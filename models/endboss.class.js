@@ -9,7 +9,7 @@ class Endboss extends MoveableObject {
         'img/2.Enemy/3 Final Enemy/2.floating/7.png',
         'img/2.Enemy/3 Final Enemy/2.floating/7.png',
         'img/2.Enemy/3 Final Enemy/2.floating/9.png',
-        'img/2.Enemy/3 Final Enemy/2.floating/10.png',
+        'img/2.Enemy/3 Final Enemy/2.floating/10.png'
     ];
     height = 200;
     width = 200;
