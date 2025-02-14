@@ -14,6 +14,10 @@ class MoveableObject {
     right: 0,
     bottom: 0,
   };
+  energy = 100;
+  lastHit = 0;
+  deadAnimationIndex = 0;
+  deadAnimationComplete = false;
 
   loadImage(path) {
     this.img = new Image();
@@ -34,10 +38,10 @@ class MoveableObject {
       ctx.lineWidth = "2";
       ctx.strokeStyle = "blue";
       ctx.rect(
-        this.x + this.offset.left, 
-        this.y + this.offset.top, 
-        this.width - this.offset.left - this.offset.right, 
-        this.height - this.offset.top - this.offset.bottom 
+        this.x + this.offset.left,
+        this.y + this.offset.top,
+        this.width - this.offset.left - this.offset.right,
+        this.height - this.offset.top - this.offset.bottom
       );
       ctx.stroke();
     }
@@ -66,14 +70,12 @@ class MoveableObject {
   }
 
   playAnimation(images) {
-    let i = this.currentImage % this.IMAGES_SWIMMING.length;
+    let i = this.currentImage % images.length;
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
   }
 
-
-  
   doLinesIntersect(l1Start, l1End, l2Start, l2End) {
     const cross = (o, a, b) =>
       (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
@@ -89,7 +91,10 @@ class MoveableObject {
       { x: this.x + off.left, y: this.y + off.top },
       { x: this.x + this.width - off.right, y: this.y + off.top },
       { x: this.x + off.left, y: this.y + this.height - off.bottom },
-      { x: this.x + this.width - off.right, y: this.y + this.height - off.bottom }
+      {
+        x: this.x + this.width - off.right,
+        y: this.y + this.height - off.bottom,
+      },
     ];
   }
 
@@ -98,7 +103,7 @@ class MoveableObject {
       [corners[0], corners[1]],
       [corners[1], corners[3]],
       [corners[3], corners[2]],
-      [corners[2], corners[0]]
+      [corners[2], corners[0]],
     ];
   }
 
@@ -114,10 +119,10 @@ class MoveableObject {
 
   isColliding(mO) {
     const myCorners = this.getCorners();
-    if (myCorners.some(p => this.isPointInsideRect(p, mO))) return true;
+    if (myCorners.some((p) => this.isPointInsideRect(p, mO))) return true;
     const myEdges = this.getEdges(myCorners);
     const otherCorners =
-      mO.getCorners && typeof mO.getCorners === 'function'
+      mO.getCorners && typeof mO.getCorners === "function"
         ? mO.getCorners()
         : (() => {
             const off = mO.offset || { left: 0, top: 0, right: 0, bottom: 0 };
@@ -125,7 +130,10 @@ class MoveableObject {
               { x: mO.x + off.left, y: mO.y + off.top },
               { x: mO.x + mO.width - off.right, y: mO.y + off.top },
               { x: mO.x + off.left, y: mO.y + mO.height - off.bottom },
-              { x: mO.x + mO.width - off.right, y: mO.y + mO.height - off.bottom }
+              {
+                x: mO.x + mO.width - off.right,
+                y: mO.y + mO.height - off.bottom,
+              },
             ];
           })();
     const otherEdges = this.getEdges(otherCorners);
@@ -134,9 +142,23 @@ class MoveableObject {
         if (this.doLinesIntersect(s1, e1, s2, e2)) return true;
     return false;
   }
-  
-  
-  
-  
-  
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy < 0) {
+      this.energy = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
+  isDead() {
+    return this.energy == 0;
+  }
+
+  isHurt() {
+    let timepassed = new Date().getTime() - this.lastHit;
+    timepassed = timepassed / 1000;
+    return timepassed < 0.5;
+  }
 }
