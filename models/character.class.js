@@ -12,6 +12,12 @@ class Character extends MoveableObject {
   ];
   speed = 0.8;
   world;
+  offset = {
+    top: 120,
+    bottom: 85,
+    left: 35,
+    right: 35
+  };
 
   constructor() {
     super().loadImage("img/1.Sharkie/1.IDLE/1.png");
