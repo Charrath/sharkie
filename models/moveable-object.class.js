@@ -1,11 +1,4 @@
-class MoveableObject {
-  x = 120;
-  y = 400;
-  height;
-  width;
-  img;
-  imageCache = {};
-  currentImage = 0;
+class MoveableObject extends DrawableObject {
   speed = 0.2;
   otherDirection = false;
   offset = {
@@ -18,15 +11,6 @@ class MoveableObject {
   lastHit = 0;
   deadAnimationIndex = 0;
   deadAnimationComplete = false;
-
-  loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
-  }
-
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
 
   drawFrame(ctx) {
     if (
@@ -45,14 +29,6 @@ class MoveableObject {
       );
       ctx.stroke();
     }
-  }
-
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
   }
 
   moveLeft() {
@@ -121,25 +97,31 @@ class MoveableObject {
     const myCorners = this.getCorners();
     if (myCorners.some((p) => this.isPointInsideRect(p, mO))) return true;
     const myEdges = this.getEdges(myCorners);
-    const otherCorners =
-      mO.getCorners && typeof mO.getCorners === "function"
-        ? mO.getCorners()
-        : (() => {
-            const off = mO.offset || { left: 0, top: 0, right: 0, bottom: 0 };
-            return [
-              { x: mO.x + off.left, y: mO.y + off.top },
-              { x: mO.x + mO.width - off.right, y: mO.y + off.top },
-              { x: mO.x + off.left, y: mO.y + mO.height - off.bottom },
-              {
-                x: mO.x + mO.width - off.right,
-                y: mO.y + mO.height - off.bottom,
-              },
-            ];
-          })();
+    const otherCorners = this.getOtherCorners(mO);
     const otherEdges = this.getEdges(otherCorners);
-    for (const [s1, e1] of myEdges)
-      for (const [s2, e2] of otherEdges)
+    return this.checkEdgeIntersections(myEdges, otherEdges);
+  }
+
+  getOtherCorners(mO) {
+    if (mO.getCorners && typeof mO.getCorners === "function") {
+      return mO.getCorners();
+    } else {
+      const off = mO.offset || { left: 0, top: 0, right: 0, bottom: 0 };
+      return [
+        { x: mO.x + off.left, y: mO.y + off.top },
+        { x: mO.x + mO.width - off.right, y: mO.y + off.top },
+        { x: mO.x + off.left, y: mO.y + mO.height - off.bottom },
+        { x: mO.x + mO.width - off.right, y: mO.y + mO.height - off.bottom },
+      ];
+    }
+  }
+
+  checkEdgeIntersections(myEdges, otherEdges) {
+    for (const [s1, e1] of myEdges) {
+      for (const [s2, e2] of otherEdges) {
         if (this.doLinesIntersect(s1, e1, s2, e2)) return true;
+      }
+    }
     return false;
   }
 

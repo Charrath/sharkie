@@ -2,6 +2,7 @@ class Character extends MoveableObject {
   height = 150;
   width = 200;
   y = 50;
+  
   IMAGES_SWIMMING = [
     "img/1.Sharkie/3.Swim/1.png",
     "img/1.Sharkie/3.Swim/2.png",
