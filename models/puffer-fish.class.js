@@ -8,6 +8,12 @@ class PufferFish extends MoveableObject {
   ];
   height = 75;
   width = 75;
+  offset = {
+    top: 5,
+    left: 1,
+    right: 3,
+    bottom: 19,
+  };
 
   constructor() {
     super().loadImage(
@@ -23,6 +29,7 @@ class PufferFish extends MoveableObject {
   animate() {
     setInterval(() => {
       this.playAnimation(this.IMAGES_SWIMMING);
+      this.moveLeft();
     }, 200);
   }
 }

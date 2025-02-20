@@ -10,32 +10,32 @@ function init() {
 }
 
 document.addEventListener('keydown', (event) => {
-  if(event.key === "ArrowLeft") {
+  if(event.key === "ArrowLeft" || event.code === "KeyA") {
     keyboard.LEFT = true;
   }
-  if(event.key === "ArrowUp") {
+  if(event.key === "ArrowUp" || event.code === "KeyW") {
     keyboard.UP = true;
   }
-  if(event.key === "ArrowRight") {
+  if(event.key === "ArrowRight" || event.code === "KeyD") {
     keyboard.RIGHT = true;
   }
-  if(event.key === "ArrowDown") {
+  if(event.key === "ArrowDown" || event.code === "KeyS") {
     keyboard.DOWN = true;
   }
-console.log(event);
+  console.log(event);
 });
 
 document.addEventListener('keyup', (event) => {
-  if(event.key === "ArrowLeft") {
+  if(event.key === "ArrowLeft" || event.code === "KeyA") {
     keyboard.LEFT = false;
   }
-  if(event.key === "ArrowUp") {
+  if(event.key === "ArrowUp" || event.code === "KeyW") {
     keyboard.UP = false;
   }
-  if(event.key === "ArrowRight") {
+  if(event.key === "ArrowRight" || event.code === "KeyD") {
     keyboard.RIGHT = false;
   }
-  if(event.key === "ArrowDown") {
+  if(event.key === "ArrowDown" || event.code === "KeyS") {
     keyboard.DOWN = false;
   }
 console.log(event);

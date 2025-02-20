@@ -11,6 +11,9 @@ class MoveableObject extends DrawableObject {
   lastHit = 0;
   deadAnimationIndex = 0;
   deadAnimationComplete = false;
+  maxX;
+  minX;
+
 
   drawFrame(ctx) {
     if (
@@ -31,25 +34,39 @@ class MoveableObject extends DrawableObject {
     }
   }
 
-  moveLeft() {
-    setInterval(() => {
-      this.x -= this.speed;
-    });
+  canMoveRight() {
+    return this.world.keyboard.RIGHT && this.x < this.maxX;
   }
 
   moveRight() {
-    setInterval(() => {
-      if (this.world.keyboard.RIGHT) {
-        this.x += this.speed;
-      }
-    });
+    this.x += this.speed;
+  }
+  
+  canMoveLeft() {
+    return this.world.keyboard.LEFT && this.x > this.minX;
+  }
+
+  moveLeft() {
+    this.x -= this.speed;
+  }
+  
+  canMoveUp() {
+    return this.world.keyboard.UP && this.y > this.minY;
+  }
+
+  moveUp() {
+    this.y -= this.speed;
+  }
+  
+  canMoveDown() {
+    return this.world.keyboard.DOWN && this.y < this.maxY;
+  }
+
+  moveDown() {
+    this.y += this.speed;
   }
 
   playAnimation(images) {
-    if (this.currentAnimation !== images) {
-      this.currentImage = 0;
-      this.currentAnimation = images;
-    }
     let i = this.currentImage % images.length;
     let path = images[i];
     this.img = this.imageCache[path];
