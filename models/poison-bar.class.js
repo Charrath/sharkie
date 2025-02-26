@@ -1,0 +1,3 @@
+class PoisonBar extends StatusBar {
+
+}

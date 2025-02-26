@@ -16,6 +16,7 @@ class Character extends MoveableObject {
   minX = -300;
   maxY = 350;
   minY = -20;
+  
 
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/1.png",
@@ -88,7 +89,7 @@ class Character extends MoveableObject {
   ];
 
   constructor() {
-    super().loadImage("img/1.Sharkie/1.IDLE/1.png");
+    super().loadImage(this.IMAGES_SWIMMING[0]);
     this.IMAGES_LONG_IDLE_LAST4 = this.IMAGES_LONG_IDLE.slice(-4);
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_DEAD);
@@ -119,7 +120,7 @@ class Character extends MoveableObject {
       else if (this.isHurt()) this.handleHurtAnimation();
       else if (this.isMoving()) this.handleMovementAnimation();
       else this.handleIdleAnimation();
-    }, 300);
+    }, 150);
   }
 
   updateCamera() {
