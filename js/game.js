@@ -22,6 +22,9 @@ document.addEventListener('keydown', (event) => {
   if(event.key === "ArrowDown" || event.code === "KeyS") {
     keyboard.DOWN = true;
   }
+  if(event.code === "KeyF") {
+    keyboard.F = true;
+  }
   console.log(event);
 });
 
@@ -37,6 +40,9 @@ document.addEventListener('keyup', (event) => {
   }
   if(event.key === "ArrowDown" || event.code === "KeyS") {
     keyboard.DOWN = false;
+  }
+  if(event.code === "KeyF") {
+    keyboard.F = false;
   }
 console.log(event);
 });

@@ -14,8 +14,22 @@ class MoveableObject extends DrawableObject {
   maxX;
   minX;
 
+  applyGravity() {
+    setInterval(() => {
+      this.x += this.speedX;
+      this.speedX = Math.max(0, this.speedX - this.friction);
 
-
+      if (this.isUnderWater()) {
+        const horizontalFactor = this.speedX / this.initialSpeedX;
+        const riseSpeed = this.buoyancy * (1 - horizontalFactor);
+        this.y -= riseSpeed;
+      }
+    }, 1000 / 25);
+  }
+  
+  isUnderWater() {
+    return this.y > this.waterSurfaceY - this.height;
+  }
 
   canMoveRight() {
     return this.world.keyboard.RIGHT && this.x < this.maxX;
@@ -24,7 +38,7 @@ class MoveableObject extends DrawableObject {
   moveRight() {
     this.x += this.speed;
   }
-  
+
   canMoveLeft() {
     return this.world.keyboard.LEFT && this.x > this.minX;
   }
@@ -32,7 +46,7 @@ class MoveableObject extends DrawableObject {
   moveLeft() {
     this.x -= this.speed;
   }
-  
+
   canMoveUp() {
     return this.world.keyboard.UP && this.y > this.minY;
   }
@@ -40,7 +54,7 @@ class MoveableObject extends DrawableObject {
   moveUp() {
     this.y -= this.speed;
   }
-  
+
   canMoveDown() {
     return this.world.keyboard.DOWN && this.y < this.maxY;
   }
