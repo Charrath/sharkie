@@ -17,10 +17,15 @@ class MoveableObject extends DrawableObject {
   applyGravity() {
     setInterval(() => {
       this.x += this.speedX;
-      this.speedX = Math.max(0, this.speedX - this.friction);
-
+  
+      if (this.speedX > 0) {
+        this.speedX = Math.max(0, this.speedX - this.friction);
+      } else if (this.speedX < 0) {
+        this.speedX = Math.min(0, this.speedX + this.friction);
+      }
+  
       if (this.isUnderWater()) {
-        const horizontalFactor = this.speedX / this.initialSpeedX;
+        const horizontalFactor = Math.abs(this.speedX) / this.initialSpeedX;
         const riseSpeed = this.buoyancy * (1 - horizontalFactor);
         this.y -= riseSpeed;
       }

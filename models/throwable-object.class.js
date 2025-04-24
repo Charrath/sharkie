@@ -4,16 +4,16 @@ class ThrowableObject extends MoveableObject {
     this.x = x;
     this.y = y;
     this.waterSurfaceY = 0;
-    this.friction = 0.2;
+    this.friction = 0.5;
     this.initialSpeedX   = 30;
-    this.buoyancy = 3.0;
+    this.buoyancy = 2.5;
     this.height = 20;
     this.width = 20;
     this.trow();
   }
 
   trow() {
-    this.speedX = 12;
+    this.speedX = 20;
     this.applyGravity();
   }
 }

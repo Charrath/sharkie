@@ -32,7 +32,8 @@ class World {
 
   checkThrowObjects() {
     if (this.keyboard.F) {
-      let bubble = new ThrowableObject(this.character.x + 130, this.character.y + 97)
+      let bubble = new ThrowableObject(this.character.x + (this.character.otherDirection ? 30 : 130), this.character.y + 97)
+      bubble.speedX = this.character.otherDirection ? -20 : 20;
       this.throwableObjects.push(bubble);
     }
   }
