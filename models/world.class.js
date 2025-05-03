@@ -8,7 +8,7 @@ class World {
   coinBar = new CoinBar();
   healthBar = new HealthBar(this.character);
   poisonBar = new PoisonBar();
-  throwableObjects = [new ThrowableObject()];
+  throwableObjects = [];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -26,7 +26,6 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
-      this.checkThrowObjects();
     }, 200);
   }
 

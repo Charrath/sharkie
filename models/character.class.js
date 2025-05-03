@@ -152,10 +152,14 @@ class Character extends MoveableObject {
 
   handleAttackAnimation() {
     if (this.currentImage < this.IMAGES_ATTACK_BUBBLE.length) {
-      let path = this.IMAGES_ATTACK_BUBBLE[this.currentImage];
-      this.img = this.imageCache[path];
+      this.img = this.imageCache[this.IMAGES_ATTACK_BUBBLE[this.currentImage]];
       this.currentImage++;
     } else {
+      const bx = this.x + (this.otherDirection ? 0 : 180);
+      const by = this.y + 85;
+      const bubble = new ThrowableObject(bx, by, this.world);
+      bubble.speedX = this.otherDirection ? -20 : 20;
+      this.world.throwableObjects.push(bubble);
       this.isAttacking = false;
       this.currentImage = 0;
     }

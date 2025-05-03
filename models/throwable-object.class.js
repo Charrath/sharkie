@@ -1,8 +1,9 @@
 class ThrowableObject extends MoveableObject {
-  constructor(x, y) {
+  constructor(x, y, world) {
     super().loadImage("img/1.Sharkie/4.Attack/Bubble trap/Bubble.png");
     this.x = x;
     this.y = y;
+    this.world = world;
     this.waterSurfaceY = 0;
     this.friction = 0.5;
     this.initialSpeedX   = 30;
