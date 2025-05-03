@@ -29,14 +29,6 @@ class World {
     }, 200);
   }
 
-  checkThrowObjects() {
-    if (this.keyboard.F) {
-      let bubble = new ThrowableObject(this.character.x + (this.character.otherDirection ? 30 : 130), this.character.y + 97)
-      bubble.speedX = this.character.otherDirection ? -20 : 20;
-      this.throwableObjects.push(bubble);
-    }
-  }
-
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
@@ -44,6 +36,15 @@ class World {
         console.log("Collision with Character, energy", this.character.energy);
       }
     });
+
+    this.throwableObjects.forEach(bubble => {
+      this.level.enemies.forEach(enemy => {
+        if (bubble.isColliding(enemy)) {
+          console.log("Bubble hit enemy", enemy);
+        }
+      });
+    });
+
   }
 
   draw() {

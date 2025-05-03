@@ -121,10 +121,12 @@ class Character extends MoveableObject {
       if (this.world.keyboard.F && !this.isAttacking) {
         this.startAttack();
       }
-      if (this.canMoveRight()) this.moveRight();
-      if (this.canMoveLeft()) this.moveLeft();
-      if (this.canMoveUp()) this.moveUp();
-      if (this.canMoveDown()) this.moveDown();
+      if (!this.isDead()) {
+        if (this.canMoveRight()) this.moveRight();
+        if (this.canMoveLeft()) this.moveLeft();
+        if (this.canMoveUp()) this.moveUp();
+        if (this.canMoveDown()) this.moveDown();
+      }
       this.updateCamera();
     }, 16);
   }
@@ -145,9 +147,11 @@ class Character extends MoveableObject {
   }
 
   startAttack() {
-    this.isAttacking = true;
-    this.currentImage = 0;
-    this.idleTimer = 0;
+    if (!this.isHurt()) {
+      this.isAttacking = true;
+      this.currentImage = 0;
+      this.idleTimer = 0;
+    }
   }
 
   handleAttackAnimation() {
