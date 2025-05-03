@@ -146,7 +146,7 @@ class Character extends MoveableObject {
 
   startAttack() {
     this.isAttacking = true;
-    this.currentImage = 0; 
+    this.currentImage = 0;
     this.idleTimer = 0;
   }
 
@@ -155,14 +155,18 @@ class Character extends MoveableObject {
       this.img = this.imageCache[this.IMAGES_ATTACK_BUBBLE[this.currentImage]];
       this.currentImage++;
     } else {
-      const bx = this.x + (this.otherDirection ? 0 : 180);
-      const by = this.y + 85;
-      const bubble = new ThrowableObject(bx, by, this.world);
-      bubble.speedX = this.otherDirection ? -20 : 20;
-      this.world.throwableObjects.push(bubble);
-      this.isAttacking = false;
-      this.currentImage = 0;
+      this.spawnBubble();
     }
+  }
+
+  spawnBubble() {
+    const bx = this.x + (this.otherDirection ? 0 : 180);
+    const by = this.y + 85;
+    const bubble = new ThrowableObject(bx, by, this.world);
+    bubble.speedX = this.otherDirection ? -20 : 20;
+    this.world.throwableObjects.push(bubble);
+    this.isAttacking = false;
+    this.currentImage = 0;
   }
 
   isMoving() {
