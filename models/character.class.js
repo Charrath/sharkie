@@ -6,6 +6,7 @@ class Character extends MoveableObject {
   world;
   idleTimer = 0;
   longIdlePlayed = false;
+  isAttacking = false;
   offset = {
     top: 120,
     bottom: 85,
@@ -16,7 +17,6 @@ class Character extends MoveableObject {
   minX = -300;
   maxY = 350;
   minY = -20;
-  
 
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/1.png",
@@ -88,6 +88,17 @@ class Character extends MoveableObject {
     "img/1.Sharkie/5.Hurt/1.Poisoned/1.png",
   ];
 
+  IMAGES_ATTACK_BUBBLE = [
+    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
+    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
+  ];
+
   constructor() {
     super().loadImage(this.IMAGES_SWIMMING[0]);
     this.IMAGES_LONG_IDLE_LAST4 = this.IMAGES_LONG_IDLE.slice(-4);
@@ -96,16 +107,20 @@ class Character extends MoveableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_LONG_IDLE);
+    this.loadImages(this.IMAGES_ATTACK_BUBBLE);
     this.animate();
   }
 
   animate() {
-    this.startMovementLoop();
+    this.startInputLoop();
     this.startAnimationLoop();
   }
 
-  startMovementLoop() {
+  startInputLoop() {
     setInterval(() => {
+      if (this.world.keyboard.F && !this.isAttacking) {
+        this.startAttack();
+      }
       if (this.canMoveRight()) this.moveRight();
       if (this.canMoveLeft()) this.moveLeft();
       if (this.canMoveUp()) this.moveUp();
@@ -117,14 +132,33 @@ class Character extends MoveableObject {
   startAnimationLoop() {
     setInterval(() => {
       if (this.isDead()) this.handleDeadAnimation();
-      else if (this.isHurt()) this.handleHurtAnimation();
+      else if (this.isAttacking) {
+        this.handleAttackAnimation();
+      } else if (this.isHurt()) this.handleHurtAnimation();
       else if (this.isMoving()) this.handleMovementAnimation();
       else this.handleIdleAnimation();
-    }, 150);
+    }, 100);
   }
 
   updateCamera() {
     this.world.camera_x = -this.x + 100;
+  }
+
+  startAttack() {
+    this.isAttacking = true;
+    this.currentImage = 0; 
+    this.idleTimer = 0;
+  }
+
+  handleAttackAnimation() {
+    if (this.currentImage < this.IMAGES_ATTACK_BUBBLE.length) {
+      let path = this.IMAGES_ATTACK_BUBBLE[this.currentImage];
+      this.img = this.imageCache[path];
+      this.currentImage++;
+    } else {
+      this.isAttacking = false;
+      this.currentImage = 0;
+    }
   }
 
   isMoving() {
