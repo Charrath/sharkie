@@ -7,6 +7,7 @@ class Character extends MoveableObject {
   idleTimer = 0;
   longIdlePlayed = false;
   isAttacking = false;
+  attackType = 0;
   offset = {
     top: 120,
     bottom: 85,
@@ -99,6 +100,17 @@ class Character extends MoveableObject {
     "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
   ];
 
+  IMAGES_ATTACK_FINAL_SLAP = [
+    "img/1.Sharkie/4.Attack/Fin slap/1.png",
+    "img/1.Sharkie/4.Attack/Fin slap/2.png",
+    "img/1.Sharkie/4.Attack/Fin slap/3.png",
+    "img/1.Sharkie/4.Attack/Fin slap/4.png",
+    "img/1.Sharkie/4.Attack/Fin slap/5.png",
+    "img/1.Sharkie/4.Attack/Fin slap/6.png",
+    "img/1.Sharkie/4.Attack/Fin slap/7.png",
+    "img/1.Sharkie/4.Attack/Fin slap/8.png",
+  ];
+
   constructor() {
     super().loadImage(this.IMAGES_SWIMMING[0]);
     this.IMAGES_LONG_IDLE_LAST4 = this.IMAGES_LONG_IDLE.slice(-4);
@@ -108,6 +120,7 @@ class Character extends MoveableObject {
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.loadImages(this.IMAGES_ATTACK_BUBBLE);
+    this.loadImages(this.IMAGES_ATTACK_FINAL_SLAP);
     this.animate();
   }
 
@@ -119,6 +132,11 @@ class Character extends MoveableObject {
   startInputLoop() {
     setInterval(() => {
       if (this.world.keyboard.F && !this.isAttacking) {
+        this.attackType = 'bubble';
+        this.startAttack();
+      }
+      if (this.world.keyboard.E && !this.isAttacking) {
+        this.attackType = 'finalSlap';
         this.startAttack();
       }
       if (!this.isDead()) {
@@ -134,8 +152,8 @@ class Character extends MoveableObject {
   startAnimationLoop() {
     setInterval(() => {
       if (this.isDead()) this.handleDeadAnimation();
-      else if (this.isAttacking) {
-        this.handleAttackAnimation();
+      else if (this.attackType === 'bubble' || this.attackType === 'finalSlap') {
+        this.handleAttackAnimation(this.attackType);
       } else if (this.isHurt()) this.handleHurtAnimation();
       else if (this.isMoving()) this.handleMovementAnimation();
       else this.handleIdleAnimation();
@@ -154,12 +172,34 @@ class Character extends MoveableObject {
     }
   }
 
-  handleAttackAnimation() {
+  handleAttackAnimation(attackType) {
+    if (attackType === "bubble") {
+    this.bubbleAttack();
+    } else if (attackType === "finalSlap") {
+    this.finalSlapAttack();
+    }
+    
+  }
+
+  finalSlapAttack() {
+    if (this.currentImage < this.IMAGES_ATTACK_FINAL_SLAP.length) {
+      this.img = this.imageCache[this.IMAGES_ATTACK_FINAL_SLAP[this.currentImage]];
+      this.currentImage++;
+    } else {
+      this.isAttacking = false;
+      this.currentImage = 0;
+      this.attackType = 0;
+    }
+  }
+
+  bubbleAttack() {
     if (this.currentImage < this.IMAGES_ATTACK_BUBBLE.length) {
-      this.img = this.imageCache[this.IMAGES_ATTACK_BUBBLE[this.currentImage]];
+      this.img =
+        this.imageCache[this.IMAGES_ATTACK_BUBBLE[this.currentImage]];
       this.currentImage++;
     } else {
       this.spawnBubble();
+      this.attackType = 0;
     }
   }
 
