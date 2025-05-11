@@ -7,6 +7,7 @@ class Character extends MoveableObject {
   idleTimer = 0;
   longIdlePlayed = false;
   isAttacking = false;
+  isUntouchable = false;
   attackType = 0;
   offset = {
     top: 120,
@@ -166,11 +167,23 @@ class Character extends MoveableObject {
 
   startAttack() {
     if (!this.isHurt()) {
-      this.isAttacking = true;
+      this.isAttacking  = true;
       this.currentImage = 0;
-      this.idleTimer = 0;
+      this.idleTimer    = 0;
+
+      // wenn es die Final Slap ist, sofort unverwundbar schalten
+      if (this.attackType === 'finalSlap') {
+        this.isUntouchable = true;
+
+        // Frames * Frame-Dauer (100 ms) + 1000 ms Nach-Schutz
+        const attackDuration = this.IMAGES_ATTACK_FINAL_SLAP.length * 100;
+        setTimeout(() => {
+          this.isUntouchable = false;
+        }, attackDuration + 1000);
+      }
     }
   }
+
 
   handleAttackAnimation(attackType) {
     if (attackType === "bubble") {
@@ -182,8 +195,15 @@ class Character extends MoveableObject {
   }
 
   finalSlapAttack() {
+    const step = 4;
+
     if (this.currentImage < this.IMAGES_ATTACK_FINAL_SLAP.length) {
       this.img = this.imageCache[this.IMAGES_ATTACK_FINAL_SLAP[this.currentImage]];
+      if (!this.otherDirection) {
+        this.x = Math.min(this.maxX, this.x + step);
+      } else {
+        this.x = Math.max(this.minX, this.x - step);
+      }
       this.currentImage++;
     } else {
       this.isAttacking = false;
