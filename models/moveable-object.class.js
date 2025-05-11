@@ -163,4 +163,5 @@ class MoveableObject extends DrawableObject {
   isVisible() {
     return true;
   }
+
 }
