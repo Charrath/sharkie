@@ -1,25 +1,4 @@
 class Character extends MoveableObject {
-  height = 150;
-  width = 200;
-  y = 50;
-  speed = 2.5;
-  world;
-  idleTimer = 0;
-  longIdlePlayed = false;
-  isAttacking = false;
-  isUntouchable = false;
-  attackType = 0;
-  offset = {
-    top: 120,
-    bottom: 85,
-    left: 35,
-    right: 35,
-  };
-  maxX = 1420;
-  minX = -300;
-  maxY = 350;
-  minY = -20;
-
   IMAGES_IDLE = [
     "img/1.Sharkie/1.IDLE/1.png",
     "img/1.Sharkie/1.IDLE/2.png",
@@ -112,6 +91,27 @@ class Character extends MoveableObject {
     "img/1.Sharkie/4.Attack/Fin slap/8.png",
   ];
 
+  height = 150;
+  width = 200;
+  y = 50;
+  speed = 2.5;
+  world;
+  idleTimer = 0;
+  longIdlePlayed = false;
+  isAttacking = false;
+  isUntouchable = false;
+  attackType = 0;
+  offset = {
+    top: 120,
+    bottom: 85,
+    left: 35,
+    right: 35,
+  };
+  maxX = 3000;
+  minX = -300;
+  maxY = 350;
+  minY = -20;
+
   constructor() {
     super().loadImage(this.IMAGES_SWIMMING[0]);
     this.IMAGES_LONG_IDLE_LAST4 = this.IMAGES_LONG_IDLE.slice(-4);
@@ -171,11 +171,9 @@ class Character extends MoveableObject {
       this.currentImage = 0;
       this.idleTimer    = 0;
 
-      // wenn es die Final Slap ist, sofort unverwundbar schalten
       if (this.attackType === 'finalSlap') {
         this.isUntouchable = true;
 
-        // Frames * Frame-Dauer (100 ms) + 1000 ms Nach-Schutz
         const attackDuration = this.IMAGES_ATTACK_FINAL_SLAP.length * 100;
         setTimeout(() => {
           this.isUntouchable = false;

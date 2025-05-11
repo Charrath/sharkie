@@ -159,4 +159,8 @@ class MoveableObject extends DrawableObject {
     timepassed = timepassed / 1000;
     return timepassed < 0.5;
   }
+
+  isVisible() {
+    return true;
+  }
 }

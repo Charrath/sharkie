@@ -17,10 +17,14 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
+    window.character = this.character;
   }
 
   setWorld() {
     this.character.world = this;
+    this.level.enemies.forEach(enemy => {
+      enemy.world = this;
+    });
   }
 
   run() {
@@ -31,6 +35,7 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
+      if (enemy.introduced === false) return;
       if (
         this.character.isColliding(enemy) &&
         !this.character.isUntouchable
@@ -75,6 +80,9 @@ class World {
   }
 
   addToMap(mO) {
+    if (typeof mO.isVisible === 'function' && !mO.isVisible()) {
+      return;
+    }
     if (mO.otherDirection) {
       this.flipImage(mO);
     }

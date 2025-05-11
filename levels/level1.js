@@ -31,5 +31,5 @@ const layerPaths = [
   
   const level1 = new Level(
     enemies,
-    createBackgroundObjects(-719, 719, 4, layerPaths)
+    createBackgroundObjects(-719, 719, 8, layerPaths)
   );
