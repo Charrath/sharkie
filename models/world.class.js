@@ -1,12 +1,10 @@
 class World {
-  character = new Character();
   level = level1;
   canvas;
   ctx;
   keyboard;
   camera_x = 0;
   coinBar = new CoinBar();
-  healthBar = new HealthBar(this.character);
   poisonBar = new PoisonBar();
   throwableObjects = [];
 
@@ -14,6 +12,8 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.character = new Character(this);
+    this.healthBar = new HealthBar(this.character);
     this.draw();
     this.setWorld();
     this.run();
@@ -22,7 +22,7 @@ class World {
 
   setWorld() {
     this.character.world = this;
-    this.level.enemies.forEach(enemy => {
+    this.level.enemies.forEach((enemy) => {
       enemy.world = this;
     });
   }
@@ -36,10 +36,7 @@ class World {
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (enemy.introduced === false) return;
-      if (
-        this.character.isColliding(enemy) &&
-        !this.character.isUntouchable
-      ) {
+      if (this.character.isColliding(enemy) && !this.character.isUntouchable) {
         this.character.hit();
 
         console.log("Collision with Character, energy", this.character.energy);
@@ -80,7 +77,7 @@ class World {
   }
 
   addToMap(mO) {
-    if (typeof mO.isVisible === 'function' && !mO.isVisible()) {
+    if (typeof mO.isVisible === "function" && !mO.isVisible()) {
       return;
     }
     if (mO.otherDirection) {

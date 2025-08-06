@@ -112,8 +112,9 @@ class Character extends MoveableObject {
   maxY = 350;
   minY = -20;
 
-  constructor() {
+  constructor(world) {
     super().loadImage(this.IMAGES_SWIMMING[0]);
+    this.world = world;
     this.IMAGES_LONG_IDLE_LAST4 = this.IMAGES_LONG_IDLE.slice(-4);
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_DEAD);
@@ -150,16 +151,18 @@ class Character extends MoveableObject {
     }, 16);
   }
 
-  startAnimationLoop() {
-    setInterval(() => {
-      if (this.isDead()) this.handleDeadAnimation();
-      else if (this.attackType === 'bubble' || this.attackType === 'finalSlap') {
-        this.handleAttackAnimation(this.attackType);
-      } else if (this.isHurt()) this.handleHurtAnimation();
-      else if (this.isMoving()) this.handleMovementAnimation();
-      else this.handleIdleAnimation();
-    }, 100);
-  }
+startAnimationLoop() {
+  const loop = () => {
+    let t = 100;
+    if (this.isDead())                      { t = 150; this.handleDeadAnimation(); }
+    else if (this.attackType)               { t =  80; this.handleAttackAnimation(this.attackType); }
+    else if (this.isHurt())                 { t = 200; this.handleHurtAnimation(); }
+    else if (this.isMoving())               { t = 100; this.handleMovementAnimation(); }
+    else                                    { t = 175; this.handleIdleAnimation(); }
+    setTimeout(loop, t);
+  };
+  loop();
+}
 
   updateCamera() {
     this.world.camera_x = -this.x + 100;
