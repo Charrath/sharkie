@@ -60,33 +60,43 @@ class Endboss extends MoveableObject {
   }
 
   startInputLoop() {
-    setInterval(() => {
+    const id = setInterval(() => {
       if (!this.world?.character) return;
-
-      if (!this.introduced && this.world.character.x >= 400) {
-        this.introduced = true;
-        this.currentImage = 0;
-        this.img = this.imageCache[this.IMAGES_INTRODUCE[0]];
+      if (!this.introduced && this.world.character.x >= 350) {
+        this.startIntro();
+        clearInterval(id);
       }
     }, 16);
+  }
+
+  startIntro() {
+    this.introduced = true;
+    this.currentImage = 0;
+    this.img = this.imageCache[this.IMAGES_INTRODUCE[0]];
   }
 
   startAnimationLoop() {
     setInterval(() => {
       if (!this.introduced) return;
-
       if (!this.introPlayed) {
-        this.playAnimationNonLoop(this.IMAGES_INTRODUCE);
-        if (this.currentImage >= this.IMAGES_INTRODUCE.length) {
-          this.introPlayed   = true;
-          this.currentImage  = 0;  
-        }
-      }
-
-      else {
+        this.playIntro();
+      } else if (
+        this.introPlayed &&
+        Math.abs(this.world.character.x - this.x) <= 350
+      ) {
+        this.attackCharacter();
+      } else {
         this.playAnimation(this.IMAGES_SWIMMING);
       }
     }, 150);
+  }
+
+  playIntro() {
+    this.playAnimationNonLoop(this.IMAGES_INTRODUCE);
+    if (this.currentImage >= this.IMAGES_INTRODUCE.length) {
+      this.introPlayed = true;
+      this.currentImage = 0;
+    }
   }
 
   playAnimationNonLoop(images) {
@@ -96,5 +106,4 @@ class Endboss extends MoveableObject {
       this.currentImage++;
     }
   }
-
 }
