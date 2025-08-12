@@ -28,6 +28,15 @@ class Endboss extends MoveableObject {
     "img/2.Enemy/3 Final Enemy/1.Introduce/10.png",
   ];
 
+  IMAGES_ATTACK = [
+    "img/2.Enemy/3 Final Enemy/Attack/1.png",
+    "img/2.Enemy/3 Final Enemy/Attack/2.png",
+    "img/2.Enemy/3 Final Enemy/Attack/3.png",
+    "img/2.Enemy/3 Final Enemy/Attack/4.png",
+    "img/2.Enemy/3 Final Enemy/Attack/5.png",
+    "img/2.Enemy/3 Final Enemy/Attack/6.png",
+  ];
+
   height = 200;
   width = 200;
   y = 50;
@@ -46,6 +55,7 @@ class Endboss extends MoveableObject {
     this.world = world;
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_INTRODUCE);
+    this.loadImages(this.IMAGES_ATTACK)
     this.x = 800;
     this.animate();
   }
@@ -84,11 +94,27 @@ class Endboss extends MoveableObject {
         this.introPlayed &&
         Math.abs(this.world.character.x - this.x) <= 350
       ) {
-        this.attackCharacter();
+        this.attackCharacter(3);
+        this.playAnimation(this.IMAGES_ATTACK);
       } else {
         this.playAnimation(this.IMAGES_SWIMMING);
       }
     }, 150);
+  }
+
+  attackCharacter(speed = 10) {
+    const char = this.world.character;
+    this.otherDirection = char.x > this.x;
+    if (char.x > this.x) {
+      this.x += speed;
+    } else if (char.x < this.x) {
+      this.x -= speed;
+    }
+    if (char.y > this.y) {
+      this.y += speed;
+    } else if (char.y < this.y) {
+      this.y -= speed;
+    }
   }
 
   playIntro() {
