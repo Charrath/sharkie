@@ -134,12 +134,10 @@ class Character extends MoveableObject {
   startInputLoop() {
     setInterval(() => {
       if (this.world.keyboard.F && !this.isAttacking) {
-        this.attackType = 'bubble';
-        this.startAttack();
+        this.startAttack('bubble');
       }
       if (this.world.keyboard.E && !this.isAttacking) {
-        this.attackType = 'finalSlap';
-        this.startAttack();
+        this.startAttack('finalSlap');
       }
       if (!this.isDead()) {
         if (this.canMoveRight()) this.moveRight();
@@ -151,30 +149,42 @@ class Character extends MoveableObject {
     }, 16);
   }
 
-startAnimationLoop() {
-  const loop = () => {
-    let t = 100;
-    if (this.isDead())                      { t = 150; this.handleDeadAnimation(); }
-    else if (this.attackType)               { t =  80; this.handleAttackAnimation(this.attackType); }
-    else if (this.isHurt())                 { t = 200; this.handleHurtAnimation(); }
-    else if (this.isMoving())               { t = 100; this.handleMovementAnimation(); }
-    else                                    { t = 175; this.handleIdleAnimation(); }
-    setTimeout(loop, t);
-  };
-  loop();
-}
+  startAnimationLoop() {
+    const loop = () => {
+      let t = 100;
+      if (this.isDead()) {
+        t = 150;
+        this.handleDeadAnimation();
+      } else if (this.attackType) {
+        t = 80;
+        this.handleAttackAnimation(this.attackType);
+      } else if (this.isHurt()) {
+        t = 200;
+        this.handleHurtAnimation();
+      } else if (this.isMoving()) {
+        t = 100;
+        this.handleMovementAnimation();
+      } else {
+        t = 175;
+        this.handleIdleAnimation();
+      }
+      setTimeout(loop, t);
+    };
+    loop();
+  }
 
   updateCamera() {
     this.world.camera_x = -this.x + 100;
   }
 
-  startAttack() {
+  startAttack(type) {
     if (!this.isHurt()) {
-      this.isAttacking  = true;
+      this.attackType = type;
+      this.isAttacking = true;
       this.currentImage = 0;
-      this.idleTimer    = 0;
+      this.idleTimer = 0;
 
-      if (this.attackType === 'finalSlap') {
+      if (this.attackType === "finalSlap") {
         this.isUntouchable = true;
 
         const attackDuration = this.IMAGES_ATTACK_FINAL_SLAP.length * 100;
@@ -185,21 +195,20 @@ startAnimationLoop() {
     }
   }
 
-
   handleAttackAnimation(attackType) {
     if (attackType === "bubble") {
-    this.bubbleAttack();
+      this.bubbleAttack();
     } else if (attackType === "finalSlap") {
-    this.finalSlapAttack();
+      this.finalSlapAttack();
     }
-    
   }
 
   finalSlapAttack() {
     const step = 4;
 
     if (this.currentImage < this.IMAGES_ATTACK_FINAL_SLAP.length) {
-      this.img = this.imageCache[this.IMAGES_ATTACK_FINAL_SLAP[this.currentImage]];
+      this.img =
+        this.imageCache[this.IMAGES_ATTACK_FINAL_SLAP[this.currentImage]];
       if (!this.otherDirection) {
         this.x = Math.min(this.maxX, this.x + step);
       } else {
@@ -215,8 +224,7 @@ startAnimationLoop() {
 
   bubbleAttack() {
     if (this.currentImage < this.IMAGES_ATTACK_BUBBLE.length) {
-      this.img =
-        this.imageCache[this.IMAGES_ATTACK_BUBBLE[this.currentImage]];
+      this.img = this.imageCache[this.IMAGES_ATTACK_BUBBLE[this.currentImage]];
       this.currentImage++;
     } else {
       this.spawnBubble();

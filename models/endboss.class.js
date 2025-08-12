@@ -110,9 +110,9 @@ class Endboss extends MoveableObject {
     } else if (char.x < this.x) {
       this.x -= speed;
     }
-    if (char.y > this.y) {
+    if (char.y - 40 > this.y) {
       this.y += speed;
-    } else if (char.y < this.y) {
+    } else if (char.y - 40 < this.y) {
       this.y -= speed;
     }
   }
