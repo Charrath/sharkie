@@ -14,6 +14,8 @@ class World {
     this.keyboard = keyboard;
     this.character = new Character(this);
     this.healthBar = new HealthBar(this.character);
+    this.endboss = null;            
+    this.bossHealthBar = null; 
     this.draw();
     this.setWorld();
     this.run();
@@ -27,9 +29,21 @@ class World {
     });
   }
 
-  run() {
+   ensureBossBar() {
+    if (!this.endboss) {
+      this.endboss = this.level.enemies.find(e => e instanceof Endboss);
+    }
+    if (this.endboss && this.endboss.introduced && !this.bossHealthBar) {
+      this.bossHealthBar = new BossHealthBar(this.endboss);
+    }
+  }
+
+   run() {
     setInterval(() => {
       this.checkCollisions();
+      this.ensureBossBar();    
+      if (this.bossHealthBar) this.bossHealthBar.update();
+      this.healthBar.update();
     }, 200);
   }
 
@@ -62,10 +76,14 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.coinBar);
     this.addToMap(this.healthBar);
+    if (this.bossHealthBar && this.bossHealthBar.isVisible()) {
+      this.addToMap(this.bossHealthBar);
+    }
     this.addToMap(this.poisonBar);
     this.ctx.translate(this.camera_x, 0);
     this.ctx.translate(-this.camera_x, 0);
     this.healthBar.update();
+    if (this.bossHealthBar) this.bossHealthBar.update();
 
     requestAnimationFrame(this.draw.bind(this));
   }
