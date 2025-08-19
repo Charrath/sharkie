@@ -1,95 +1,54 @@
 class Character extends MoveableObject {
-  IMAGES_IDLE = [
-    "img/1.Sharkie/1.IDLE/1.png",
-    "img/1.Sharkie/1.IDLE/2.png",
-    "img/1.Sharkie/1.IDLE/3.png",
-    "img/1.Sharkie/1.IDLE/4.png",
-    "img/1.Sharkie/1.IDLE/5.png",
-    "img/1.Sharkie/1.IDLE/6.png",
-    "img/1.Sharkie/1.IDLE/7.png",
-    "img/1.Sharkie/1.IDLE/8.png",
-    "img/1.Sharkie/1.IDLE/9.png",
-    "img/1.Sharkie/1.IDLE/10.png",
-    "img/1.Sharkie/1.IDLE/11.png",
-    "img/1.Sharkie/1.IDLE/12.png",
-    "img/1.Sharkie/1.IDLE/13.png",
-    "img/1.Sharkie/1.IDLE/14.png",
-    "img/1.Sharkie/1.IDLE/15.png",
-    "img/1.Sharkie/1.IDLE/16.png",
-    "img/1.Sharkie/1.IDLE/17.png",
-    "img/1.Sharkie/1.IDLE/18.png",
-  ];
-
-  IMAGES_LONG_IDLE = [
-    "img/1.Sharkie/2.Long_IDLE/i1.png",
-    "img/1.Sharkie/2.Long_IDLE/i2.png",
-    "img/1.Sharkie/2.Long_IDLE/i3.png",
-    "img/1.Sharkie/2.Long_IDLE/i4.png",
-    "img/1.Sharkie/2.Long_IDLE/i5.png",
-    "img/1.Sharkie/2.Long_IDLE/i6.png",
-    "img/1.Sharkie/2.Long_IDLE/i7.png",
-    "img/1.Sharkie/2.Long_IDLE/i8.png",
-    "img/1.Sharkie/2.Long_IDLE/i9.png",
-    "img/1.Sharkie/2.Long_IDLE/i10.png",
-    "img/1.Sharkie/2.Long_IDLE/i11.png",
-    "img/1.Sharkie/2.Long_IDLE/i12.png",
-    "img/1.Sharkie/2.Long_IDLE/i13.png",
-    "img/1.Sharkie/2.Long_IDLE/i14.png",
-  ];
-
-  IMAGES_SWIMMING = [
-    "img/1.Sharkie/3.Swim/1.png",
-    "img/1.Sharkie/3.Swim/2.png",
-    "img/1.Sharkie/3.Swim/3.png",
-    "img/1.Sharkie/3.Swim/4.png",
-    "img/1.Sharkie/3.Swim/5.png",
-    "img/1.Sharkie/3.Swim/6.png",
-  ];
-
-  IMAGES_DEAD = [
-    "img/1.Sharkie/6.dead/1.Poisoned/1.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/2.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/3.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/4.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/5.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/6.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/7.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/8.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/9.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/10.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/11.png",
-    "img/1.Sharkie/6.dead/1.Poisoned/12.png",
-  ];
-
-  IMAGES_HURT = [
-    "img/1.Sharkie/5.Hurt/1.Poisoned/1.png",
-    "img/1.Sharkie/5.Hurt/1.Poisoned/3.png",
-    "img/1.Sharkie/5.Hurt/1.Poisoned/5.png",
-    "img/1.Sharkie/5.Hurt/1.Poisoned/3.png",
-    "img/1.Sharkie/5.Hurt/1.Poisoned/1.png",
-  ];
-
-  IMAGES_ATTACK_BUBBLE = [
-    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png",
-    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png",
-    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png",
-    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png",
-    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
-    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
-    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
-    "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
-  ];
-
-  IMAGES_ATTACK_FINAL_SLAP = [
-    "img/1.Sharkie/4.Attack/Fin slap/1.png",
-    "img/1.Sharkie/4.Attack/Fin slap/2.png",
-    "img/1.Sharkie/4.Attack/Fin slap/3.png",
-    "img/1.Sharkie/4.Attack/Fin slap/4.png",
-    "img/1.Sharkie/4.Attack/Fin slap/5.png",
-    "img/1.Sharkie/4.Attack/Fin slap/6.png",
-    "img/1.Sharkie/4.Attack/Fin slap/7.png",
-    "img/1.Sharkie/4.Attack/Fin slap/8.png",
-  ];
+  IMAGE_SETS = {
+    idle: [
+      "img/1.Sharkie/1.IDLE/1.png","img/1.Sharkie/1.IDLE/2.png","img/1.Sharkie/1.IDLE/3.png",
+      "img/1.Sharkie/1.IDLE/4.png","img/1.Sharkie/1.IDLE/5.png","img/1.Sharkie/1.IDLE/6.png",
+      "img/1.Sharkie/1.IDLE/7.png","img/1.Sharkie/1.IDLE/8.png","img/1.Sharkie/1.IDLE/9.png",
+      "img/1.Sharkie/1.IDLE/10.png","img/1.Sharkie/1.IDLE/11.png","img/1.Sharkie/1.IDLE/12.png",
+      "img/1.Sharkie/1.IDLE/13.png","img/1.Sharkie/1.IDLE/14.png","img/1.Sharkie/1.IDLE/15.png",
+      "img/1.Sharkie/1.IDLE/16.png","img/1.Sharkie/1.IDLE/17.png","img/1.Sharkie/1.IDLE/18.png",
+    ],
+    longIdle: [
+      "img/1.Sharkie/2.Long_IDLE/i1.png","img/1.Sharkie/2.Long_IDLE/i2.png","img/1.Sharkie/2.Long_IDLE/i3.png",
+      "img/1.Sharkie/2.Long_IDLE/i4.png","img/1.Sharkie/2.Long_IDLE/i5.png","img/1.Sharkie/2.Long_IDLE/i6.png",
+      "img/1.Sharkie/2.Long_IDLE/i7.png","img/1.Sharkie/2.Long_IDLE/i8.png","img/1.Sharkie/2.Long_IDLE/i9.png",
+      "img/1.Sharkie/2.Long_IDLE/i10.png","img/1.Sharkie/2.Long_IDLE/i11.png","img/1.Sharkie/2.Long_IDLE/i12.png",
+      "img/1.Sharkie/2.Long_IDLE/i13.png","img/1.Sharkie/2.Long_IDLE/i14.png",
+    ],
+    swimming: [
+      "img/1.Sharkie/3.Swim/1.png","img/1.Sharkie/3.Swim/2.png","img/1.Sharkie/3.Swim/3.png",
+      "img/1.Sharkie/3.Swim/4.png","img/1.Sharkie/3.Swim/5.png","img/1.Sharkie/3.Swim/6.png",
+    ],
+    dead: [
+      "img/1.Sharkie/6.dead/1.Poisoned/1.png","img/1.Sharkie/6.dead/1.Poisoned/2.png",
+      "img/1.Sharkie/6.dead/1.Poisoned/3.png","img/1.Sharkie/6.dead/1.Poisoned/4.png",
+      "img/1.Sharkie/6.dead/1.Poisoned/5.png","img/1.Sharkie/6.dead/1.Poisoned/6.png",
+      "img/1.Sharkie/6.dead/1.Poisoned/7.png","img/1.Sharkie/6.dead/1.Poisoned/8.png",
+      "img/1.Sharkie/6.dead/1.Poisoned/9.png","img/1.Sharkie/6.dead/1.Poisoned/10.png",
+      "img/1.Sharkie/6.dead/1.Poisoned/11.png","img/1.Sharkie/6.dead/1.Poisoned/12.png",
+    ],
+    hurt: [
+      "img/1.Sharkie/5.Hurt/1.Poisoned/1.png","img/1.Sharkie/5.Hurt/1.Poisoned/3.png",
+      "img/1.Sharkie/5.Hurt/1.Poisoned/5.png","img/1.Sharkie/5.Hurt/1.Poisoned/3.png",
+      "img/1.Sharkie/5.Hurt/1.Poisoned/1.png",
+    ],
+    attack_bubble: [
+      "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png",
+      "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png",
+      "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png",
+      "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png",
+      "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
+      "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
+      "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
+      "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
+    ],
+    attack_final_slap: [
+      "img/1.Sharkie/4.Attack/Fin slap/1.png","img/1.Sharkie/4.Attack/Fin slap/2.png",
+      "img/1.Sharkie/4.Attack/Fin slap/3.png","img/1.Sharkie/4.Attack/Fin slap/4.png",
+      "img/1.Sharkie/4.Attack/Fin slap/5.png","img/1.Sharkie/4.Attack/Fin slap/6.png",
+      "img/1.Sharkie/4.Attack/Fin slap/7.png","img/1.Sharkie/4.Attack/Fin slap/8.png",
+    ],
+  };
 
   height = 150;
   width = 200;
@@ -101,29 +60,22 @@ class Character extends MoveableObject {
   isAttacking = false;
   isUntouchable = false;
   attackType = 0;
-  offset = {
-    top: 120,
-    bottom: 85,
-    left: 35,
-    right: 35,
-  };
+  offset = { top: 120, bottom: 85, left: 35, right: 35 };
   maxX = 3000;
   minX = -300;
   maxY = 350;
   minY = -20;
 
   constructor(world) {
-    super().loadImage(this.IMAGES_SWIMMING[0]);
+    super().loadImage(this.IMAGE_SETS.swimming[0]);
     this.world = world;
-    this.IMAGES_LONG_IDLE_LAST4 = this.IMAGES_LONG_IDLE.slice(-4);
-    this.loadImages(this.IMAGES_SWIMMING);
-    this.loadImages(this.IMAGES_DEAD);
-    this.loadImages(this.IMAGES_HURT);
-    this.loadImages(this.IMAGES_IDLE);
-    this.loadImages(this.IMAGES_LONG_IDLE);
-    this.loadImages(this.IMAGES_ATTACK_BUBBLE);
-    this.loadImages(this.IMAGES_ATTACK_FINAL_SLAP);
+    this.loadAllImages();
+    this.IMAGES_LONG_IDLE_LAST4 = this.IMAGE_SETS.longIdle.slice(-4);
     this.animate();
+  }
+
+  loadAllImages() {
+    Object.values(this.IMAGE_SETS).forEach(arr => this.loadImages(arr));
   }
 
   animate() {
@@ -133,12 +85,8 @@ class Character extends MoveableObject {
 
   startInputLoop() {
     setInterval(() => {
-      if (this.world.keyboard.F && !this.isAttacking) {
-        this.startAttack('bubble');
-      }
-      if (this.world.keyboard.E && !this.isAttacking) {
-        this.startAttack('finalSlap');
-      }
+      if (this.world.keyboard.F && !this.isAttacking) this.startAttack('bubble');
+      if (this.world.keyboard.E && !this.isAttacking) this.startAttack('finalSlap');
       if (!this.isDead()) {
         if (this.canMoveRight()) this.moveRight();
         if (this.canMoveLeft()) this.moveLeft();
@@ -152,30 +100,17 @@ class Character extends MoveableObject {
   startAnimationLoop() {
     const loop = () => {
       let t = 100;
-      if (this.isDead()) {
-        t = 150;
-        this.handleDeadAnimation();
-      } else if (this.attackType) {
-        t = 80;
-        this.handleAttackAnimation(this.attackType);
-      } else if (this.isHurt()) {
-        t = 200;
-        this.handleHurtAnimation();
-      } else if (this.isMoving()) {
-        t = 100;
-        this.handleMovementAnimation();
-      } else {
-        t = 175;
-        this.handleIdleAnimation();
-      }
+      if (this.isDead()) { t = 150; this.handleDeadAnimation(); }
+      else if (this.attackType) { t = 80; this.handleAttackAnimation(this.attackType); }
+      else if (this.isHurt()) { t = 200; this.handleHurtAnimation(); }
+      else if (this.isMoving()) { t = 100; this.handleMovementAnimation(); }
+      else { t = 175; this.handleIdleAnimation(); }
       setTimeout(loop, t);
     };
     loop();
   }
 
-  updateCamera() {
-    this.world.camera_x = -this.x + 100;
-  }
+  updateCamera() { this.world.camera_x = -this.x + 100; }
 
   startAttack(type) {
     if (!this.isHurt()) {
@@ -183,37 +118,25 @@ class Character extends MoveableObject {
       this.isAttacking = true;
       this.currentImage = 0;
       this.idleTimer = 0;
-
       if (this.attackType === "finalSlap") {
         this.isUntouchable = true;
-
-        const attackDuration = this.IMAGES_ATTACK_FINAL_SLAP.length * 100;
-        setTimeout(() => {
-          this.isUntouchable = false;
-        }, attackDuration + 1000);
+        const attackDuration = this.IMAGE_SETS.attack_final_slap.length * 100;
+        setTimeout(() => { this.isUntouchable = false; }, attackDuration + 1000);
       }
     }
   }
 
   handleAttackAnimation(attackType) {
-    if (attackType === "bubble") {
-      this.bubbleAttack();
-    } else if (attackType === "finalSlap") {
-      this.finalSlapAttack();
-    }
+    if (attackType === "bubble") this.bubbleAttack();
+    else if (attackType === "finalSlap") this.finalSlapAttack();
   }
 
   finalSlapAttack() {
     const step = 4;
-
-    if (this.currentImage < this.IMAGES_ATTACK_FINAL_SLAP.length) {
-      this.img =
-        this.imageCache[this.IMAGES_ATTACK_FINAL_SLAP[this.currentImage]];
-      if (!this.otherDirection) {
-        this.x = Math.min(this.maxX, this.x + step);
-      } else {
-        this.x = Math.max(this.minX, this.x - step);
-      }
+    if (this.currentImage < this.IMAGE_SETS.attack_final_slap.length) {
+      this.img = this.imageCache[this.IMAGE_SETS.attack_final_slap[this.currentImage]];
+      if (!this.otherDirection) this.x = Math.min(this.maxX, this.x + step);
+      else this.x = Math.max(this.minX, this.x - step);
       this.currentImage++;
     } else {
       this.isAttacking = false;
@@ -223,8 +146,8 @@ class Character extends MoveableObject {
   }
 
   bubbleAttack() {
-    if (this.currentImage < this.IMAGES_ATTACK_BUBBLE.length) {
-      this.img = this.imageCache[this.IMAGES_ATTACK_BUBBLE[this.currentImage]];
+    if (this.currentImage < this.IMAGE_SETS.attack_bubble.length) {
+      this.img = this.imageCache[this.IMAGE_SETS.attack_bubble[this.currentImage]];
       this.currentImage++;
     } else {
       this.spawnBubble();
@@ -252,20 +175,18 @@ class Character extends MoveableObject {
   }
 
   handleDeadAnimation() {
-    if (!this.deadAnimationComplete) {
-      this.playDeadAnimation();
-    }
+    if (!this.deadAnimationComplete) this.playDeadAnimation();
     this.resetIdle();
   }
 
   handleHurtAnimation() {
-    this.playAnimation(this.IMAGES_HURT);
+    this.playAnimation(this.IMAGE_SETS.hurt);
     this.resetIdle();
     this.longIdlePlayed = false;
   }
 
   handleMovementAnimation() {
-    this.playAnimation(this.IMAGES_SWIMMING);
+    this.playAnimation(this.IMAGE_SETS.swimming);
     this.resetIdle();
     this.longIdlePlayed = false;
   }
@@ -277,7 +198,7 @@ class Character extends MoveableObject {
       else this.playAnimation(this.IMAGES_LONG_IDLE_LAST4);
     } else {
       this.animationState = "idle";
-      this.playAnimation(this.IMAGES_IDLE);
+      this.playAnimation(this.IMAGE_SETS.idle);
     }
   }
 
@@ -286,32 +207,22 @@ class Character extends MoveableObject {
       this.animationState = "longIdleFull";
       this.currentImage = 0;
     }
-    this.playAnimationNonLoop(this.IMAGES_LONG_IDLE);
-    if (this.currentImage >= this.IMAGES_LONG_IDLE.length) {
+    this.playAnimationNonLoop(this.IMAGE_SETS.longIdle);
+    if (this.currentImage >= this.IMAGE_SETS.longIdle.length) {
       this.longIdlePlayed = true;
       this.animationState = "longIdleLoop";
       this.currentImage = 0;
     }
   }
 
-  resetIdle() {
-    this.idleTimer = 0;
-    this.animationState = "idle";
-  }
+  resetIdle() { this.idleTimer = 0; this.animationState = "idle"; }
 
-  moveRight() {
-    this.x += this.speed;
-    this.otherDirection = false;
-  }
-
-  moveLeft() {
-    this.x -= this.speed;
-    this.otherDirection = true;
-  }
+  moveRight() { this.x += this.speed; this.otherDirection = false; }
+  moveLeft() { this.x -= this.speed; this.otherDirection = true; }
 
   playDeadAnimation() {
-    if (this.deadAnimationIndex < this.IMAGES_DEAD.length) {
-      const currentFramePath = this.IMAGES_DEAD[this.deadAnimationIndex];
+    if (this.deadAnimationIndex < this.IMAGE_SETS.dead.length) {
+      const currentFramePath = this.IMAGE_SETS.dead[this.deadAnimationIndex];
       this.img = this.imageCache[currentFramePath];
       this.deadAnimationIndex++;
     } else {
