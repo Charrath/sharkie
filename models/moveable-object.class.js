@@ -141,14 +141,14 @@ class MoveableObject extends DrawableObject {
     return false;
   }
 
-  hit() {
-    this.energy -= 5;
-    if (this.energy < 0) {
-      this.energy = 0;
-    } else {
-      this.lastHit = new Date().getTime();
-    }
+ hit(damage = 5) {
+  this.energy -= damage;
+  if (this.energy < 0) {
+    this.energy = 0;
+  } else {
+    this.lastHit = new Date().getTime();
   }
+}
 
   isDead() {
     return this.energy == 0;

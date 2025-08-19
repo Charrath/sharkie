@@ -20,16 +20,27 @@ class BossHealthBar extends StatusBar {
     this._maxHP = boss.maxEnergy ?? boss.energyMax ?? boss.energyStart ?? boss.energy;
   }
 
-  update() {
-    const hp = Math.max(0, this.boss.energy);
-    const pct = Math.round((hp / this._maxHP) * 100);
-    const step = pct >= 100 ? 100 : pct >= 80 ? 80 : pct >= 60 ? 60 : pct >= 40 ? 40 : pct >= 20 ? 20 : 0;
-    const path = this.IMAGES[step];
-    if (path && this.imageCache[path]) {
-      this.img = this.imageCache[path];
-    }
-    this.number = hp;
+update() {
+  const hp = Math.max(0, this.boss.energy);
+  const healthPercent = Math.round((hp / this._maxHP) * 100);
+  const step = this.getHealthStep(healthPercent);
+  const path = this.IMAGES[step];
+
+  if (path && this.imageCache[path]) {
+    this.img = this.imageCache[path];
   }
+
+  this.number = hp;
+}
+
+getHealthStep(healthPercent) {
+  if (healthPercent >= 100) return 100;
+  if (healthPercent >= 80) return 80;
+  if (healthPercent >= 60) return 60;
+  if (healthPercent >= 40) return 40;
+  if (healthPercent >= 20) return 20;
+  return 0;
+}
 
   isVisible() {
     return !!this.boss && !!this.boss.introduced && !this.boss.isDead?.();

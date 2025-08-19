@@ -52,18 +52,28 @@ class World {
       if (enemy.introduced === false) return;
       if (this.character.isColliding(enemy) && !this.character.isUntouchable) {
         this.character.hit();
-
         console.log("Collision with Character, energy", this.character.energy);
       }
     });
 
-    this.throwableObjects.forEach((bubble) => {
-      this.level.enemies.forEach((enemy) => {
-        if (bubble.isColliding(enemy)) {
-          console.log("Bubble hit enemy", enemy);
-        }
-      });
-    });
+    for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
+  const bubble = this.throwableObjects[i];
+
+  for (const enemy of this.level.enemies) {
+    if (bubble.isColliding(enemy)) {
+      if (enemy instanceof Endboss) {
+        this.endboss.hit(20);
+        console.log("Bubble hit endboss", enemy);
+      } else {
+        enemy.hit(5);
+        console.log("Bubble hit enemy", enemy);
+      }
+
+      this.throwableObjects.splice(i, 1);
+      break; 
+    }
+  }
+}
   }
 
   draw() {
