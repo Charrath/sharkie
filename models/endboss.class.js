@@ -37,6 +37,13 @@ class Endboss extends MoveableObject {
     "img/2.Enemy/3 Final Enemy/Attack/6.png",
   ];
 
+  IMAGES_HURT = [
+    "img/2.Enemy/3 Final Enemy/Hurt/1.png",
+    "img/2.Enemy/3 Final Enemy/Hurt/2.png",
+    "img/2.Enemy/3 Final Enemy/Hurt/3.png",
+    "img/2.Enemy/3 Final Enemy/Hurt/4.png",
+  ];
+
   height = 200;
   width = 200;
   y = 50;
@@ -55,7 +62,8 @@ class Endboss extends MoveableObject {
     this.world = world;
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_INTRODUCE);
-    this.loadImages(this.IMAGES_ATTACK)
+    this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_HURT);
     this.x = 800;
     this.animate();
   }
@@ -90,6 +98,8 @@ class Endboss extends MoveableObject {
       if (!this.introduced) return;
       if (!this.introPlayed) {
         this.playIntro();
+      } else if (this.isHurt()) {
+        this.handleHurtAnimation();
       } else if (
         this.introPlayed &&
         Math.abs(this.world.character.x - this.x) <= 350
@@ -131,5 +141,9 @@ class Endboss extends MoveableObject {
       this.img = this.imageCache[path];
       this.currentImage++;
     }
+  }
+
+  handleHurtAnimation() {
+    this.playAnimation(this.IMAGES_HURT);
   }
 }
