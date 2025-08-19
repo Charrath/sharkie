@@ -44,6 +44,14 @@ class Endboss extends MoveableObject {
     "img/2.Enemy/3 Final Enemy/Hurt/4.png",
   ];
 
+  IMAGES_DEAD = [
+    "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 6.png",
+    "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 7.png",
+    "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 8.png",
+    "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png",
+    "img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png",
+  ];
+
   height = 200;
   width = 200;
   y = 50;
@@ -64,6 +72,7 @@ class Endboss extends MoveableObject {
     this.loadImages(this.IMAGES_INTRODUCE);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_DEAD);
     this.x = 800;
     this.animate();
   }
@@ -98,6 +107,8 @@ class Endboss extends MoveableObject {
       if (!this.introduced) return;
       if (!this.introPlayed) {
         this.playIntro();
+      } else if (this.isDead()) {
+        this.handleDeadAnimation();
       } else if (this.isHurt()) {
         this.handleHurtAnimation();
       } else if (
@@ -145,5 +156,21 @@ class Endboss extends MoveableObject {
 
   handleHurtAnimation() {
     this.playAnimation(this.IMAGES_HURT);
+  }
+
+ handleDeadAnimation() {
+    if (!this.deadAnimationComplete) {
+      this.playDeadAnimation();
+    }
+  }
+
+  playDeadAnimation() {
+    if (this.deadAnimationIndex < this.IMAGES_DEAD.length) {
+      const currentFramePath = this.IMAGES_DEAD[this.deadAnimationIndex];
+      this.img = this.imageCache[currentFramePath];
+      this.deadAnimationIndex++;
+    } else {
+      this.deadAnimationComplete = true;
+    }
   }
 }
