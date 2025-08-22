@@ -218,6 +218,7 @@ class Character extends MoveableObject {
   resetIdle() { this.idleTimer = 0; this.animationState = "idle"; }
 
   moveRight() { this.x += this.speed; this.otherDirection = false; }
+  
   moveLeft() { this.x -= this.speed; this.otherDirection = true; }
 
   playDeadAnimation() {
