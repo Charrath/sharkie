@@ -7,8 +7,8 @@ class BossHealthBar extends StatusBar {
        80: 'img/4. Marcadores/orange/80_  copia.png',
        60: 'img/4. Marcadores/orange/60_  copia.png',
        40: 'img/4. Marcadores/orange/40_  copia.png',
-       20: 'img/4. Marcadores/orange/20_  copia.png',
-        0: 'img/4. Marcadores/orange/0_   copia.png',
+       20: 'img/4. Marcadores/orange/20_ copia 2.png',
+        0: 'img/4. Marcadores/orange/0_  copia.png',
     };
     this.loadImages(Object.values(this.IMAGES));
     this.img = this.imageCache[this.IMAGES[100]];

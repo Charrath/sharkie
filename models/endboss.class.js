@@ -95,24 +95,36 @@ class Endboss extends MoveableObject {
   }
 
   startAnimationLoop() {
-    setInterval(() => {
-      if (!this.introduced) return;
+    const loop = () => {
+      let t = 150;
+      if (!this.introduced) {
+        setTimeout(loop, t);
+        return;
+      }
       if (!this.introPlayed) {
         this.playIntro();
+        t = 150;
       } else if (this.isDead()) {
         this.handleDeadAnimation();
+        t = 200;
       } else if (this.isHurt()) {
         this.handleHurtAnimation();
+        t = 150;
       } else if (
         this.introPlayed &&
+        !this.world.character.isDead() &&
         Math.abs(this.world.character.x - this.x) <= 350
       ) {
-        this.attackCharacter(3);
+        this.attackCharacter(12);
         this.playAnimation(this.IMAGE_SETS.attack);
+        t = 120;
       } else {
         this.playAnimation(this.IMAGE_SETS.swimming);
+        t = 200;
       }
-    }, 150);
+      setTimeout(loop, t);
+    };
+    loop();
   }
 
   attackCharacter(speed = 10) {
@@ -144,7 +156,7 @@ class Endboss extends MoveableObject {
     this.playAnimation(this.IMAGE_SETS.hurt);
   }
 
- handleDeadAnimation() {
+  handleDeadAnimation() {
     if (!this.deadAnimationComplete) {
       this.playDeadAnimation();
     }
