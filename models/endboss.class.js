@@ -96,28 +96,16 @@ class Endboss extends MoveableObject {
 
   startAnimationLoop() {
     const loop = () => {
-      let t = 150;
-      if (!this.introduced) {
-        setTimeout(loop, t);
-        return;
-      }
+      let t = 150 ;
+      if (!this.ensureIntroduced(t)) return;
       if (!this.introPlayed) {
         this.playIntro();
-        t = 150;
       } else if (this.isDead()) {
-        this.handleDeadAnimation();
-        t = 200;
+        t = this.handleDeadAnimation();
       } else if (this.isHurt()) {
-        this.handleHurtAnimation();
-        t = 150;
-      } else if (
-        this.introPlayed &&
-        !this.world.character.isDead() &&
-        Math.abs(this.world.character.x - this.x) <= 350
-      ) {
-        this.attackCharacter(12);
-        this.playAnimation(this.IMAGE_SETS.attack);
-        t = 120;
+        t = this.handleHurtAnimation();
+      } else if (this.shouldAttackCharacter()) {
+        t = this.attackCharacter(12);
       } else {
         this.playAnimation(this.IMAGE_SETS.swimming);
         t = 200;
@@ -127,6 +115,22 @@ class Endboss extends MoveableObject {
     loop();
   }
 
+  ensureIntroduced(t) {
+    if (!this.introduced) {
+        setTimeout(() => this.startAnimationLoop(), t);
+        return false;
+    }
+    return true;
+}
+
+  shouldAttackCharacter() {
+    return (
+      this.introPlayed &&
+      !this.world.character.isDead() &&
+      Math.abs(this.world.character.x - this.x) <= 350
+    );
+  }
+
   attackCharacter(speed = 10) {
     const char = this.world.character;
     this.otherDirection = char.x > this.x;
@@ -134,6 +138,8 @@ class Endboss extends MoveableObject {
     else if (char.x < this.x) this.x -= speed;
     if (char.y - 40 > this.y) this.y += speed;
     else if (char.y - 40 < this.y) this.y -= speed;
+    this.playAnimation(this.IMAGE_SETS.attack);
+    return 120;
   }
 
   playIntro() {
@@ -154,11 +160,13 @@ class Endboss extends MoveableObject {
 
   handleHurtAnimation() {
     this.playAnimation(this.IMAGE_SETS.hurt);
+    return 150;
   }
 
   handleDeadAnimation() {
     if (!this.deadAnimationComplete) {
       this.playDeadAnimation();
+      return 200;
     }
   }
 
