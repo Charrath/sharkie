@@ -56,14 +56,14 @@ class Endboss extends MoveableObject {
   offset = { top: 63, left: 10, right: 14, bottom: 30 };
   introduced = false;
   introPlayed = false;
-  spawnPoint = { x: 800, y: 50 };
+  spawnPoint = { x: 4000, y: 50 };
   speed = 20;
 
   constructor(world) {
     super();
     this.world = world;
     this.loadAllImages();
-    this.x = 800;
+    this.x = 4000;
     this.animate();
   }
 
@@ -83,7 +83,7 @@ class Endboss extends MoveableObject {
   startInputLoop() {
     const id = setInterval(() => {
       if (!this.world?.character) return;
-      if (!this.introduced && this.world.character.x >= 350) {
+      if (!this.introduced && this.world.character.x >= 3550) {
         this.startIntro();
         clearInterval(id);
       }
@@ -130,24 +130,25 @@ class Endboss extends MoveableObject {
     const distanceFromSpawn = this.x - this.spawnPoint.x;
     const distanceToPlayer = this.world.character.x - this.x;
 
-    if (Math.abs(distanceFromSpawn) >= 300) {
-      return this.moveTo(this.spawnPoint.x);
-    }
-
-    if (Math.abs(distanceToPlayer) <= 350 && !this.world.character.isDead()) {
-      return this.attackCharacter(12);
-    }
-
-    if (this.x !== this.spawnPoint.x) {
-      return this.moveTo(this.spawnPoint.x);
+    if (this.returningToSpawn) {
+        if (this.x !== this.spawnPoint.x) {
+            return this.moveTo(this.spawnPoint.x);
+        } else {
+            this.returningToSpawn = false;
+        }
+    } else if (Math.abs(distanceFromSpawn) >= 500 || Math.abs(distanceToPlayer) > 350) {
+        this.returningToSpawn = true;
+        return this.moveTo(this.spawnPoint.x);
+    } else if (Math.abs(distanceToPlayer) <= 350 && !this.world.character.isDead()) {
+        return this.attackCharacter(12);
     }
 
     this.playAnimation(this.IMAGE_SETS.swimming);
     return 200;
-  }
+}
 
   faceTowards(targetX) {
-    this.otherDirection = targetX > this.x; 
+    this.otherDirection = targetX > this.x;
   }
 
   moveTo(targetX) {
@@ -155,9 +156,9 @@ class Endboss extends MoveableObject {
     if (Math.abs(this.x - targetX) <= this.speed) {
       this.x = targetX;
     } else if (this.x < targetX) {
-      this.x += this.speed; 
+      this.x += this.speed;
     } else {
-      this.x -= this.speed; 
+      this.x -= this.speed;
     }
     this.playAnimation(this.IMAGE_SETS.swimming);
     return 150;

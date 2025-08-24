@@ -61,7 +61,7 @@ class Character extends MoveableObject {
   isUntouchable = false;
   attackType = 0;
   offset = { top: 120, bottom: 85, left: 35, right: 35 };
-  maxX = 3000;
+  maxX = 4410;
   minX = -300;
   maxY = 350;
   minY = -20;

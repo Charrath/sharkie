@@ -14,8 +14,8 @@ class World {
     this.keyboard = keyboard;
     this.character = new Character(this);
     this.healthBar = new HealthBar(this.character);
-    this.endboss = null;            
-    this.bossHealthBar = null; 
+    this.endboss = null;
+    this.bossHealthBar = null;
     this.draw();
     this.setWorld();
     this.run();
@@ -29,19 +29,19 @@ class World {
     });
   }
 
-   ensureBossBar() {
+  ensureBossBar() {
     if (!this.endboss) {
-      this.endboss = this.level.enemies.find(e => e instanceof Endboss);
+      this.endboss = this.level.enemies.find((e) => e instanceof Endboss);
     }
     if (this.endboss && this.endboss.introduced && !this.bossHealthBar) {
       this.bossHealthBar = new BossHealthBar(this.endboss);
     }
   }
 
-   run() {
+  run() {
     setInterval(() => {
       this.checkCollisions();
-      this.ensureBossBar();    
+      this.ensureBossBar();
       if (this.bossHealthBar) this.bossHealthBar.update();
       this.healthBar.update();
     }, 200);
@@ -57,23 +57,23 @@ class World {
     });
 
     for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
-  const bubble = this.throwableObjects[i];
+      const bubble = this.throwableObjects[i];
 
-  for (const enemy of this.level.enemies) {
-    if (bubble.isColliding(enemy)) {
-      if (enemy instanceof Endboss) {
-        this.endboss.hit(20);
-        console.log("Bubble hit endboss", enemy);
-      } else {
-        enemy.hit(5);
-        console.log("Bubble hit enemy", enemy);
+      for (const enemy of this.level.enemies) {
+        if (bubble.isColliding(enemy)) {
+          if (enemy instanceof Endboss) {
+            this.endboss.hit(20);
+            console.log("Bubble hit endboss", enemy);
+          } else {
+            enemy.hit(5);
+            console.log("Bubble hit enemy", enemy);
+          }
+
+          this.throwableObjects.splice(i, 1);
+          break;
+        }
       }
-
-      this.throwableObjects.splice(i, 1);
-      break; 
     }
-  }
-}
   }
 
   draw() {
