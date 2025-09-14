@@ -21,30 +21,42 @@ function createBackgroundObjects(startX, step, groupCount, layerPaths) {
 }
 
 function buildMixedOrder(pufferFishCount, jellyFishCount) {
-  if (jellyFishCount === 0) return Array(pufferFishCount).fill('PufferFish');
-  if (pufferFishCount === 0) return Array(jellyFishCount).fill('JellyFish');
-  const order = [], pufferPerJelly = Math.floor(pufferFishCount / jellyFishCount),
-        extraPuffer = pufferFishCount % jellyFishCount;
+  if (jellyFishCount === 0) return Array(pufferFishCount).fill("PufferFish");
+  if (pufferFishCount === 0) return Array(jellyFishCount).fill("JellyFish");
+  const order = [],
+    pufferPerJelly = Math.floor(pufferFishCount / jellyFishCount),
+    extraPuffer = pufferFishCount % jellyFishCount;
   for (let jellyIndex = 0; jellyIndex < jellyFishCount; jellyIndex++) {
     const groupSize = pufferPerJelly + (jellyIndex < extraPuffer ? 1 : 0);
-    for (let pufferIndex = 0; pufferIndex < groupSize; pufferIndex++) order.push('PufferFish');
-    order.push('JellyFish');
+    for (let pufferIndex = 0; pufferIndex < groupSize; pufferIndex++)
+      order.push("PufferFish");
+    order.push("JellyFish");
   }
   return order;
 }
 
 function createEnemies(config, minX, maxX, minY, maxY) {
-  const EnemyTypes = { PufferFish, JellyFish }, enemies = [];
-  const puffer = config.PufferFish || 0, jelly = config.JellyFish || 0;
+  const EnemyTypes = { PufferFish, JellyFish },
+    enemies = [];
+  const puffer = config.PufferFish || 0,
+    jelly = config.JellyFish || 0;
   const order = buildMixedOrder(puffer, jelly);
-  const total = order.length, stepX = (maxX - minX) / Math.max(1, total - 1);
+  const total = order.length,
+    stepX = (maxX - minX) / Math.max(1, total - 1);
   order.forEach((type, i) => {
     const enemy = new EnemyTypes[type]();
     enemy.x = minX + i * stepX;
     enemy.y = minY + Math.random() * (maxY - minY);
     enemies.push(enemy);
   });
-  enemies.push(new Endboss()); return enemies;
+  const patrolZoneWidth = 200;
+  enemies.forEach((enemy) => {
+    if (enemy instanceof PufferFish && typeof enemy.setPatrol === "function") {
+      enemy.setPatrol(enemy.x, patrolZoneWidth);
+    }
+  });
+  enemies.push(new Endboss());
+  return enemies;
 }
 
 const level1 = new Level(
