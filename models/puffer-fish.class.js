@@ -22,14 +22,36 @@ class PufferFish extends MoveableObject {
     this.x = 200 + Math.random() * 400;
     this.y = Math.random() * (this.maxY - this.minY) + this.minY;
     this.loadImages(this.IMAGES_SWIMMING);
-    this.speed = 0.05 + Math.random() * 0.15;
+    this.speed = 0.8 + Math.random() * 0.6; 
+    this.setPatrol(this.x, 200); 
     this.animate();
   }
 
+  setPatrol(centerX, zoneWidth = 200) {
+    const half = zoneWidth / 2;
+    this.patrolMinX = centerX - half;
+    this.patrolMaxX = centerX + half;
+    this.otherDirection = Math.random() < 0.5;
+    this.baseY = this.y;
+    this.bobAmp = 8;
+    this.bobT = Math.random() * Math.PI * 2;
+  }
+
   animate() {
+    setInterval(() => this.playAnimation(this.IMAGES_SWIMMING), 120);
+
     setInterval(() => {
-      this.playAnimation(this.IMAGES_SWIMMING);
-      this.moveLeft();
-    }, 200);
+      this.otherDirection ? this.moveLeft() : this.moveRight();
+
+      if (this.x <= this.patrolMinX) {
+        this.x = this.patrolMinX;
+        this.otherDirection = false;
+      }
+      if (this.x >= this.patrolMaxX) {
+        this.x = this.patrolMaxX;
+        this.otherDirection = true;
+      }
+
+    }, 1000 / 60);
   }
 }
