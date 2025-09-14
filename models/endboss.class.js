@@ -136,7 +136,7 @@ class Endboss extends MoveableObject {
         } else {
             this.returningToSpawn = false;
         }
-    } else if (Math.abs(distanceFromSpawn) >= 500 || Math.abs(distanceToPlayer) > 350) {
+    } else if (Math.abs(distanceFromSpawn) >= 1500 || Math.abs(distanceToPlayer) > 350) {
         this.returningToSpawn = true;
         return this.moveTo(this.spawnPoint.x);
     } else if (Math.abs(distanceToPlayer) <= 350 && !this.world.character.isDead()) {
