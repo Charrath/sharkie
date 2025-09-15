@@ -21,14 +21,24 @@ class JellyFish extends MoveableObject {
     this.x = 200 + Math.random() * 400;
     this.y = Math.random() * (this.maxY - this.minY) + this.minY;
     this.loadImages(this.IMAGES_SWIMMING);
-    this.speed = 0.05 + Math.random() * 0.15;
+    this.speed = 0.7 + Math.random() * 0.6;
     this.animate();
   }
 
+   setVerticalPatrol(centerY, zoneHeight = 160) {
+    const half = Math.min(zoneHeight / 2, centerY - this.minY, this.maxY - centerY);
+    this.patrolMinY = centerY - half;
+    this.patrolMaxY = centerY + half;
+    this.dirY = Math.random() < 0.5 ? -1 : 1; 
+  }
+
   animate() {
+    setInterval(() => this.playAnimation(this.IMAGES_SWIMMING), 250);
     setInterval(() => {
-      this.playAnimation(this.IMAGES_SWIMMING);
-      this.moveLeft();
-    }, 200);
+      if (this.patrolMinY == null) return;           
+      this.y += this.dirY * this.speed;              
+      if (this.y <= this.patrolMinY) { this.y = this.patrolMinY; this.dirY = 1; }
+      if (this.y >= this.patrolMaxY) { this.y = this.patrolMaxY; this.dirY = -1; }
+    }, 1000 / 60);
   }
 }

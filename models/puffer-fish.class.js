@@ -25,7 +25,7 @@ class PufferFish extends MoveableObject {
     this.animate();
   }
 
-  setPatrol(centerX, zoneWidth = 200) {
+  setPatrol(centerX, zoneWidth) {
     const half = zoneWidth / 2;
     this.patrolMinX = centerX - half;
     this.patrolMaxX = centerX + half;

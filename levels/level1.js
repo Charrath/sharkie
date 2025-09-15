@@ -44,16 +44,21 @@ function createEnemies(config, minX, maxX, minY, maxY) {
   const total = order.length,
     stepX = (maxX - minX) / Math.max(1, total - 1);
   order.forEach((type, i) => {
+    const centerY = (minY + maxY) / 2;
     const enemy = new EnemyTypes[type]();
     enemy.x = minX + i * stepX;
-    enemy.y = minY + Math.random() * (maxY - minY);
+    enemy.y =
+      type === "JellyFish" ? centerY : minY + Math.random() * (maxY - minY); 
     enemies.push(enemy);
   });
-  const patrolZoneWidth = 200;
+  const patrolZoneWidth = 500;
+  const patrolZoneHeight = 500;
   enemies.forEach((enemy) => {
     if (enemy instanceof PufferFish && typeof enemy.setPatrol === "function") {
       enemy.setPatrol(enemy.x, patrolZoneWidth);
     }
+    if (enemy instanceof JellyFish && enemy.setVerticalPatrol)
+      enemy.setVerticalPatrol(enemy.y, patrolZoneHeight);
   });
   enemies.push(new Endboss());
   return enemies;
