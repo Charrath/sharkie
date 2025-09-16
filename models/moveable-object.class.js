@@ -14,16 +14,17 @@ class MoveableObject extends DrawableObject {
   maxX;
   minX;
 
+
   applyGravity() {
     setInterval(() => {
       this.x += this.speedX;
-  
+
       if (this.speedX > 0) {
         this.speedX = Math.max(0, this.speedX - this.friction);
       } else if (this.speedX < 0) {
         this.speedX = Math.min(0, this.speedX + this.friction);
       }
-  
+
       if (this.isUnderWater()) {
         const horizontalFactor = Math.abs(this.speedX) / this.initialSpeedX;
         const riseSpeed = this.buoyancy * (1 - horizontalFactor);
@@ -31,7 +32,7 @@ class MoveableObject extends DrawableObject {
       }
     }, 1000 / 25);
   }
-  
+
   isUnderWater() {
     return this.y > this.waterSurfaceY - this.height;
   }
@@ -141,13 +142,19 @@ class MoveableObject extends DrawableObject {
     return false;
   }
 
- hit(damage = 5) {
-  this.energy -= damage;
-  if (this.energy < 0) {
-    this.energy = 0;
-  } else {
+  hit(damage = 5) {
+    if (this.isUntouchable) return; 
+
+    this.energy -= damage;
+    if (this.energy < 0) this.energy = 0;
+    this.isUntouchable = true;      
+    this.currentImage = 0;
     this.lastHit = new Date().getTime();
-  }
+
+    const hurtDuration = this.IMAGE_SETS.hurt.length * 200; 
+    setTimeout(() => {
+        this.isUntouchable = false;
+    }, hurtDuration);
 }
 
   isDead() {
@@ -163,5 +170,4 @@ class MoveableObject extends DrawableObject {
   isVisible() {
     return true;
   }
-
 }
