@@ -162,10 +162,10 @@ class MoveableObject extends DrawableObject {
   }
 
   isHurt() {
-    let timepassed = new Date().getTime() - this.lastHit;
-    timepassed = timepassed / 1000;
-    return timepassed < 0.5;
-  }
+  const frames = this.IMAGE_SETS?.hurt?.length ?? 0;
+  const durationMs = frames * 200; 
+  return (Date.now() - this.lastHit) < durationMs;
+}
 
   isVisible() {
     return true;
