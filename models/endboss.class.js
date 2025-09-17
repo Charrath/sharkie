@@ -197,7 +197,7 @@ class Endboss extends MoveableObject {
 
   handleHurtAnimation() {
     this.playAnimation(this.IMAGE_SETS.hurt);
-    return 150;
+    return 200;
   }
 
   handleDeadAnimation() {

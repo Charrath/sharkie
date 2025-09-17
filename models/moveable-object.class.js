@@ -14,7 +14,6 @@ class MoveableObject extends DrawableObject {
   maxX;
   minX;
 
-
   applyGravity() {
     setInterval(() => {
       this.x += this.speedX;
@@ -143,29 +142,31 @@ class MoveableObject extends DrawableObject {
   }
 
   hit(damage = 5) {
-    if (this.isUntouchable) return; 
+    if (this.isUntouchable) return;
 
     this.energy -= damage;
     if (this.energy < 0) this.energy = 0;
-    this.isUntouchable = true;      
+    this.isUntouchable = true;
     this.currentImage = 0;
     this.lastHit = new Date().getTime();
 
-    const hurtDuration = this.IMAGE_SETS.hurt.length * 200; 
+    const frames = this.IMAGE_SETS?.hurt?.length ?? 1;
+    const frameDurationMs = 200;
+    const hurtDuration = frames * frameDurationMs;
     setTimeout(() => {
-        this.isUntouchable = false;
+      this.isUntouchable = false;
     }, hurtDuration);
-}
+  }
 
   isDead() {
     return this.energy == 0;
   }
 
   isHurt() {
-  const frames = this.IMAGE_SETS?.hurt?.length ?? 0;
-  const durationMs = frames * 200; 
-  return (Date.now() - this.lastHit) < durationMs;
-}
+    const frames = this.IMAGE_SETS?.hurt?.length ?? 0;
+    const durationMs = frames * 200;
+    return Date.now() - this.lastHit < durationMs;
+  }
 
   isVisible() {
     return true;
