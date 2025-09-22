@@ -32,7 +32,7 @@ class Character extends MoveableObject {
       "img/1.Sharkie/5.Hurt/1.Poisoned/5.png","img/1.Sharkie/5.Hurt/1.Poisoned/3.png",
       "img/1.Sharkie/5.Hurt/1.Poisoned/1.png",
     ],
-    attack_bubble: [
+    attackBubble: [
       "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png",
       "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png",
       "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png",
@@ -42,7 +42,7 @@ class Character extends MoveableObject {
       "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
       "img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
     ],
-    attack_final_slap: [
+    attackFinalSlap: [
       "img/1.Sharkie/4.Attack/Fin slap/1.png","img/1.Sharkie/4.Attack/Fin slap/2.png",
       "img/1.Sharkie/4.Attack/Fin slap/3.png","img/1.Sharkie/4.Attack/Fin slap/4.png",
       "img/1.Sharkie/4.Attack/Fin slap/5.png","img/1.Sharkie/4.Attack/Fin slap/6.png",
@@ -70,7 +70,7 @@ class Character extends MoveableObject {
     super().loadImage(this.IMAGE_SETS.swimming[0]);
     this.world = world;
     this.loadAllImages();
-    this.IMAGES_LONG_IDLE_LAST4 = this.IMAGE_SETS.longIdle.slice(-4);
+    this.imagesLongIdleLast4 = this.IMAGE_SETS.longIdle.slice(-4);
     this.animate();
   }
 
@@ -120,7 +120,7 @@ class Character extends MoveableObject {
       this.idleTimer = 0;
       if (this.attackType === "finalSlap") {
         this.isUntouchable = true;
-        const attackDuration = this.IMAGE_SETS.attack_final_slap.length * 100;
+        const attackDuration = this.IMAGE_SETS.attackFinalSlap.length * 100;
         setTimeout(() => { this.isUntouchable = false; }, attackDuration + 1000);
       }
     }
@@ -133,8 +133,8 @@ class Character extends MoveableObject {
 
   finalSlapAttack() {
     const step = 4;
-    if (this.currentImage < this.IMAGE_SETS.attack_final_slap.length) {
-      this.img = this.imageCache[this.IMAGE_SETS.attack_final_slap[this.currentImage]];
+    if (this.currentImage < this.IMAGE_SETS.attackFinalSlap.length) {
+      this.img = this.imageCache[this.IMAGE_SETS.attackFinalSlap[this.currentImage]];
       if (!this.otherDirection) this.x = Math.min(this.maxX, this.x + step);
       else this.x = Math.max(this.minX, this.x - step);
       this.currentImage++;
@@ -146,8 +146,8 @@ class Character extends MoveableObject {
   }
 
   bubbleAttack() {
-    if (this.currentImage < this.IMAGE_SETS.attack_bubble.length) {
-      this.img = this.imageCache[this.IMAGE_SETS.attack_bubble[this.currentImage]];
+    if (this.currentImage < this.IMAGE_SETS.attackBubble.length) {
+      this.img = this.imageCache[this.IMAGE_SETS.attackBubble[this.currentImage]];
       this.currentImage++;
     } else {
       this.spawnBubble();
@@ -195,7 +195,7 @@ class Character extends MoveableObject {
     this.idleTimer += 100;
     if (this.idleTimer >= 4000) {
       if (!this.longIdlePlayed) this.playFullLongIdle();
-      else this.playAnimation(this.IMAGES_LONG_IDLE_LAST4);
+      else this.playAnimation(this.imagesLongIdleLast4);
     } else {
       this.animationState = "idle";
       this.playAnimation(this.IMAGE_SETS.idle);

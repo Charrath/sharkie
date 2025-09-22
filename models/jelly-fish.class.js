@@ -1,10 +1,14 @@
 class JellyFish extends MoveableObject {
-  IMAGES_SWIMMING = [
-    "img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png",
-    "img/2.Enemy/2 Jelly fish/Regular damage/Lila 2.png",
-    "img/2.Enemy/2 Jelly fish/Regular damage/Lila 3.png",
-    "img/2.Enemy/2 Jelly fish/Regular damage/Lila 4.png",
-  ];
+  IMAGE_SETS = {
+    swimming: [
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim3.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim4.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png"
+    ]
+  };
+
   height = 75;
   width = 75;
   offset = {
@@ -17,15 +21,15 @@ class JellyFish extends MoveableObject {
   minY = 50;
 
   constructor() {
-    super().loadImage(this.IMAGES_SWIMMING[0]);
+    super().loadImage(this.IMAGE_SETS.swimming[0]);
     this.x = 200 + Math.random() * 400;
     this.y = Math.random() * (this.maxY - this.minY) + this.minY;
-    this.loadImages(this.IMAGES_SWIMMING);
+    this.loadImages(this.IMAGE_SETS.swimming);
     this.speed = 0.7 + Math.random() * 0.6;
     this.animate();
   }
 
-   setVerticalPatrol(centerY, zoneHeight = 160) {
+  setVerticalPatrol(centerY, zoneHeight = 160) {
     const half = Math.min(zoneHeight / 2, centerY - this.minY, this.maxY - centerY);
     this.patrolMinY = centerY - half;
     this.patrolMaxY = centerY + half;
@@ -33,7 +37,7 @@ class JellyFish extends MoveableObject {
   }
 
   animate() {
-    setInterval(() => this.playAnimation(this.IMAGES_SWIMMING), 250);
+    setInterval(() => this.playAnimation(this.IMAGE_SETS.swimming), 250);
     setInterval(() => {
       if (this.patrolMinY == null) return;           
       this.y += this.dirY * this.speed;              

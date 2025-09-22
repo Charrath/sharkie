@@ -1,11 +1,14 @@
 class PufferFish extends MoveableObject {
-  IMAGES_SWIMMING = [
-    "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim3.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim4.png",
-    "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png",
-  ];
+  IMAGE_SETS = {
+    swimming: [
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim3.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim4.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png"
+    ]
+  };
+
   height = 75;
   width = 75;
   offset = {
@@ -17,10 +20,9 @@ class PufferFish extends MoveableObject {
   maxY = 405;
   minY = 50;
 
-
   constructor() {
-    super().loadImage(this.IMAGES_SWIMMING[0]);
-    this.loadImages(this.IMAGES_SWIMMING);
+    super().loadImage(this.IMAGE_SETS.swimming[0]);
+    this.loadImages(this.IMAGE_SETS.swimming);
     this.speed = 0.7 + Math.random() * 0.6;
     this.animate();
   }
@@ -33,7 +35,7 @@ class PufferFish extends MoveableObject {
   }
 
   animate() {
-    setInterval(() => this.playAnimation(this.IMAGES_SWIMMING), 120);
+    setInterval(() => this.playAnimation(this.IMAGE_SETS.swimming), 120);
 
     setInterval(() => {
       if (this.patrolMinX == null) return;
@@ -50,13 +52,13 @@ class PufferFish extends MoveableObject {
     }, 1000 / 60);
   }
 
-moveRight() {
-  this.x += this.speed;
-  this.otherDirection = true;   
-}
+  moveRight() {
+    this.x += this.speed;
+    this.otherDirection = true;   
+  }
 
-moveLeft() {
-  this.x -= this.speed;
-  this.otherDirection = false;  
-}
+  moveLeft() {
+    this.x -= this.speed;
+    this.otherDirection = false;  
+  }
 }
