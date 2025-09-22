@@ -5,8 +5,22 @@ class PufferFish extends MoveableObject {
       "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png",
       "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim3.png",
       "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim4.png",
-      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png"
-    ]
+      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png",
+    ],
+    transition: [
+      "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/1.transition1.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/1.transition2.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/1.transition3.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/1.transition4.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/2.transition/1.transition5.png",
+    ],
+    bubbleSwim: [
+      "img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/1.bubbleswim1.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/1.bubbleswim2.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/1.bubbleswim3.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/1.bubbleswim4.png",
+      "img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/1.bubbleswim5.png",
+    ],
   };
 
   height = 75;
@@ -22,9 +36,13 @@ class PufferFish extends MoveableObject {
 
   constructor() {
     super().loadImage(this.IMAGE_SETS.swimming[0]);
-    this.loadImages(this.IMAGE_SETS.swimming);
+    this.loadAllImages();
     this.speed = 0.7 + Math.random() * 0.6;
     this.animate();
+  }
+
+  loadAllImages() {
+    Object.values(this.IMAGE_SETS).forEach((images) => this.loadImages(images));
   }
 
   setPatrol(centerX, zoneWidth) {
@@ -54,11 +72,11 @@ class PufferFish extends MoveableObject {
 
   moveRight() {
     this.x += this.speed;
-    this.otherDirection = true;   
+    this.otherDirection = true;
   }
 
   moveLeft() {
     this.x -= this.speed;
-    this.otherDirection = false;  
+    this.otherDirection = false;
   }
 }
