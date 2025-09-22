@@ -1,11 +1,10 @@
 class JellyFish extends MoveableObject {
   IMAGE_SETS = {
     swimming: [
-      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
-      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png",
-      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim3.png",
-      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim4.png",
-      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png"
+      "img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png",
+      "img/2.Enemy/2 Jelly fish/Regular damage/Lila 2.png",
+      "img/2.Enemy/2 Jelly fish/Regular damage/Lila 3.png",
+      "img/2.Enemy/2 Jelly fish/Regular damage/Lila 4.png",
     ]
   };
 
