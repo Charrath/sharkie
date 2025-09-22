@@ -25,19 +25,25 @@ class PufferFish extends MoveableObject {
 
   height = 75;
   width = 75;
-  offset = {
-    top: 5,
-    left: 1,
-    right: 3,
-    bottom: 19,
-  };
+  offset = { top: 5, left: 1, right: 3, bottom: 19 };
   maxY = 405;
   minY = 50;
 
-  constructor() {
+  // fehlende Variablen hier initialisieren
+  inBubbleMode = false;
+  transitioning = false;
+  currentAnim = "swim";
+
+  constructor(world) {
     super().loadImage(this.IMAGE_SETS.swimming[0]);
     this.loadAllImages();
+    this.world = world;
     this.speed = 0.7 + Math.random() * 0.6;
+
+    this.inBubbleMode = false;
+    this.transitioning = false;
+
+    this.startFrameTicker(); // <— NEU
     this.animate();
   }
 
@@ -53,20 +59,89 @@ class PufferFish extends MoveableObject {
   }
 
   animate() {
-    setInterval(() => this.playAnimation(this.IMAGE_SETS.swimming), 120);
+    this.startAnimationLoop();
+    this.startPatrolLoop();
+  }
 
+  startAnimationLoop() {
+  const loop = () => {
+    const t = 120;
+    const char = this.world?.character;
+    if (!char) { setTimeout(loop, t); return; }
+
+    const cx = (char.x ?? 0) + (char.width ?? 0)/2;
+    const cy = (char.y ?? 0) + (char.height ?? 0)/2;
+    const fx = this.x + this.width/2, fy = this.y + this.height/2;
+    const close = Math.hypot(cx - fx, cy - fy) <= 300;
+
+    if (!this.transitioning) {
+      if (close && !this.inBubbleMode) {
+        this.transitioning = true;
+        this.playOnce(this.IMAGE_SETS.transition, 150, () => {
+          this.transitioning = false;
+          this.inBubbleMode = true;   // Ticker spielt jetzt bubbleSwim
+        });
+      } else if (!close && this.inBubbleMode) {
+        this.transitioning = true;
+        this.playOnceReverse(this.IMAGE_SETS.transition, 150, () => {
+          this.transitioning = false;
+          this.inBubbleMode = false;  // Ticker spielt jetzt swimming
+        });
+      }
+    }
+
+    setTimeout(loop, t);
+  };
+  loop();
+}
+
+
+  startFrameTicker() {
+    setInterval(() => {
+      if (this.transitioning) return; // Transition dominiert Frames
+      const set = this.inBubbleMode
+        ? this.IMAGE_SETS.bubbleSwim
+        : this.IMAGE_SETS.swimming;
+      this.playAnimation(set); // 1 Frame vorrücken
+    }, 120);
+  }
+
+  playOnce(images, speed, done) {
+    let i = 0;
+    const id = setInterval(() => {
+      if (i >= images.length) {
+        clearInterval(id);
+        done && done();
+        return;
+      }
+      const img = this.imageCache[images[i]];
+      if (img) this.img = img;
+      i++;
+    }, speed);
+  }
+
+  playOnceReverse(images, speed, done) {
+    let i = images.length - 1;
+    const id = setInterval(() => {
+      if (i < 0) {
+        clearInterval(id);
+        done && done();
+        return;
+      }
+      const img = this.imageCache[images[i]];
+      if (img) this.img = img;
+      i--;
+    }, speed);
+  }
+
+  startPatrolLoop() {
     setInterval(() => {
       if (this.patrolMinX == null) return;
       this.otherDirection ? this.moveRight() : this.moveLeft();
-
-      if (this.x <= this.patrolMinX) {
-        this.x = this.patrolMinX;
-        this.otherDirection = true;
-      }
-      if (this.x >= this.patrolMaxX) {
-        this.x = this.patrolMaxX;
-        this.otherDirection = false;
-      }
+      if (this.x <= this.patrolMinX)
+        (this.x = this.patrolMinX), (this.otherDirection = true);
+      if (this.x >= this.patrolMaxX)
+        (this.x = this.patrolMaxX), (this.otherDirection = false);
     }, 1000 / 60);
   }
 
@@ -74,7 +149,6 @@ class PufferFish extends MoveableObject {
     this.x += this.speed;
     this.otherDirection = true;
   }
-
   moveLeft() {
     this.x -= this.speed;
     this.otherDirection = false;
