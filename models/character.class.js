@@ -212,10 +212,16 @@ class Character extends MoveableObject {
       this.longIdlePlayed = true;
       this.animationState = "longIdleLoop";
       this.currentImage = 0;
+      Object.assign(this.offset, { top: 132, bottom: 62 });
+
     }
   }
 
-  resetIdle() { this.idleTimer = 0; this.animationState = "idle"; }
+  resetIdle() { 
+    this.idleTimer = 0; 
+    this.animationState = "idle"; 
+    Object.assign(this.offset, { top: 120, bottom: 85 });
+  }
 
   moveRight() { this.x += this.speed; this.otherDirection = false; }
   
