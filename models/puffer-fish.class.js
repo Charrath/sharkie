@@ -31,6 +31,7 @@ class PufferFish extends MoveableObject {
   offset = { top: 3, left: 1, right: 3, bottom: 19 };
   maxY = 405;
   minY = 50;
+  verticalSpeed = -6;
 
   inBubbleMode = false;
   transitioning = false;
@@ -170,33 +171,38 @@ class PufferFish extends MoveableObject {
     this.otherDirection = false;
   }
 
-  onFinalSlap(charLooksLeft) {
+  onFinalSlap(characterLooksLeft) {
     this.slapped = true;
     this.transitioning = false;
+    this.setDeadImage();
 
-    const hitImg = this.IMAGE_SETS.dead[0];
-    const deadImg = this.imageCache[hitImg];
+    this.horizontalSpeed = characterLooksLeft ? 4 : -4;
+    this.verticalSpeed = -6;
 
-    const speedX = 4;
-    const vx = charLooksLeft ? +speedX : -speedX;
-    let vy = -6;
-
-    this.otherDirection = vx < 0;
-    this.patrolMinX = this.patrolMaxX = null;
+    this.otherDirection = this.horizontalSpeed < 0;
 
     if (this.flyAwayId) clearInterval(this.flyAwayId);
-    this.flyAwayId = setInterval(() => {
-      // Dead-Bild bei jedem Frame festhalten
-      this.img = deadImg;
+    this.flyAwayId = setInterval(() => this.flyAwayStep(), 16);
+  }
 
-      this.x += vx;
-      this.y += vy;
-      if (vy > -12) vy -= 0.25;
+  setDeadImage() {
+    const deadImagePath = this.IMAGE_SETS.dead[0];
+    this.img = this.imageCache[deadImagePath];
+  }
 
-      if (this.y + this.height < 0) {
-        clearInterval(this.flyAwayId);
-        this.removed = true;
-      }
-    }, 16);
+  flyAwayStep() {
+    this.setDeadImage();
+
+    this.x += this.horizontalSpeed;
+    this.y += this.verticalSpeed;
+
+    if (this.verticalSpeed > -12) {
+      this.verticalSpeed -= 0.25;
+    }
+
+    if (this.y + this.height < 0) {
+      clearInterval(this.flyAwayId);
+      this.removed = true;
+    }
   }
 }
