@@ -50,9 +50,19 @@ class World {
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (enemy.introduced === false) return;
-      if (this.character.isColliding(enemy) && !this.character.isUntouchable) {
-        this.character.hit();
-        console.log("Collision with Character, energy", this.character.energy);
+      if (this.character.isColliding(enemy)) {
+        if (
+          enemy instanceof PufferFish &&
+          this.character.isAttacking &&
+          this.character.attackType === "finalSlap"
+        ) {
+          if (!enemy.slapped) enemy.onFinalSlap(this.character.otherDirection);
+          return;
+        }
+
+        if (!this.character.isUntouchable) {
+          this.character.hit();
+        }
       }
     });
 

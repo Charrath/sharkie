@@ -21,6 +21,9 @@ class PufferFish extends MoveableObject {
       "img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/1.bubbleswim4.png",
       "img/2.Enemy/1.Puffer fish (3 color options)/3.Bubbleeswim/1.bubbleswim5.png",
     ],
+    dead: [
+      "img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1 (can animate by going up).png",
+    ],
   };
 
   height = 75;
@@ -28,7 +31,6 @@ class PufferFish extends MoveableObject {
   offset = { top: 3, left: 1, right: 3, bottom: 19 };
   maxY = 405;
   minY = 50;
-
 
   inBubbleMode = false;
   transitioning = false;
@@ -43,7 +45,7 @@ class PufferFish extends MoveableObject {
     this.inBubbleMode = false;
     this.transitioning = false;
 
-    this.startFrameTicker(); 
+    this.startFrameTicker();
     this.animate();
   }
 
@@ -64,55 +66,56 @@ class PufferFish extends MoveableObject {
   }
 
   startAnimationLoop() {
-  const loop = () => {
-    const t = 120;
-    const char = this.world?.character;
-    if (!char) return setTimeout(loop, t);
+    const loop = () => {
+      if (this.slapped) return;
+      const t = 120;
+      const char = this.world?.character;
+      if (!char) return setTimeout(loop, t);
 
-    const close = this.isCharacterClose(char);
+      const close = this.isCharacterClose(char);
 
-    if (!this.transitioning) {
-      if (close && !this.inBubbleMode) this.startForwardTransition();
-      else if (!close && this.inBubbleMode) this.startReverseTransition();
-    }
+      if (!this.transitioning) {
+        if (close && !this.inBubbleMode) this.startForwardTransition();
+        else if (!close && this.inBubbleMode) this.startReverseTransition();
+      }
 
-    setTimeout(loop, t);
-  };
-  loop();
-}
+      setTimeout(loop, t);
+    };
+    loop();
+  }
 
-isCharacterClose(char) {
-  const cx = (char.x ?? 0) + (char.width ?? 0) / 2;
-  const cy = (char.y ?? 0) + (char.height ?? 0) / 2;
-  const fx = this.x + this.width / 2;
-  const fy = this.y + this.height / 2;
-  return Math.hypot(cx - fx, cy - fy) <= 300;
-}
+  isCharacterClose(char) {
+    const cx = (char.x ?? 0) + (char.width ?? 0) / 2;
+    const cy = (char.y ?? 0) + (char.height ?? 0) / 2;
+    const fx = this.x + this.width / 2;
+    const fy = this.y + this.height / 2;
+    return Math.hypot(cx - fx, cy - fy) <= 300;
+  }
 
-startForwardTransition() {
-  this.transitioning = true;
-  this.playOnce(this.IMAGE_SETS.transition, 150, () => {
-    this.transitioning = false;
-    this.inBubbleMode = true;
-    this.offset.bottom = 3;
-  });
-}
+  startForwardTransition() {
+    this.transitioning = true;
+    this.playOnce(this.IMAGE_SETS.transition, 150, () => {
+      this.transitioning = false;
+      this.inBubbleMode = true;
+      this.offset.bottom = 3;
+    });
+  }
 
-startReverseTransition() {
-  this.transitioning = true;
-  this.playOnceReverse(this.IMAGE_SETS.transition, 150, () => {
-    this.transitioning = false;
-    this.inBubbleMode = false;
-  });
-}
+  startReverseTransition() {
+    this.transitioning = true;
+    this.playOnceReverse(this.IMAGE_SETS.transition, 150, () => {
+      this.transitioning = false;
+      this.inBubbleMode = false;
+    });
+  }
 
   startFrameTicker() {
     setInterval(() => {
-      if (this.transitioning) return; 
+      if (this.slapped || this.transitioning) return;
       const set = this.inBubbleMode
         ? this.IMAGE_SETS.bubbleSwim
         : this.IMAGE_SETS.swimming;
-      this.playAnimation(set); 
+      this.playAnimation(set);
     }, 120);
   }
 
@@ -147,6 +150,7 @@ startReverseTransition() {
 
   startPatrolLoop() {
     setInterval(() => {
+      if (this.slapped) return;
       if (this.patrolMinX == null) return;
       this.otherDirection ? this.moveRight() : this.moveLeft();
       if (this.x <= this.patrolMinX)
@@ -160,8 +164,39 @@ startReverseTransition() {
     this.x += this.speed;
     this.otherDirection = true;
   }
+
   moveLeft() {
     this.x -= this.speed;
     this.otherDirection = false;
+  }
+
+  onFinalSlap(charLooksLeft) {
+    this.slapped = true;
+    this.transitioning = false;
+
+    const hitImg = this.IMAGE_SETS.dead[0];
+    const deadImg = this.imageCache[hitImg];
+
+    const speedX = 4;
+    const vx = charLooksLeft ? +speedX : -speedX;
+    let vy = -6;
+
+    this.otherDirection = vx < 0;
+    this.patrolMinX = this.patrolMaxX = null;
+
+    if (this.flyAwayId) clearInterval(this.flyAwayId);
+    this.flyAwayId = setInterval(() => {
+      // Dead-Bild bei jedem Frame festhalten
+      this.img = deadImg;
+
+      this.x += vx;
+      this.y += vy;
+      if (vy > -12) vy -= 0.25;
+
+      if (this.y + this.height < 0) {
+        clearInterval(this.flyAwayId);
+        this.removed = true;
+      }
+    }, 16);
   }
 }
