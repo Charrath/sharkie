@@ -48,42 +48,41 @@ class World {
   }
 
   checkCollisions() {
-    this.level.enemies.forEach((enemy) => {
-      if (enemy.introduced === false) return;
-      if (this.character.isColliding(enemy)) {
-        if (
-          enemy instanceof PufferFish &&
-          this.character.isAttacking &&
-          this.character.attackType === "finalSlap"
-        ) {
-          if (!enemy.slapped) enemy.onFinalSlap(this.character.otherDirection);
-          return;
-        }
-
-        if (!this.character.isUntouchable) {
-          this.character.hit();
-        }
-      }
-    });
-
+    this.level.enemies.forEach((enemy) =>
+      this.checkCharacterEnemyCollision(enemy)
+    );
     for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
-      const bubble = this.throwableObjects[i];
-
-      for (const enemy of this.level.enemies) {
-        if (bubble.isColliding(enemy)) {
-          if (enemy instanceof Endboss) {
-            this.endboss.hit(20);
-            console.log("Bubble hit endboss", enemy);
-          } else {
-            enemy.hit(5);
-            console.log("Bubble hit enemy", enemy);
-          }
-
-          this.throwableObjects.splice(i, 1);
-          break;
-        }
-      }
+      this.checkBubbleCollisions(this.throwableObjects[i], i);
     }
+  }
+
+  checkCharacterEnemyCollision(enemy) {
+    if (enemy.introduced === false) return;
+    if (!this.character.isColliding(enemy)) return;
+    if (
+      enemy instanceof PufferFish &&
+      this.character.isAttacking &&
+      this.character.attackType === "finalSlap"
+    ) {
+      if (!enemy.slapped) enemy.onFinalSlap(this.character.otherDirection);
+    } else if (!this.character.isUntouchable) {
+      this.character.hit();
+    }
+  }
+
+  checkBubbleCollisions(bubble, i) {
+    for (const enemy of this.level.enemies) {
+      if (!bubble.isColliding(enemy)) continue;
+      this.handleEnemyHitByBubble(enemy);
+      this.throwableObjects.splice(i, 1);
+      break;
+    }
+  }
+
+  handleEnemyHitByBubble(enemy) {
+    if (enemy instanceof Endboss) this.endboss.hit(20);
+    else if (enemy instanceof JellyFish) enemy.die();
+    else enemy.hit(5);
   }
 
   draw() {

@@ -32,9 +32,6 @@ class PufferFish extends MoveableObject {
   maxY = 405;
   minY = 50;
   verticalSpeed = -6;
-
-  inBubbleMode = false;
-  transitioning = false;
   currentAnim = "swim";
 
   constructor(world) {
@@ -42,10 +39,8 @@ class PufferFish extends MoveableObject {
     this.loadAllImages();
     this.world = world;
     this.speed = 0.7 + Math.random() * 0.6;
-
     this.inBubbleMode = false;
     this.transitioning = false;
-
     this.startFrameTicker();
     this.animate();
   }

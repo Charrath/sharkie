@@ -101,7 +101,7 @@ class Character extends MoveableObject {
     const loop = () => {
       let t = 100;
       if (this.isDead()) { t = 150; this.handleDeadAnimation(); }
-      else if (this.attackType) { t = 80; this.handleAttackAnimation(this.attackType); }
+      else if (this.attackType) { t = 40; this.handleAttackAnimation(this.attackType); }
       else if (this.isHurt()) { t = 200; this.handleHurtAnimation(); }
       else if (this.isMoving()) { t = 100; this.handleMovementAnimation(); }
       else { t = 175; this.handleIdleAnimation(); }
