@@ -57,18 +57,19 @@ class World {
   }
 
   checkCharacterEnemyCollision(enemy) {
-    if (enemy.introduced === false) return;
-    if (!this.character.isColliding(enemy)) return;
-    if (
-      enemy instanceof PufferFish &&
-      this.character.isAttacking &&
-      this.character.attackType === "finalSlap"
-    ) {
-      if (!enemy.slapped) enemy.onFinalSlap(this.character.otherDirection);
-    } else if (!this.character.isUntouchable) {
-      this.character.hit();
-    }
+  if (enemy.introduced === false) return;
+  if (!this.character.isColliding(enemy)) return;
+
+  if (enemy instanceof PufferFish && this.character.isAttacking && this.character.attackType === "finalSlap") {
+    if (!enemy.slapped) enemy.onFinalSlap(this.character.otherDirection);
+    return;
   }
+
+  if (!this.character.isUntouchable) {
+    const damage = enemy instanceof Endboss ? 20 : 5; 
+    this.character.hit(damage);
+  }
+}
 
   checkBubbleCollisions(bubble, i) {
     for (const enemy of this.level.enemies) {

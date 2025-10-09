@@ -14,7 +14,7 @@ class StatusBar extends DrawableObject {
   draw(ctx) {
     super.draw(ctx);
     if (this.showNumber) {
-      ctx.font = "bold 30px Luckiest Guy ";
+      ctx.font = "30px Luckiest Guy ";
       ctx.fillStyle = "white";
       ctx.fillText(
         this.number.toString(),
