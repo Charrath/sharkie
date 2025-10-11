@@ -113,18 +113,31 @@ class Character extends MoveableObject {
   updateCamera() { this.world.camera_x = -this.x + 100; }
 
   startAttack(type) {
-    if (!this.isHurt()) {
-      this.attackType = type;
-      this.isAttacking = true;
-      this.currentImage = 0;
-      this.idleTimer = 0;
-      if (this.attackType === "finalSlap") {
-        this.isUntouchable = true;
-        const attackDuration = this.IMAGE_SETS.attackFinalSlap.length * 100;
-        setTimeout(() => { this.isUntouchable = false; }, attackDuration + 1000);
-      }
-    }
+  if (this.isHurt()) return;
+
+  // Wenn Bubble-Angriff versucht wird, aber keine Phiolen vorhanden sind → abbrechen
+  if (type === "bubble" && this.world.poisonBar?.number <= 0) {
+    return;
   }
+
+  this.attackType = type;
+  this.isAttacking = true;
+  this.currentImage = 0;
+  this.idleTimer = 0;
+
+  if (this.attackType === "bubble") {
+    // Eine Phiole verbrauchen
+    this.world.poisonBar.number -= 1;
+  }
+
+  if (this.attackType === "finalSlap") {
+    this.isUntouchable = true;
+    const attackDuration = this.IMAGE_SETS.attackFinalSlap.length * 100;
+    setTimeout(() => {
+      this.isUntouchable = false;
+    }, attackDuration + 1000);
+  }
+}
 
   handleAttackAnimation(attackType) {
     if (attackType === "bubble") this.bubbleAttack();

@@ -91,7 +91,7 @@ class JellyFish extends MoveableObject {
 
   die() {
     this.isDead = true;
-    this.verticalSpeed = -2; 
+    this.verticalSpeed = -2;
   }
 
   flyAwayStep() {
@@ -102,9 +102,8 @@ class JellyFish extends MoveableObject {
   }
 
   removeFromWorld() {
-    const index = this.level.enemies.indexOf(this);
-    if (index > -1) {
-      this.level.enemies.splice(index, 1);
-    }
+    if (!this.world || !this.world.level || !this.world.level.enemies) return;
+    const index = this.world.level.enemies.indexOf(this);
+    if (index > -1) this.world.level.enemies.splice(index, 1);
   }
 }
