@@ -10,6 +10,8 @@ class PoisonFlask extends MoveableObject {
     "img/4. Marcadores/Posión/Animada/8.png",
   ];
 
+  static sound = new Audio('assets/audio/poison.mp3');
+
   constructor(x, y) {
     super().loadImage(this.IMAGES_ROTATE[0]);
     this.loadImages(this.IMAGES_ROTATE);
@@ -36,7 +38,8 @@ class PoisonFlask extends MoveableObject {
     this.world.poisonBar.number += 1;
   }
 
-  new Audio('audio/poison.mp3').play();
+  PoisonFlask.sound.currentTime = 0;
+  PoisonFlask.sound.play();
 
   // Respawn an gleicher Stelle nach 10 Sekunden
   setTimeout(() => {
