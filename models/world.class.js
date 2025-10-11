@@ -27,6 +27,8 @@ class World {
     this.level.enemies.forEach((enemy) => {
       enemy.world = this;
     });
+    if (!this.level.collectables) this.level.collectables = [];
+    this.level.collectables.forEach((c) => (c.world = this));
   }
 
   ensureBossBar() {
@@ -54,22 +56,32 @@ class World {
     for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
       this.checkBubbleCollisions(this.throwableObjects[i], i);
     }
+    this.level.collectables.forEach((item, i) => {
+      if (!item.collected && this.character.isColliding(item)) {
+        item.collect();
+        this.level.collectables.splice(i, 1);
+      }
+    });
   }
 
   checkCharacterEnemyCollision(enemy) {
-  if (enemy.introduced === false) return;
-  if (!this.character.isColliding(enemy)) return;
+    if (enemy.introduced === false) return;
+    if (!this.character.isColliding(enemy)) return;
 
-  if (enemy instanceof PufferFish && this.character.isAttacking && this.character.attackType === "finalSlap") {
-    if (!enemy.slapped) enemy.onFinalSlap(this.character.otherDirection);
-    return;
-  }
+    if (
+      enemy instanceof PufferFish &&
+      this.character.isAttacking &&
+      this.character.attackType === "finalSlap"
+    ) {
+      if (!enemy.slapped) enemy.onFinalSlap(this.character.otherDirection);
+      return;
+    }
 
-  if (!this.character.isUntouchable) {
-    const damage = enemy instanceof Endboss ? 20 : 5; 
-    this.character.hit(damage);
+    if (!this.character.isUntouchable) {
+      const damage = enemy instanceof Endboss ? 20 : 5;
+      this.character.hit(damage);
+    }
   }
-}
 
   checkBubbleCollisions(bubble, i) {
     for (const enemy of this.level.enemies) {
@@ -90,6 +102,9 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
+    if (this.level.collectables) {
+      this.addObjectsToMap(this.level.collectables.filter((c) => !c.collected));
+    }
     this.addToMap(this.character);
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.enemies);

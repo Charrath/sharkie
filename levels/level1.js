@@ -36,19 +36,15 @@ function buildMixedOrder(pufferFishCount, jellyFishCount) {
 }
 
 function createEnemies(config, minX, maxX, minY, maxY) {
-  const EnemyTypes = { PufferFish, JellyFish },
-    enemies = [];
-  const puffer = config.PufferFish || 0,
-    jelly = config.JellyFish || 0;
+  const EnemyTypes = { PufferFish, JellyFish }, enemies = [];
+  const puffer = config.PufferFish || 0, jelly = config.JellyFish || 0;
   const order = buildMixedOrder(puffer, jelly);
-  const total = order.length,
-    stepX = (maxX - minX) / Math.max(1, total - 1);
+  const total = order.length, stepX = (maxX - minX) / Math.max(1, total - 1);
   order.forEach((type, i) => {
     const centerY = (minY + maxY) / 2;
     const enemy = new EnemyTypes[type]();
     enemy.x = minX + i * stepX;
-    enemy.y =
-      type === "JellyFish" ? centerY : minY + Math.random() * (maxY - minY); 
+    enemy.y = type === "JellyFish" ? centerY : minY + Math.random() * (maxY - minY);
     enemies.push(enemy);
   });
   const patrolZoneWidth = 500;
@@ -64,7 +60,34 @@ function createEnemies(config, minX, maxX, minY, maxY) {
   return enemies;
 }
 
-const level1 = new Level(
-  createEnemies({ PufferFish: 6, JellyFish: 3 }, 550, 3500, 50, 405),
-  createBackgroundObjects(-719, 719, 8, layerPaths)
-);
+function createCollectables(enemies) {
+  const collectables = [];
+  enemies.forEach(enemy => {
+    if (enemy instanceof PufferFish) {
+      const radius = 100;
+      const centerX = enemy.x + enemy.width / 2;
+      const centerY = enemy.y + 50;
+      for (let i = 0; i < 6; i++) {
+        const angle = Math.PI * (i / 5);
+        const x = centerX + radius * Math.cos(angle - Math.PI);
+        const y = centerY + radius * Math.sin(angle - Math.PI);
+        collectables.push(new Coin(x, y));
+      }
+    }
+    if (enemy instanceof JellyFish) {
+      const groundY = 430;
+      const x = enemy.x + enemy.width / 2;
+      collectables.push(new PoisonFlask(x, groundY));
+    }
+  });
+  return collectables;
+}
+
+function createLevel1() {
+  const enemies = createEnemies({ PufferFish: 6, JellyFish: 3 }, 550, 3500, 50, 405);
+  const background = createBackgroundObjects(-719, 719, 8, layerPaths);
+  const collectables = createCollectables(enemies);
+  return new Level(enemies, background, collectables);
+}
+
+const level1 = createLevel1();
