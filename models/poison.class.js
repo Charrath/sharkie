@@ -1,13 +1,13 @@
 class PoisonFlask extends MoveableObject {
   IMAGES_ROTATE = [
-    'img/4. Marcadores/Posión/Animada/1.png',
-    'img/4. Marcadores/Posión/Animada/2.png',
-    'img/4. Marcadores/Posión/Animada/3.png',
-    'img/4. Marcadores/Posión/Animada/4.png',
-    'img/4. Marcadores/Posión/Animada/5.png',
-    'img/4. Marcadores/Posión/Animada/6.png',
-    'img/4. Marcadores/Posión/Animada/7.png',
-    'img/4. Marcadores/Posión/Animada/8.png'
+    "img/4. Marcadores/Posión/Animada/1.png",
+    "img/4. Marcadores/Posión/Animada/2.png",
+    "img/4. Marcadores/Posión/Animada/3.png",
+    "img/4. Marcadores/Posión/Animada/4.png",
+    "img/4. Marcadores/Posión/Animada/5.png",
+    "img/4. Marcadores/Posión/Animada/6.png",
+    "img/4. Marcadores/Posión/Animada/7.png",
+    "img/4. Marcadores/Posión/Animada/8.png",
   ];
 
   constructor(x, y) {
@@ -28,12 +28,28 @@ class PoisonFlask extends MoveableObject {
   }
 
   collect() {
-    if (this.collected) return;
-    this.collected = true;
-    clearInterval(this.animationInterval);
-    if (this.world.poisonBar) {
-      this.world.poisonBar.number += 1;
+  if (this.collected) return;
+  this.collected = true;
+  clearInterval(this.animationInterval);
+
+  if (this.world.poisonBar) {
+    this.world.poisonBar.number += 1;
+  }
+
+  new Audio('audio/poison.mp3').play();
+
+  // Respawn an gleicher Stelle nach 10 Sekunden
+  setTimeout(() => {
+    if (this.world && this.world.level && this.world.level.collectables) {
+      const newFlask = new PoisonFlask(this.x, this.y);
+      newFlask.world = this.world;
+      this.world.level.collectables.push(newFlask);
     }
-    new Audio('audio/poison.mp3').play();
+  }, 10000);
+}
+
+  respawn() {
+    this.collected = false;
+    this.animate();
   }
 }
