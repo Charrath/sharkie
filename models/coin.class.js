@@ -6,6 +6,8 @@ class Coin extends MoveableObject {
     'img/4. Marcadores/1. Coins/4.png'
   ];
 
+  static sound = new Audio('assets/audio/coin.mp3');
+
   constructor(x, y) {
     super().loadImage(this.IMAGES_ROTATE[0]);
     this.loadImages(this.IMAGES_ROTATE);
@@ -30,6 +32,7 @@ class Coin extends MoveableObject {
   if (this.world.coinBar) {
     this.world.coinBar.number += 1;
   }
-  new Audio('audio/coin.mp3').play();
+  Coin.sound.currentTime = 0;
+  Coin.sound.play();
 }
 }
