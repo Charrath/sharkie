@@ -110,6 +110,9 @@ class Character extends MoveableObject {
     this.imagesLongIdleLast4 = this.IMAGE_SETS.longIdle.slice(-4);
     this.animate();
     this.swimSound = new Audio("assets/audio/sharkieSwim.mp3");
+    this.swimSound.volume = 0.2;
+    this.sleepStartSound = new Audio("assets/audio/sharkieSleepStart.mp3");
+    this.sleepLoopSound = new Audio("assets/audio/sharkieSleepLoop.mp3");
   }
 
   loadAllImages() {
@@ -166,31 +169,34 @@ class Character extends MoveableObject {
   }
 
   startAttack(type) {
-    if (this.isHurt()) return;
+    if (this.cannotAttack(type)) return;
 
-    // Wenn Bubble-Angriff versucht wird, aber keine Phiolen vorhanden sind → abbrechen
-    if (type === "bubble" && this.world.poisonBar?.number <= 0) {
-      return;
-    }
+    this.initializeAttack(type);
 
+    if (type === "bubble") this.consumePoison();
+    if (type === "finalSlap") this.activateFinalSlapImmunity();
+  }
+
+  cannotAttack(type) {
+    if (this.isHurt()) return true;
+    if (type === "bubble" && this.world.poisonBar?.number <= 0) return true;
+    return false;
+  }
+
+  initializeAttack(type) {
     this.attackType = type;
     this.isAttacking = true;
     this.currentImage = 0;
     this.idleTimer = 0;
-
-    if (this.attackType === "bubble") {
-      // Eine Phiole verbrauchen
-      this.world.poisonBar.number -= 1;
-    }
-
-    if (this.attackType === "finalSlap") {
-      this.isUntouchable = true;
-      const attackDuration = this.IMAGE_SETS.attackFinalSlap.length * 100;
-      setTimeout(() => {
-        this.isUntouchable = false;
-      }, attackDuration + 1000);
-    }
   }
+
+  consumePoison() {
+    this.world.poisonBar.number -= 1;
+  }
+
+  activateFinalSlapImmunity() {
+  this.isUntouchable = true;
+}
 
   handleAttackAnimation(attackType) {
     if (attackType === "bubble") this.bubbleAttack();
@@ -198,19 +204,20 @@ class Character extends MoveableObject {
   }
 
   finalSlapAttack() {
-    const step = 4;
-    if (this.currentImage < this.IMAGE_SETS.attackFinalSlap.length) {
-      this.img =
-        this.imageCache[this.IMAGE_SETS.attackFinalSlap[this.currentImage]];
-      if (!this.otherDirection) this.x = Math.min(this.maxX, this.x + step);
-      else this.x = Math.max(this.minX, this.x - step);
-      this.currentImage++;
-    } else {
-      this.isAttacking = false;
-      this.currentImage = 0;
-      this.attackType = 0;
-    }
+  const step = 8;
+  const frames = this.IMAGE_SETS.attackFinalSlap;
+
+  if (this.currentImage < frames.length) {
+    this.img = this.imageCache[frames[this.currentImage]];
+    this.x += this.otherDirection ? -step : step;
+    this.currentImage++;
+  } else {
+    this.isUntouchable = false;
+    this.isAttacking = false;
+    this.currentImage = 0;
+    this.attackType = 0;
   }
+}
 
   bubbleAttack() {
     if (this.currentImage < this.IMAGE_SETS.attackBubble.length) {
@@ -278,8 +285,24 @@ class Character extends MoveableObject {
     if (this.animationState !== "longIdleFull") {
       this.animationState = "longIdleFull";
       this.currentImage = 0;
+
+      // Einschlafsound einmal abspielen
+      if (this.sleepStartSound) {
+        this.sleepStartSound.currentTime = 0;
+        this.sleepStartSound.play();
+
+        // Nach Ende des Einschlafsounds den Schlafloop starten
+        this.sleepStartSound.onended = () => {
+          if (this.sleepLoopSound) {
+            this.sleepLoopSound.loop = true;
+            this.sleepLoopSound.play();
+          }
+        };
+      }
     }
+
     this.playAnimationNonLoop(this.IMAGE_SETS.longIdle);
+
     if (this.currentImage >= this.IMAGE_SETS.longIdle.length) {
       this.longIdlePlayed = true;
       this.animationState = "longIdleLoop";
@@ -292,6 +315,11 @@ class Character extends MoveableObject {
     this.idleTimer = 0;
     this.animationState = "idle";
     Object.assign(this.offset, { top: 120, bottom: 85 });
+
+    if (this.sleepLoopSound && !this.sleepLoopSound.paused) {
+      this.sleepLoopSound.pause();
+      this.sleepLoopSound.currentTime = 0;
+    }
   }
 
   moveRight() {
