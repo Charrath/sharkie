@@ -113,6 +113,10 @@ class Character extends MoveableObject {
     this.swimSound.volume = 0.2;
     this.sleepStartSound = new Audio("assets/audio/sharkieSleepStart.mp3");
     this.sleepLoopSound = new Audio("assets/audio/sharkieSleepLoop.mp3");
+    this.punchSond = new Audio("assets/audio/sharkiePunch.mp3");
+    this.hurtSound = new Audio("assets/audio/sharkieHurt.mp3");
+    this.bubbleAttackSound = new Audio("assets/audio/sharkieBubble.mp3");
+    this.deadSound = new Audio("assets/audio/sharkieDead.mp3");
   }
 
   loadAllImages() {
@@ -170,7 +174,10 @@ class Character extends MoveableObject {
 
   startAttack(type) {
     if (this.cannotAttack(type)) return;
-
+    if (this.sleepLoopSound && !this.sleepLoopSound.paused) {
+      this.sleepLoopSound.pause();
+      this.sleepLoopSound.currentTime = 0;
+    }
     this.initializeAttack(type);
 
     if (type === "bubble") this.consumePoison();
@@ -195,8 +202,8 @@ class Character extends MoveableObject {
   }
 
   activateFinalSlapImmunity() {
-  this.isUntouchable = true;
-}
+    this.isUntouchable = true;
+  }
 
   handleAttackAnimation(attackType) {
     if (attackType === "bubble") this.bubbleAttack();
@@ -204,26 +211,34 @@ class Character extends MoveableObject {
   }
 
   finalSlapAttack() {
-  const step = 8;
-  const frames = this.IMAGE_SETS.attackFinalSlap;
+    const step = 8;
+    const frames = this.IMAGE_SETS.attackFinalSlap;
 
-  if (this.currentImage < frames.length) {
-    this.img = this.imageCache[frames[this.currentImage]];
-    this.x += this.otherDirection ? -step : step;
-    this.currentImage++;
-  } else {
-    this.isUntouchable = false;
-    this.isAttacking = false;
-    this.currentImage = 0;
-    this.attackType = 0;
+    if (this.currentImage < frames.length) {
+      this.img = this.imageCache[frames[this.currentImage]];
+      this.x += this.otherDirection ? -step : step;
+      this.currentImage++;
+      if (this.punchSond && this.currentImage === 1) {
+        this.punchSond.currentTime = 0;
+        this.punchSond.play();
+      }
+    } else {
+      this.isUntouchable = false;
+      this.isAttacking = false;
+      this.currentImage = 0;
+      this.attackType = 0;
+    }
   }
-}
 
   bubbleAttack() {
     if (this.currentImage < this.IMAGE_SETS.attackBubble.length) {
       this.img =
         this.imageCache[this.IMAGE_SETS.attackBubble[this.currentImage]];
       this.currentImage++;
+      if (this.bubbleAttackSound && this.currentImage === 1) {
+        this.bubbleAttackSound.currentTime = 0;
+        setTimeout(() => this.bubbleAttackSound.play(), 150);
+      }
     } else {
       this.spawnBubble();
       this.attackType = 0;
@@ -258,6 +273,10 @@ class Character extends MoveableObject {
     this.playAnimation(this.IMAGE_SETS.hurt);
     this.resetIdle();
     this.longIdlePlayed = false;
+    if (this.hurtSound && this.currentImage === 1) {
+      this.hurtSound.currentTime = 0;
+      this.hurtSound.play();
+    }
   }
 
   handleMovementAnimation() {
@@ -286,12 +305,10 @@ class Character extends MoveableObject {
       this.animationState = "longIdleFull";
       this.currentImage = 0;
 
-      // Einschlafsound einmal abspielen
       if (this.sleepStartSound) {
         this.sleepStartSound.currentTime = 0;
         this.sleepStartSound.play();
 
-        // Nach Ende des Einschlafsounds den Schlafloop starten
         this.sleepStartSound.onended = () => {
           if (this.sleepLoopSound) {
             this.sleepLoopSound.loop = true;
@@ -337,6 +354,10 @@ class Character extends MoveableObject {
       const currentFramePath = this.IMAGE_SETS.dead[this.deadAnimationIndex];
       this.img = this.imageCache[currentFramePath];
       this.deadAnimationIndex++;
+      if (this.deadSound && this.deadAnimationIndex === 1) {
+        this.deadSound.currentTime = 0;
+        this.deadSound.play();
+      }
     } else {
       this.deadAnimationComplete = true;
     }
