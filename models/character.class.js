@@ -107,20 +107,23 @@ class Character extends MoveableObject {
     super().loadImage(this.IMAGE_SETS.swimming[0]);
     this.world = world;
     this.loadAllImages();
+    this.loadCharacterSounds();
     this.imagesLongIdleLast4 = this.IMAGE_SETS.longIdle.slice(-4);
     this.animate();
-    this.swimSound = new Audio("assets/audio/sharkieSwim.mp3");
-    this.swimSound.volume = 0.2;
-    this.sleepStartSound = new Audio("assets/audio/sharkieSleepStart.mp3");
-    this.sleepLoopSound = new Audio("assets/audio/sharkieSleepLoop.mp3");
-    this.punchSond = new Audio("assets/audio/sharkiePunch.mp3");
-    this.hurtSound = new Audio("assets/audio/sharkieHurt.mp3");
-    this.bubbleAttackSound = new Audio("assets/audio/sharkieBubble.mp3");
-    this.deadSound = new Audio("assets/audio/sharkieDead.mp3");
   }
 
   loadAllImages() {
     Object.values(this.IMAGE_SETS).forEach((arr) => this.loadImages(arr));
+  }
+
+  loadCharacterSounds() {
+    this.loadSound("swim", "assets/audio/sharkieSwim.mp3", 0.2);
+    this.loadSound("sleepStart", "assets/audio/sharkieSleepStart.mp3");
+    this.loadSound("sleepLoop", "assets/audio/sharkieSleepLoop.mp3");
+    this.loadSound("punch", "assets/audio/sharkiePunch.mp3");
+    this.loadSound("hurt", "assets/audio/sharkieHurt.mp3");
+    this.loadSound("bubbleAttack", "assets/audio/sharkieBubble.mp3");
+    this.loadSound("dead", "assets/audio/sharkieDead.mp3");
   }
 
   animate() {
@@ -174,10 +177,7 @@ class Character extends MoveableObject {
 
   startAttack(type) {
     if (this.cannotAttack(type)) return;
-    if (this.sleepLoopSound && !this.sleepLoopSound.paused) {
-      this.sleepLoopSound.pause();
-      this.sleepLoopSound.currentTime = 0;
-    }
+    this.stopSound("sleepLoop");
     this.initializeAttack(type);
 
     if (type === "bubble") this.consumePoison();
@@ -218,10 +218,7 @@ class Character extends MoveableObject {
       this.img = this.imageCache[frames[this.currentImage]];
       this.x += this.otherDirection ? -step : step;
       this.currentImage++;
-      if (this.punchSond && this.currentImage === 1) {
-        this.punchSond.currentTime = 0;
-        this.punchSond.play();
-      }
+      if (this.currentImage === 1) this.playSound("punch");
     } else {
       this.isUntouchable = false;
       this.isAttacking = false;
@@ -235,10 +232,7 @@ class Character extends MoveableObject {
       this.img =
         this.imageCache[this.IMAGE_SETS.attackBubble[this.currentImage]];
       this.currentImage++;
-      if (this.bubbleAttackSound && this.currentImage === 1) {
-        this.bubbleAttackSound.currentTime = 0;
-        setTimeout(() => this.bubbleAttackSound.play(), 150);
-      }
+      if (this.currentImage === 1) this.playSound("bubbleAttack", 150);
     } else {
       this.spawnBubble();
       this.attackType = 0;
@@ -273,20 +267,15 @@ class Character extends MoveableObject {
     this.playAnimation(this.IMAGE_SETS.hurt);
     this.resetIdle();
     this.longIdlePlayed = false;
-    if (this.hurtSound && this.currentImage === 1) {
-      this.hurtSound.currentTime = 0;
-      this.hurtSound.play();
-    }
+    if (this.currentImage === 1) this.playSound("hurt");
   }
 
   handleMovementAnimation() {
     this.playAnimation(this.IMAGE_SETS.swimming);
     this.resetIdle();
     this.longIdlePlayed = false;
-    if (this.swimSound && this.swimSound.paused) {
-      this.swimSound.currentTime = 0;
-      this.swimSound.play();
-    }
+    const swim = this.sounds["swim"];
+    if (swim && swim.paused) this.playSound("swim");
   }
 
   handleIdleAnimation() {
@@ -302,41 +291,48 @@ class Character extends MoveableObject {
 
   playFullLongIdle() {
     if (this.animationState !== "longIdleFull") {
-      this.animationState = "longIdleFull";
-      this.currentImage = 0;
-
-      if (this.sleepStartSound) {
-        this.sleepStartSound.currentTime = 0;
-        this.sleepStartSound.play();
-
-        this.sleepStartSound.onended = () => {
-          if (this.sleepLoopSound) {
-            this.sleepLoopSound.loop = true;
-            this.sleepLoopSound.play();
-          }
-        };
-      }
+      this.startIdleSleep();
     }
 
     this.playAnimationNonLoop(this.IMAGE_SETS.longIdle);
+    this.completeIdleSleepIfFinished();
+  }
 
-    if (this.currentImage >= this.IMAGE_SETS.longIdle.length) {
-      this.longIdlePlayed = true;
-      this.animationState = "longIdleLoop";
-      this.currentImage = 0;
-      Object.assign(this.offset, { top: 132, bottom: 62 });
-    }
+  startIdleSleep() {
+    this.animationState = "longIdleFull";
+    this.currentImage = 0;
+    this.playSound("sleepStart");
+    this.setupIdleSleepLoop();
+  }
+
+  setupIdleSleepLoop() {
+    const startSound = this.sounds["sleepStart"];
+    if (!startSound) return;
+
+    startSound.onended = () => {
+      const loopSound = this.sounds["sleepLoop"];
+      if (loopSound) {
+        loopSound.loop = true;
+        loopSound.play();
+      }
+    };
+  }
+
+  completeIdleSleepIfFinished() {
+    const sequenceDone = this.currentImage >= this.IMAGE_SETS.longIdle.length;
+    if (!sequenceDone) return;
+
+    this.longIdlePlayed = true;
+    this.animationState = "longIdleLoop";
+    this.currentImage = 0;
+    Object.assign(this.offset, { top: 132, bottom: 62 });
   }
 
   resetIdle() {
     this.idleTimer = 0;
     this.animationState = "idle";
     Object.assign(this.offset, { top: 120, bottom: 85 });
-
-    if (this.sleepLoopSound && !this.sleepLoopSound.paused) {
-      this.sleepLoopSound.pause();
-      this.sleepLoopSound.currentTime = 0;
-    }
+    this.stopSound("sleepLoop");
   }
 
   moveRight() {
@@ -354,10 +350,7 @@ class Character extends MoveableObject {
       const currentFramePath = this.IMAGE_SETS.dead[this.deadAnimationIndex];
       this.img = this.imageCache[currentFramePath];
       this.deadAnimationIndex++;
-      if (this.deadSound && this.deadAnimationIndex === 1) {
-        this.deadSound.currentTime = 0;
-        this.deadSound.play();
-      }
+      if (this.deadAnimationIndex === 1) this.playSound("dead");
     } else {
       this.deadAnimationComplete = true;
     }
