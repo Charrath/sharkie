@@ -37,6 +37,7 @@ class PufferFish extends MoveableObject {
   constructor(world) {
     super().loadImage(this.IMAGE_SETS.swimming[0]);
     this.loadAllImages();
+    this.loadPufferSounds();
     this.world = world;
     this.speed = 0.7 + Math.random() * 0.6;
     this.inBubbleMode = false;
@@ -47,6 +48,12 @@ class PufferFish extends MoveableObject {
 
   loadAllImages() {
     Object.values(this.IMAGE_SETS).forEach((images) => this.loadImages(images));
+  }
+
+  loadPufferSounds() {
+    this.loadSound("inhale", "assets/audio/pufferInhale.mp3");
+    this.loadSound("exhale", "assets/audio/pufferExhale.mp3");
+    
   }
 
   setPatrol(centerX, zoneWidth) {
@@ -90,6 +97,7 @@ class PufferFish extends MoveableObject {
 
   startForwardTransition() {
     this.transitioning = true;
+    this.playSound("inhale");
     this.playOnce(this.IMAGE_SETS.transition, 150, () => {
       this.transitioning = false;
       this.inBubbleMode = true;
@@ -99,6 +107,7 @@ class PufferFish extends MoveableObject {
 
   startReverseTransition() {
     this.transitioning = true;
+    this.playSound("exhale");
     this.playOnceReverse(this.IMAGE_SETS.transition, 150, () => {
       this.transitioning = false;
       this.inBubbleMode = false;

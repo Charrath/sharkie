@@ -118,8 +118,8 @@ class Character extends MoveableObject {
 
   loadCharacterSounds() {
     this.loadSound("swim", "assets/audio/sharkieSwim.mp3", 0.2);
-    this.loadSound("sleepStart", "assets/audio/sharkieSleepStart.mp3");
-    this.loadSound("sleepLoop", "assets/audio/sharkieSleepLoop.mp3");
+    this.loadSound("sleepStart", "assets/audio/sharkieSleepStart.mp3", 0.4);
+    this.loadSound("sleepLoop", "assets/audio/sharkieSleepLoop.mp3", 0.4);
     this.loadSound("punch", "assets/audio/sharkiePunch.mp3");
     this.loadSound("hurt", "assets/audio/sharkieHurt.mp3");
     this.loadSound("bubbleAttack", "assets/audio/sharkieBubble.mp3");
