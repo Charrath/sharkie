@@ -1,24 +1,43 @@
 body {
-    display: flex;
-    flex-direction: column ;
-    align-items: center;
-    font-family: 'LuckiestGuy', sans-serif;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "LuckiestGuy", sans-serif;
+  margin: 0;
+  min-height: 100vh;
+
+  background-image: url("./img/background/underwater-background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.game-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 canvas {
-    background-color: black;
-    display: block;
+  width: 100%;
+  height: auto;
+  max-width: 1440px;
+
+  background-color: black;
+  display: block;
 }
 
 @media only screen and (max-width: 720px) {
-    canvas {
-        width: 100%;
-    }    
+  canvas {
+    width: 100%;
+  }
 }
 
 @media only screen and (max-height: 480px) {
-    canvas {
-        height: 100vh;
-    }    
+  canvas {
+    height: 100vh;
+  }
 }
