@@ -3,8 +3,22 @@ body {
     flex-direction: column ;
     align-items: center;
     font-family: 'LuckiestGuy', sans-serif;
+    margin: 0;
 }
 
 canvas {
     background-color: black;
+    display: block;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }    
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }    
 }
