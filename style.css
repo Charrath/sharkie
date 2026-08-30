@@ -3,7 +3,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   font-family: "LuckiestGuy", sans-serif;
   margin: 0;
   min-height: 100vh;
@@ -16,23 +15,65 @@ body {
 
 .game-container {
   width: 100%;
+  max-width: 1440px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  position: relative;
 }
 
 canvas {
   width: 100%;
   height: auto;
-  max-width: 1440px;
 
   background-color: black;
   display: block;
 }
 
+.start-screen {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 10;
+
+  background-image: url("./img/background/start-screen.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.start-screen h1 {
+  font-size: 64px;
+  margin: 0 0 30px 0;
+}
+
+.start-screen button {
+  font-family: "LuckiestGuy", sans-serif;
+  font-size: 28px;
+
+  padding: 12px 32px;
+
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 720px) {
   canvas {
     width: 100%;
+  }
+
+  .start-screen h1 {
+    font-size: 42px;
+  }
+
+  .start-screen button {
+    font-size: 20px;
   }
 }
 
