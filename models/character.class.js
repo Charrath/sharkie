@@ -149,26 +149,28 @@ class Character extends MoveableObject {
 
   startAnimationLoop() {
     const loop = () => {
-      let t = 100;
-      if (this.isDead()) {
-        t = 150;
-        this.handleDeadAnimation();
-      } else if (this.attackType) {
-        t = 40;
-        this.handleAttackAnimation(this.attackType);
-      } else if (this.isHurt()) {
-        t = 200;
-        this.handleHurtAnimation();
-      } else if (this.isMoving()) {
-        t = 100;
-        this.handleMovementAnimation();
-      } else {
-        t = 175;
-        this.handleIdleAnimation();
-      }
-      setTimeout(loop, t);
+      this.handleAnimationState();
+      const delay = this.getAnimationDelay();
+      setTimeout(loop, delay);
     };
+
     loop();
+  }
+
+  handleAnimationState() {
+    if (this.isDead()) return this.handleDeadAnimation();
+    if (this.attackType) return this.handleAttackAnimation(this.attackType);
+    if (this.isHurt()) return this.handleHurtAnimation();
+    if (this.isMoving()) return this.handleMovementAnimation();
+    this.handleIdleAnimation();
+  }
+
+  getAnimationDelay() {
+    if (this.isDead()) return 150;
+    if (this.attackType) return 40;
+    if (this.isHurt()) return 200;
+    if (this.isMoving()) return 100;
+    return 175;
   }
 
   updateCamera() {
