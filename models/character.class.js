@@ -213,20 +213,30 @@ class Character extends MoveableObject {
   }
 
   finalSlapAttack() {
-    const step = 8;
     const frames = this.IMAGE_SETS.attackFinalSlap;
 
     if (this.currentImage < frames.length) {
-      this.img = this.imageCache[frames[this.currentImage]];
-      this.x += this.otherDirection ? -step : step;
-      this.currentImage++;
-      if (this.currentImage === 1) this.playSound("punch");
+      this.playFinalSlapFrame(frames);
     } else {
-      this.isUntouchable = false;
-      this.isAttacking = false;
-      this.currentImage = 0;
-      this.attackType = 0;
+      this.finishFinalSlap();
     }
+  }
+
+  playFinalSlapFrame(frames) {
+    const step = 8;
+
+    this.img = this.imageCache[frames[this.currentImage]];
+    this.x += this.otherDirection ? -step : step;
+    this.currentImage++;
+
+    if (this.currentImage === 1) this.playSound("punch");
+  }
+
+  finishFinalSlap() {
+    this.isUntouchable = false;
+    this.isAttacking = false;
+    this.currentImage = 0;
+    this.attackType = 0;
   }
 
   bubbleAttack() {
