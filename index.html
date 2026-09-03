@@ -43,6 +43,34 @@
             ANLEITUNG
           </button>
         </div>
+
+        <div id="instructions" class="instructions d-none">
+          <h2 class="instructions-title">SPIELANLEITUNG</h2>
+
+          <div class="instruction-box controls-box">
+            <h3>STEUERUNG</h3>
+            <p>WASD / Pfeiltasten → Schwimmen</p>
+            <p>E → Final Slap</p>
+            <p>F → Blasenangriff</p>
+          </div>
+
+          <div class="instruction-box enemies-box">
+            <h3>GEGNER</h3>
+            <p>🐡 Kugelfisch → Final Slap</p>
+            <p>🪼 Qualle → Blasenangriff</p>
+            <p>🦈 Endboss → Blasenangriff</p>
+          </div>
+
+          <div class="instruction-box collect-box">
+            <h3>SAMMELN</h3>
+            <p>🪙 Münzen einsammeln</p>
+            <p>🧪 Gift für den Blasenangriff sammeln</p>
+          </div>
+
+          <button class="menu-button back-button" onclick="hideInstructions()">
+            ZURÜCK
+          </button>
+        </div>
       </div>
 
       <canvas id="canvas" width="720" height="480"></canvas>

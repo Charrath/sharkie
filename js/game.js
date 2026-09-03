@@ -11,6 +11,14 @@ function startGame() {
   world = new World(canvas, keyboard);
 }
 
+function showInstructions() {
+  document.getElementById("instructions").classList.remove("d-none");
+}
+
+function hideInstructions() {
+  document.getElementById("instructions").classList.add("d-none");
+}
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowLeft" || event.code === "KeyA") {
     keyboard.LEFT = true;
