@@ -2,13 +2,31 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+let backgroundMusic = new Audio("assets/audio/Background-sound.mp3");
+let bossMusic = new Audio("assets/audio/Boss-fight.mp3");
+
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.2;
+
+bossMusic.loop = true;
+bossMusic.volume = 0.3;
+
 function init() {
   canvas = document.getElementById("canvas");
 }
 
 function startGame() {
   document.getElementById("startScreen").style.display = "none";
+  backgroundMusic.currentTime = 1;
+  backgroundMusic.play();
   world = new World(canvas, keyboard);
+}
+
+function playBossMusic() {
+  backgroundMusic.pause();
+
+  bossMusic.currentTime = 1;
+  bossMusic.play();
 }
 
 function showInstructions() {

@@ -65,6 +65,7 @@ class Endboss extends MoveableObject {
     this.loadAllImages();
     this.x = 4000;
     this.animate();
+    this.loadSound("bossAttack", "assets/audio/BossAttack.mp3");
   }
 
   loadAllImages() {
@@ -84,6 +85,7 @@ class Endboss extends MoveableObject {
     const id = setInterval(() => {
       if (!this.world?.character) return;
       if (!this.introduced && this.world.character.x >= 3550) {
+        playBossMusic();
         this.startIntro();
         clearInterval(id);
       }
@@ -131,21 +133,27 @@ class Endboss extends MoveableObject {
     const distanceToPlayer = this.world.character.x - this.x;
 
     if (this.returningToSpawn) {
-        if (this.x !== this.spawnPoint.x) {
-            return this.moveTo(this.spawnPoint.x);
-        } else {
-            this.returningToSpawn = false;
-        }
-    } else if (Math.abs(distanceFromSpawn) >= 1500 || Math.abs(distanceToPlayer) > 350) {
-        this.returningToSpawn = true;
+      if (this.x !== this.spawnPoint.x) {
         return this.moveTo(this.spawnPoint.x);
-    } else if (Math.abs(distanceToPlayer) <= 350 && !this.world.character.isDead()) {
-        return this.attackCharacter(12);
+      } else {
+        this.returningToSpawn = false;
+      }
+    } else if (
+      Math.abs(distanceFromSpawn) >= 1500 ||
+      Math.abs(distanceToPlayer) > 350
+    ) {
+      this.returningToSpawn = true;
+      return this.moveTo(this.spawnPoint.x);
+    } else if (
+      Math.abs(distanceToPlayer) <= 350 &&
+      !this.world.character.isDead()
+    ) {
+      return this.attackCharacter(12);
     }
 
     this.playAnimation(this.IMAGE_SETS.swimming);
     return 200;
-}
+  }
 
   faceTowards(targetX) {
     this.otherDirection = targetX > this.x;
@@ -166,12 +174,28 @@ class Endboss extends MoveableObject {
 
   attackCharacter(speed = 10) {
     const char = this.world.character;
+
     this.faceTowards(char.x);
+
     if (char.x > this.x) this.x += speed;
     else if (char.x < this.x) this.x -= speed;
+
     if (char.y - 40 > this.y) this.y += speed;
     else if (char.y - 40 < this.y) this.y -= speed;
+
+    const frame = this.currentImage % this.IMAGE_SETS.attack.length;
+
+    if (frame === 4 && !this.attackSoundPlayed) {
+      this.playSound("bossAttack");
+      this.attackSoundPlayed = true;
+    }
+
+    if (frame === 0) {
+      this.attackSoundPlayed = false;
+    }
+
     this.playAnimation(this.IMAGE_SETS.attack);
+
     return 120;
   }
 

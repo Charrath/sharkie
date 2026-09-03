@@ -77,7 +77,7 @@ canvas {
   color: white;
 
   padding: 14px 45px;
-  width: clamp(220px, 18vw, 305px);
+  width: clamp(275px, 25vw, 305px);
 
   background: linear-gradient(to bottom, #536d7c, #263e50);
 
@@ -188,6 +188,14 @@ canvas {
 
   bottom: 15%;
   right: 8%;
+}
+
+.instruction-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
 @media only screen and (max-width: 720px) {
