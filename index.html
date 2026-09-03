@@ -32,8 +32,17 @@
   <body onload="init()">
     <div class="game-container">
       <div id="startScreen" class="start-screen">
-        <h1>Sharkie</h1>
-        <button onclick="startGame()">Play</button>
+        <img
+          class="start-sharkie"
+          src="img/1.Sharkie/1.IDLE/1.png"
+          alt="sharkie"
+        />
+        <div class="start-buttons">
+          <button class="menu-button" onclick="startGame()">PLAY</button>
+          <button class="menu-button" onclick="showInstructions()">
+            ANLEITUNG
+          </button>
+        </div>
       </div>
 
       <canvas id="canvas" width="720" height="480"></canvas>
