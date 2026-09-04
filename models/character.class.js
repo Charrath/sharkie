@@ -87,6 +87,16 @@ class Character extends MoveableObject {
     ],
   };
 
+  SOUNDS = {
+    swim: ["assets/audio/sharkieSwim.mp3", 0.2],
+    sleepStart: ["assets/audio/sharkieSleepStart.mp3", 0.4],
+    sleepLoop: ["assets/audio/sharkieSleepLoop.mp3", 0.4],
+    punch: ["assets/audio/sharkiePunch.mp3", 0.5],
+    hurt: ["assets/audio/sharkieHurt.mp3", 0.5],
+    bubbleAttack: ["assets/audio/sharkieBubble.mp3", 0.5],
+    dead: ["assets/audio/sharkieDead.mp3", 0.5],
+  };
+
   height = 150;
   width = 200;
   y = 50;
@@ -107,23 +117,13 @@ class Character extends MoveableObject {
     super().loadImage(this.IMAGE_SETS.swimming[0]);
     this.world = world;
     this.loadAllImages();
-    this.loadCharacterSounds();
+    this.loadSounds(this.SOUNDS);
     this.imagesLongIdleLast4 = this.IMAGE_SETS.longIdle.slice(-4);
     this.animate();
   }
 
   loadAllImages() {
     Object.values(this.IMAGE_SETS).forEach((arr) => this.loadImages(arr));
-  }
-
-  loadCharacterSounds() {
-    this.loadSound("swim", "assets/audio/sharkieSwim.mp3", 0.2);
-    this.loadSound("sleepStart", "assets/audio/sharkieSleepStart.mp3", 0.4);
-    this.loadSound("sleepLoop", "assets/audio/sharkieSleepLoop.mp3", 0.4);
-    this.loadSound("punch", "assets/audio/sharkiePunch.mp3");
-    this.loadSound("hurt", "assets/audio/sharkieHurt.mp3");
-    this.loadSound("bubbleAttack", "assets/audio/sharkieBubble.mp3");
-    this.loadSound("dead", "assets/audio/sharkieDead.mp3");
   }
 
   animate() {

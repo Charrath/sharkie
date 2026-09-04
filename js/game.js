@@ -2,8 +2,8 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-let backgroundMusic = new Audio("assets/audio/Background-sound.mp3");
-let bossMusic = new Audio("assets/audio/Boss-fight.mp3");
+let backgroundMusic = new Audio("assets/audio/backgroundSound.mp3");
+let bossMusic = new Audio("assets/audio/backgroundbossFight.mp3");
 
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.2;

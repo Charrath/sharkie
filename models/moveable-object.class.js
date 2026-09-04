@@ -18,7 +18,7 @@ class MoveableObject extends DrawableObject {
     super();
     this.sounds = {};
   }
-  
+
   applyGravity() {
     setInterval(() => {
       this.x += this.speedX;
@@ -177,18 +177,27 @@ class MoveableObject extends DrawableObject {
     return true;
   }
 
-  loadSound(name, path, volume = 1.0) {
+  loadSound(name, path, volume = 0.5) {
     const audio = new Audio(path);
     audio.volume = volume;
     this.sounds[name] = audio;
   }
 
-  playSound(name, delay = 0) {
+  loadSounds(sounds) {
+    Object.entries(sounds).forEach(([name, [path, volume]]) => {
+      this.loadSound(name, path, volume);
+    });
+  }
+
+  playSound(name, delay = 0, startTime = 0) {
     const sound = this.sounds[name];
     if (!sound) return;
-    sound.currentTime = 0;
-    if (delay > 0) setTimeout(() => sound.play(), delay);
-    else sound.play();
+    sound.currentTime = startTime;
+    if (delay > 0) {
+      setTimeout(() => sound.play(), delay);
+    } else {
+      sound.play();
+    }
   }
 
   stopSound(name) {

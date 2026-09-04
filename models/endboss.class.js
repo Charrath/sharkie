@@ -50,12 +50,19 @@ class Endboss extends MoveableObject {
     ],
   };
 
+  SOUNDS = {
+    attack: ["assets/audio/bossAttack.mp3", 0.4],
+    hurt: ["assets/audio/endbossHurt.wav", 0.5],
+    dead: ["assets/audio/BossDead.mp3", 0.5],
+  };
+
   height = 200;
   width = 200;
   y = 50;
   offset = { top: 63, left: 10, right: 14, bottom: 30 };
   introduced = false;
   introPlayed = false;
+  hurtSoundPlayed = false;
   spawnPoint = { x: 4000, y: 50 };
   speed = 20;
 
@@ -65,7 +72,7 @@ class Endboss extends MoveableObject {
     this.loadAllImages();
     this.x = 4000;
     this.animate();
-    this.loadSound("bossAttack", "assets/audio/BossAttack.mp3");
+    this.loadSounds(this.SOUNDS);
   }
 
   loadAllImages() {
@@ -111,6 +118,7 @@ class Endboss extends MoveableObject {
       } else if (this.isHurt()) {
         t = this.handleHurtAnimation();
       } else {
+        this.hurtSoundPlayed = false;
         t = this.moveEndboss();
       }
 
@@ -186,7 +194,7 @@ class Endboss extends MoveableObject {
     const frame = this.currentImage % this.IMAGE_SETS.attack.length;
 
     if (frame === 4 && !this.attackSoundPlayed) {
-      this.playSound("bossAttack");
+      this.playSound("attack");
       this.attackSoundPlayed = true;
     }
 
@@ -220,7 +228,13 @@ class Endboss extends MoveableObject {
   }
 
   handleHurtAnimation() {
+    if (!this.hurtSoundPlayed) {
+      this.playSound("hurt", 0, 0.5);
+      this.hurtSoundPlayed = true;
+    }
+
     this.playAnimation(this.IMAGE_SETS.hurt);
+
     return 200;
   }
 
