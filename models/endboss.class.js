@@ -51,9 +51,9 @@ class Endboss extends MoveableObject {
   };
 
   SOUNDS = {
-    attack: ["assets/audio/bossAttack.mp3", 0.4],
+    attack: ["assets/audio/endbossAttack.mp3", 0.4],
     hurt: ["assets/audio/endbossHurt.wav", 0.5],
-    dead: ["assets/audio/BossDead.mp3", 0.5],
+    dead: ["assets/audio/endbossDead.wav", 0.5],
   };
 
   height = 200;
@@ -247,6 +247,9 @@ class Endboss extends MoveableObject {
 
   playDeadAnimation() {
     if (this.deadAnimationIndex < this.IMAGE_SETS.dead.length) {
+      if (this.deadAnimationIndex === 0) {
+        this.playSound("dead");
+      }
       const path = this.IMAGE_SETS.dead[this.deadAnimationIndex];
       this.img = this.imageCache[path];
       this.deadAnimationIndex++;

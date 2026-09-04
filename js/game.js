@@ -3,7 +3,7 @@ let world;
 let keyboard = new Keyboard();
 
 let backgroundMusic = new Audio("assets/audio/backgroundSound.mp3");
-let bossMusic = new Audio("assets/audio/backgroundbossFight.mp3");
+let bossMusic = new Audio("assets/audio/backgroundSoundBossFight.mp3");
 
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.2;
