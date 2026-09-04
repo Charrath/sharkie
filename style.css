@@ -1,11 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+
   font-family: "LuckiestGuy", sans-serif;
-  margin: 0;
-  min-height: 100vh;
 
   background-image: url("./img/background/underwater-background.png");
   background-size: cover;
@@ -14,22 +24,18 @@ body {
 }
 
 .game-container {
-  width: 100%;
-  max-width: 1440px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: min(100%, calc(100dvh * 1.5), 1440px);
+  aspect-ratio: 3 / 2;
 
   position: relative;
+  flex-shrink: 0;
 }
 
 canvas {
   width: 100%;
-  height: auto;
-
-  background-color: black;
+  height: 100%;
   display: block;
+  background-color: black;
 }
 
 .start-screen {
@@ -77,7 +83,7 @@ canvas {
   color: white;
 
   padding: 14px 45px;
-  width: clamp(275px, 25vw, 305px);
+  width: clamp(220px, 35vw, 305px);
 
   background: linear-gradient(to bottom, #536d7c, #263e50);
 
@@ -132,20 +138,10 @@ canvas {
   z-index: 30;
 }
 
-.instructions-title {
-  position: absolute;
-
-  top: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-
-  margin: 0;
-
-  font-size: clamp(24px, 4vw, 48px);
-}
-
 .instruction-box {
   position: absolute;
+  width: clamp(220px, 35vw, 350px);
+  height: clamp(118px, 12vw, 180px);
 
   padding: 15px 25px;
 
@@ -156,16 +152,31 @@ canvas {
   border-radius: 20px;
 }
 
-.instruction-box h3 {
-  margin: 0 0 10px;
+.instructions-title {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: clamp(18px, 3.5vw, 48px);
+}
 
-  font-size: clamp(18px, 2.5vw, 30px);
+.instruction-box h3 {
+  margin: 0 0 6px;
+  font-size: clamp(12px, 2vw, 28px);
 }
 
 .instruction-box p {
-  margin: 5px 0;
+  margin: 4px 0;
+  font-size: clamp(9px, 1.4vw, 19px);
+}
 
-  font-size: clamp(13px, 1.7vw, 21px);
+.instruction-icon {
+  width: clamp(14px, 2.2vw, 30px);
+  height: clamp(14px, 2.2vw, 30px);
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: clamp(3px, 0.5vw, 8px);
 }
 
 .controls-box {
@@ -179,33 +190,28 @@ canvas {
 }
 
 .collect-box {
-  bottom: 15%;
+  bottom: 8%;
   left: 8%;
 }
 
 .back-button {
   position: absolute;
 
-  bottom: 15%;
+  bottom: 8%;
   right: 8%;
 }
 
-.instruction-icon {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-  vertical-align: middle;
-  margin-right: 8px;
-}
+@media (max-width: 950px) and (orientation: landscape) {
+  .game-container {
+    width: 100%;
+    height: 100dvh;
+    aspect-ratio: auto;
+  }
 
-@media only screen and (max-width: 720px) {
   canvas {
     width: 100%;
+    height: 100%;
   }
 }
 
-@media only screen and (max-height: 480px) {
-  canvas {
-    height: 100vh;
-  }
-}
+
