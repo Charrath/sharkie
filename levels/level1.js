@@ -36,15 +36,19 @@ function buildMixedOrder(pufferFishCount, jellyFishCount) {
 }
 
 function createEnemies(config, minX, maxX, minY, maxY) {
-  const EnemyTypes = { PufferFish, JellyFish }, enemies = [];
-  const puffer = config.PufferFish || 0, jelly = config.JellyFish || 0;
+  const EnemyTypes = { PufferFish, JellyFish },
+    enemies = [];
+  const puffer = config.PufferFish || 0,
+    jelly = config.JellyFish || 0;
   const order = buildMixedOrder(puffer, jelly);
-  const total = order.length, stepX = (maxX - minX) / Math.max(1, total - 1);
+  const total = order.length,
+    stepX = (maxX - minX) / Math.max(1, total - 1);
   order.forEach((type, i) => {
     const centerY = (minY + maxY) / 2;
     const enemy = new EnemyTypes[type]();
     enemy.x = minX + i * stepX;
-    enemy.y = type === "JellyFish" ? centerY : minY + Math.random() * (maxY - minY);
+    enemy.y =
+      type === "JellyFish" ? centerY : minY + Math.random() * (maxY - minY);
     enemies.push(enemy);
   });
   const patrolZoneWidth = 500;
@@ -62,7 +66,7 @@ function createEnemies(config, minX, maxX, minY, maxY) {
 
 function createCollectables(enemies) {
   const collectables = [];
-  enemies.forEach(enemy => {
+  enemies.forEach((enemy) => {
     if (enemy instanceof PufferFish) {
       const radius = 100;
       const centerX = enemy.x + enemy.width / 2;
@@ -84,10 +88,16 @@ function createCollectables(enemies) {
 }
 
 function createLevel1() {
-  const enemies = createEnemies({ PufferFish: 6, JellyFish: 3 }, 550, 3500, 50, 405);
+  const enemies = createEnemies(
+    { PufferFish: 6, JellyFish: 3 },
+    550,
+    3500,
+    50,
+    405,
+  );
   const background = createBackgroundObjects(-719, 719, 8, layerPaths);
   const collectables = createCollectables(enemies);
   return new Level(enemies, background, collectables);
 }
 
-const level1 = createLevel1();
+let level1;

@@ -90,6 +90,7 @@ class Endboss extends MoveableObject {
 
   startInputLoop() {
     const id = setInterval(() => {
+      if (!gameRunning) return;
       if (!this.world?.character) return;
       if (!this.introduced && this.world.character.x >= 3550) {
         playBossMusic();
@@ -107,6 +108,7 @@ class Endboss extends MoveableObject {
 
   startAnimationLoop() {
     const loop = () => {
+      if (!gameRunning) return;
       let t;
 
       if (!this.ensureIntroduced()) return;
@@ -255,6 +257,7 @@ class Endboss extends MoveableObject {
       this.deadAnimationIndex++;
     } else {
       this.deadAnimationComplete = true;
+      showGameOver(true);
     }
   }
 }

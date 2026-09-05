@@ -42,6 +42,7 @@ class World {
 
   run() {
     setInterval(() => {
+      if (!gameRunning) return;
       this.checkCollisions();
       this.ensureBossBar();
       if (this.bossHealthBar) this.bossHealthBar.update();
@@ -51,7 +52,7 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) =>
-      this.checkCharacterEnemyCollision(enemy)
+      this.checkCharacterEnemyCollision(enemy),
     );
     for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
       this.checkBubbleCollisions(this.throwableObjects[i], i);
@@ -78,7 +79,7 @@ class World {
     }
 
     if (!this.character.isUntouchable) {
-      const damage = enemy instanceof Endboss ? 20 : 5;
+      const damage = enemy instanceof Endboss ? 20 : 20;
       this.character.hit(damage);
     }
   }
@@ -120,7 +121,9 @@ class World {
     this.healthBar.update();
     if (this.bossHealthBar) this.bossHealthBar.update();
 
-    requestAnimationFrame(this.draw.bind(this));
+    if (gameRunning) {
+      requestAnimationFrame(this.draw.bind(this));
+    }
   }
 
   addObjectsToMap(objects) {

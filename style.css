@@ -201,6 +201,34 @@ canvas {
   right: 8%;
 }
 
+.game-over-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(5, 40, 65, 0.95);
+  color: white;
+}
+
+.game-over-screen h2 {
+  margin: 0 0 40px;
+  font-size: clamp(32px, 6vw, 80px);
+
+  text-shadow:
+    3px 3px 0 #17334a,
+    5px 5px 8px rgba(0, 0, 0, 0.5);
+}
+
+.game-over-buttons {
+  display: flex;
+  gap: 20px;
+}
+
 @media (max-width: 950px) and (orientation: landscape) {
   .game-container {
     width: 100%;

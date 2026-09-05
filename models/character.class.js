@@ -133,6 +133,7 @@ class Character extends MoveableObject {
 
   startInputLoop() {
     setInterval(() => {
+      if (!gameRunning) return;
       if (this.world.keyboard.F && !this.isAttacking)
         this.startAttack("bubble");
       if (this.world.keyboard.E && !this.isAttacking)
@@ -149,6 +150,7 @@ class Character extends MoveableObject {
 
   startAnimationLoop() {
     const loop = () => {
+      if (!gameRunning) return;
       this.handleAnimationState();
       const delay = this.getAnimationDelay();
       setTimeout(loop, delay);
@@ -365,6 +367,7 @@ class Character extends MoveableObject {
       if (this.deadAnimationIndex === 1) this.playSound("dead");
     } else {
       this.deadAnimationComplete = true;
+      showGameOver();
     }
   }
 

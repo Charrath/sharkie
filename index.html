@@ -90,16 +90,27 @@
               />
               Münzen einsammeln
             </p>
-            <p><img
+            <p>
+              <img
                 class="instruction-icon"
                 src="img//4. Marcadores/Posión/Animada/1.png"
                 alt="Giftflasche"
-              /> Gift für den Blasenangriff sammeln</p>
+              />
+              Gift für den Blasenangriff sammeln
+            </p>
           </div>
 
           <button class="menu-button back-button" onclick="hideInstructions()">
             ZURÜCK
           </button>
+        </div>
+      </div>
+      <div id="gameOverScreen" class="game-over-screen d-none">
+        <h2 id="gameOverTitle">GAME OVER</h2>
+
+        <div class="game-over-buttons">
+          <button class="menu-button" onclick="restartGame()">NOCHMAL</button>
+          <button class="menu-button" onclick="backToMenu()">MENÜ</button>
         </div>
       </div>
 

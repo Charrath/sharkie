@@ -53,6 +53,7 @@ class JellyFish extends MoveableObject {
 
   startAnimationLoop() {
     setInterval(() => {
+      if (!gameRunning) return;
       if (this.isDead) {
         this.playAnimation(this.IMAGE_SETS.dead);
       } else {
@@ -63,6 +64,7 @@ class JellyFish extends MoveableObject {
 
   startMovementLoop() {
     setInterval(() => {
+      if (!gameRunning) return;
       if (this.isDead) {
         this.flyAwayStep();
       } else {

@@ -70,6 +70,7 @@ class PufferFish extends MoveableObject {
 
   startAnimationLoop() {
     const loop = () => {
+      if (!gameRunning) return;
       if (this.slapped) return;
       const t = 120;
       const char = this.world?.character;
@@ -155,6 +156,7 @@ class PufferFish extends MoveableObject {
 
   startPatrolLoop() {
     setInterval(() => {
+      if (!gameRunning) return;
       if (this.slapped) return;
       if (this.patrolMinX == null) return;
       this.otherDirection ? this.moveRight() : this.moveLeft();
