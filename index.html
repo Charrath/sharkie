@@ -30,6 +30,12 @@
     <script src="js/game.js"></script>
   </head>
   <body onload="init()">
+    <div class="rotate-screen">
+      <div class="rotate-content">
+        <div class="rotate-icon">📱↻</div>
+        <p>Bitte drehe dein Gerät ins Querformat</p>
+      </div>
+    </div>
     <div class="game-container">
       <div id="startScreen" class="start-screen">
         <img
@@ -162,7 +168,7 @@
             onpointerup="keyboard.E = false"
             onpointerleave="keyboard.E = false"
           >
-            👊 
+            👊
           </button>
 
           <button

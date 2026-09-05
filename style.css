@@ -299,9 +299,42 @@ canvas {
   position: relative;
 }
 
-@media (pointer: coarse) {
-  .mobile-controls {
-    display: block;
+.rotate-screen {
+  display: none;
+}
+
+@media (pointer: coarse) and (orientation: portrait) {
+  .game-container {
+    display: none;
+  }
+
+  .rotate-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #052841;
+    color: white;
+    text-align: center;
+  }
+
+  .rotate-content {
+    padding: 30px;
+  }
+
+  .rotate-icon {
+    font-size: 70px;
+    margin-bottom: 20px;
+  }
+
+  .rotate-content p {
+    margin: 0;
+    font-family: "LuckiestGuy", sans-serif;
+    font-size: clamp(20px, 6vw, 36px);
   }
 }
 
