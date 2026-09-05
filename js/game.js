@@ -25,6 +25,7 @@ function startGame() {
 
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("gameOverScreen").classList.add("d-none");
+  document.getElementById("mobileControls").classList.remove("d-none");
 
   backgroundMusic.currentTime = 1;
   backgroundMusic.play();
@@ -46,6 +47,7 @@ function showGameOver(won = false) {
   gameOverMusic.currentTime = 0;
   gameOverMusic.play();
 
+  document.getElementById("mobileControls").classList.add("d-none");
   document.getElementById("gameOverScreen").classList.remove("d-none");
 }
 
@@ -64,6 +66,7 @@ function backToMenu() {
   gameOverMusic.pause();
   gameOverMusic.currentTime = 0;
 
+  document.getElementById("mobileControls").classList.add("d-none");
   document.getElementById("gameOverScreen").classList.add("d-none");
   document.getElementById("startScreen").style.display = "block";
 }

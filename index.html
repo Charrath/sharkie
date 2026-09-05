@@ -115,6 +115,66 @@
       </div>
 
       <canvas id="canvas" width="720" height="480"></canvas>
+
+      <div id="mobileControls" class="mobile-controls d-none">
+        <div class="movement-controls">
+          <button
+            class="control-button up"
+            onpointerdown="keyboard.UP = true"
+            onpointerup="keyboard.UP = false"
+            onpointerleave="keyboard.UP = false"
+          >
+            ▲
+          </button>
+
+          <button
+            class="control-button left"
+            onpointerdown="keyboard.LEFT = true"
+            onpointerup="keyboard.LEFT = false"
+            onpointerleave="keyboard.LEFT = false"
+          >
+            ◀
+          </button>
+
+          <button
+            class="control-button down"
+            onpointerdown="keyboard.DOWN = true"
+            onpointerup="keyboard.DOWN = false"
+            onpointerleave="keyboard.DOWN = false"
+          >
+            ▼
+          </button>
+
+          <button
+            class="control-button right"
+            onpointerdown="keyboard.RIGHT = true"
+            onpointerup="keyboard.RIGHT = false"
+            onpointerleave="keyboard.RIGHT = false"
+          >
+            ▶
+          </button>
+        </div>
+
+        <div class="attack-controls">
+          <button
+            class="control-button attack-button"
+            onpointerdown="keyboard.E = true"
+            onpointerup="keyboard.E = false"
+            onpointerleave="keyboard.E = false"
+          >
+            👊 
+          </button>
+
+          <button
+            class="control-button attack-button"
+            onpointerdown="keyboard.F = true"
+            onpointerup="keyboard.F = false"
+            onpointerleave="keyboard.F = false"
+          >
+            🫧
+          </button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

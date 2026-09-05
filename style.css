@@ -229,6 +229,82 @@ canvas {
   gap: 20px;
 }
 
+.mobile-controls {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.movement-controls {
+  position: absolute;
+  left: 4%;
+  bottom: 5%;
+
+  width: 150px;
+  height: 110px;
+}
+
+.control-button {
+  width: 50px;
+  height: 50px;
+
+  position: absolute;
+
+  border: 2px solid white;
+  border-radius: 50%;
+
+  background: rgba(5, 40, 65, 0.65);
+  color: white;
+
+  font-family: "LuckiestGuy", sans-serif;
+  font-size: 22px;
+
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+}
+
+.up {
+  top: 0;
+  left: 50px;
+}
+
+.left {
+  top: 30px;
+  left: 0;
+}
+
+.down {
+  bottom: 0;
+  left: 50px;
+}
+
+.right {
+  top: 30px;
+  right: 0;
+}
+
+.attack-controls {
+  position: absolute;
+  right: 4%;
+  bottom: 7%;
+
+  display: flex;
+  gap: 15px;
+}
+
+.attack-controls .control-button {
+  position: relative;
+}
+
+@media (pointer: coarse) {
+  .mobile-controls {
+    display: block;
+  }
+}
+
 @media (max-width: 950px) and (orientation: landscape) {
   .game-container {
     width: 100%;
@@ -241,5 +317,3 @@ canvas {
     height: 100%;
   }
 }
-
-
