@@ -14,20 +14,20 @@ class StatusBar extends DrawableObject {
   draw(ctx) {
     super.draw(ctx);
     if (this.showNumber) {
-      ctx.font = "30px Luckiest Guy ";
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = "black";
-      ctx.strokeText(
-        this.number.toString(),
-        this.x + this.numberX,
-        this.y + this.numberY,
-      );
-      ctx.fillStyle = "white";
-      ctx.fillText(
-        this.number.toString(),
-        this.x + this.numberX,
-        this.y + this.numberY,
-      );
+      this.drawNumber(ctx);
     }
+  }
+
+  drawNumber(ctx) {
+    const text = this.number.toString();
+    const x = this.x + this.numberX;
+    const y = this.y + this.numberY;
+
+    ctx.font = "30px Luckiest Guy";
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "black";
+    ctx.strokeText(text, x, y);
+    ctx.fillStyle = "white";
+    ctx.fillText(text, x, y);
   }
 }
