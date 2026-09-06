@@ -52,8 +52,8 @@ class World {
   }
 
   stop() {
-  clearInterval(this.runInterval);
-}
+    clearInterval(this.runInterval);
+  }
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) =>
@@ -74,19 +74,33 @@ class World {
     if (enemy.introduced === false) return;
     if (!this.character.isColliding(enemy)) return;
 
-    if (
-      enemy instanceof PufferFish &&
-      this.character.isAttacking &&
-      this.character.attackType === "finalSlap"
-    ) {
-      if (!enemy.slapped) enemy.onFinalSlap(this.character.otherDirection);
+    if (this.isFinalSlapOnPufferFish(enemy)) {
+      this.handleFinalSlap(enemy);
       return;
     }
 
-    if (!this.character.isUntouchable) {
-      const damage = enemy instanceof Endboss ? 20 : 20;
-      this.character.hit(damage);
+    this.damageCharacter(enemy);
+  }
+
+  isFinalSlapOnPufferFish(enemy) {
+    return (
+      enemy instanceof PufferFish &&
+      this.character.isAttacking &&
+      this.character.attackType === "finalSlap"
+    );
+  }
+
+  handleFinalSlap(enemy) {
+    if (!enemy.slapped) {
+      enemy.onFinalSlap(this.character.otherDirection);
     }
+  }
+
+  damageCharacter(enemy) {
+    if (this.character.isUntouchable) return;
+
+    const damage = enemy instanceof Endboss ? 20 : 10;
+    this.character.hit(damage);
   }
 
   checkBubbleCollisions(bubble, i) {
@@ -105,29 +119,56 @@ class World {
   }
 
   draw() {
+    this.clearCanvas();
+    this.drawWorld();
+    this.drawStatusBars();
+    this.updateStatusBars();
+
+    if (gameRunning) {
+      requestAnimationFrame(this.draw.bind(this));
+    }
+  }
+
+  clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  drawWorld() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
-    if (this.level.collectables) {
-      this.addObjectsToMap(this.level.collectables.filter((c) => !c.collected));
-    }
+    this.drawCollectables();
     this.addToMap(this.character);
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.enemies);
     this.ctx.translate(-this.camera_x, 0);
+  }
+
+  drawCollectables() {
+    if (!this.level.collectables) return;
+
+    const activeCollectables = this.level.collectables.filter(
+      (collectable) => !collectable.collected,
+    );
+
+    this.addObjectsToMap(activeCollectables);
+  }
+
+  drawStatusBars() {
     this.addToMap(this.coinBar);
     this.addToMap(this.healthBar);
-    if (this.bossHealthBar && this.bossHealthBar.isVisible()) {
+
+    if (this.bossHealthBar?.isVisible()) {
       this.addToMap(this.bossHealthBar);
     }
-    this.addToMap(this.poisonBar);
-    this.ctx.translate(this.camera_x, 0);
-    this.ctx.translate(-this.camera_x, 0);
-    this.healthBar.update();
-    if (this.bossHealthBar) this.bossHealthBar.update();
 
-    if (gameRunning) {
-      requestAnimationFrame(this.draw.bind(this));
+    this.addToMap(this.poisonBar);
+  }
+
+  updateStatusBars() {
+    this.healthBar.update();
+
+    if (this.bossHealthBar) {
+      this.bossHealthBar.update();
     }
   }
 
