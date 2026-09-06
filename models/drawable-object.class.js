@@ -12,29 +12,28 @@ class DrawableObject {
     this.img.src = path;
   }
 
-  
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
   drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof PufferFish ||
-      this instanceof JellyFish ||
-      this instanceof Endboss
-    ) {
-      ctx.beginPath();
-      ctx.lineWidth = "2";
-      ctx.strokeStyle = "blue";
-      ctx.rect(
-        this.x + this.offset.left,
-        this.y + this.offset.top,
-        this.width - this.offset.left - this.offset.right,
-        this.height - this.offset.top - this.offset.bottom
-      );
-      ctx.stroke();
-    }
+    const objects = [Character, PufferFish, JellyFish, Endboss];
+    if (!objects.some((type) => this instanceof type)) return;
+    const box = this.getFrameBox();
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "blue";
+    ctx.rect(box.x, box.y, box.width, box.height);
+    ctx.stroke();
+  }
+
+  getFrameBox() {
+    return {
+      x: this.x + this.offset.left,
+      y: this.y + this.offset.top,
+      width: this.width - this.offset.left - this.offset.right,
+      height: this.height - this.offset.top - this.offset.bottom,
+    };
   }
 
   playAnimation(images) {
@@ -43,7 +42,6 @@ class DrawableObject {
     this.img = this.imageCache[path];
     this.currentImage++;
   }
-
 
   loadImages(arr) {
     arr.forEach((path) => {
