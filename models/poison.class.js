@@ -43,7 +43,6 @@ class PoisonFlask extends MoveableObject {
       PoisonFlask.sound.play();
     }
 
-    // Respawn an gleicher Stelle nach 10 Sekunden
     setTimeout(() => {
       if (this.world && this.world.level && this.world.level.collectables) {
         const newFlask = new PoisonFlask(this.x, this.y);

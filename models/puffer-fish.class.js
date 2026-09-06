@@ -53,7 +53,6 @@ class PufferFish extends MoveableObject {
   loadPufferSounds() {
     this.loadSound("inhale", "assets/audio/pufferInhale.mp3");
     this.loadSound("exhale", "assets/audio/pufferExhale.mp3");
-    
   }
 
   setPatrol(centerX, zoneWidth) {
@@ -70,22 +69,26 @@ class PufferFish extends MoveableObject {
 
   startAnimationLoop() {
     const loop = () => {
-      if (!gameRunning) return;
-      if (this.slapped) return;
-      const t = 120;
+      if (!gameRunning || this.slapped) return;
+      const delay = 120;
       const char = this.world?.character;
-      if (!char) return setTimeout(loop, t);
+      if (!char) return setTimeout(loop, delay);
 
-      const close = this.isCharacterClose(char);
-
-      if (!this.transitioning) {
-        if (close && !this.inBubbleMode) this.startForwardTransition();
-        else if (!close && this.inBubbleMode) this.startReverseTransition();
-      }
-
-      setTimeout(loop, t);
+      this.handleBubbleTransition(char);
+      setTimeout(loop, delay);
     };
     loop();
+  }
+
+  handleBubbleTransition(char) {
+    if (this.transitioning) return;
+
+    const close = this.isCharacterClose(char);
+    if (close && !this.inBubbleMode) {
+      this.startForwardTransition();
+    } else if (!close && this.inBubbleMode) {
+      this.startReverseTransition();
+    }
   }
 
   isCharacterClose(char) {
@@ -161,9 +164,9 @@ class PufferFish extends MoveableObject {
       if (this.patrolMinX == null) return;
       this.otherDirection ? this.moveRight() : this.moveLeft();
       if (this.x <= this.patrolMinX)
-        (this.x = this.patrolMinX), (this.otherDirection = true);
+        ((this.x = this.patrolMinX), (this.otherDirection = true));
       if (this.x >= this.patrolMaxX)
-        (this.x = this.patrolMaxX), (this.otherDirection = false);
+        ((this.x = this.patrolMaxX), (this.otherDirection = false));
     }, 1000 / 60);
   }
 
