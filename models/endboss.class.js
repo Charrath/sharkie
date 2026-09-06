@@ -110,25 +110,20 @@ class Endboss extends MoveableObject {
   startAnimationLoop() {
     const loop = () => {
       if (!gameRunning) return;
-      let t;
-
       if (!this.ensureIntroduced()) return;
-
-      if (!this.introPlayed) {
-        t = this.playIntro();
-      } else if (this.isDead()) {
-        t = this.handleDeadAnimation();
-      } else if (this.isHurt()) {
-        t = this.handleHurtAnimation();
-      } else {
-        this.hurtSoundPlayed = false;
-        t = this.moveEndboss();
-      }
-
-      setTimeout(loop, t);
+      const delay = this.handleAnimationState();
+      setTimeout(loop, delay);
     };
-
     loop();
+  }
+
+  handleAnimationState() {
+    if (!this.introPlayed) return this.playIntro();
+    if (this.isDead()) return this.handleDeadAnimation();
+    if (this.isHurt()) return this.handleHurtAnimation();
+
+    this.hurtSoundPlayed = false;
+    return this.moveEndboss();
   }
 
   ensureIntroduced(t) {
@@ -140,29 +135,36 @@ class Endboss extends MoveableObject {
   }
 
   moveEndboss() {
-    const distanceFromSpawn = this.x - this.spawnPoint.x;
-    const distanceToPlayer = this.world.character.x - this.x;
+    const spawnDist = Math.abs(this.x - this.spawnPoint.x);
+    const playerDist = Math.abs(this.world.character.x - this.x);
 
-    if (this.returningToSpawn) {
-      if (this.x !== this.spawnPoint.x) {
-        return this.moveTo(this.spawnPoint.x);
-      } else {
-        this.returningToSpawn = false;
-      }
-    } else if (
-      Math.abs(distanceFromSpawn) >= 2000 ||
-      Math.abs(distanceToPlayer) > 550
-    ) {
-      this.returningToSpawn = true;
-      return this.moveTo(this.spawnPoint.x);
-    } else if (
-      Math.abs(distanceToPlayer) <= 550 &&
-      !this.world.character.isDead()
-    ) {
-      return this.attackCharacter(19);
-    }
+    if (this.returningToSpawn) return this.returnToSpawn();
+    if (this.shouldReturnToSpawn(spawnDist, playerDist))
+      return this.startReturn();
+    if (this.canAttackPlayer(playerDist)) return this.attackCharacter(19);
 
     this.playAnimation(this.IMAGE_SETS.swimming);
+    return 200;
+  }
+
+  startReturn() {
+    this.returningToSpawn = true;
+    return this.moveTo(this.spawnPoint.x);
+  }
+
+  shouldReturnToSpawn(spawnDist, playerDist) {
+    return spawnDist >= 2000 || playerDist > 550;
+  }
+
+  canAttackPlayer(playerDist) {
+    return playerDist <= 550 && !this.world.character.isDead();
+  }
+
+  returnToSpawn() {
+    if (this.x !== this.spawnPoint.x) {
+      return this.moveTo(this.spawnPoint.x);
+    }
+    this.returningToSpawn = false;
     return 200;
   }
 
@@ -185,15 +187,22 @@ class Endboss extends MoveableObject {
 
   attackCharacter(speed = 10) {
     const char = this.world.character;
-
     this.faceTowards(char.x);
+    this.moveTowardsCharacter(char, speed);
+    this.handleAttackSound();
+    this.playAnimation(this.IMAGE_SETS.attack);
+    return 120;
+  }
 
+  moveTowardsCharacter(char, speed) {
     if (char.x > this.x) this.x += speed;
     else if (char.x < this.x) this.x -= speed;
 
     if (char.y - 40 > this.y) this.y += speed;
     else if (char.y - 40 < this.y) this.y -= speed;
+  }
 
+  handleAttackSound() {
     const frame = this.currentImage % this.IMAGE_SETS.attack.length;
 
     if (frame === 4 && !this.attackSoundPlayed) {
@@ -201,13 +210,7 @@ class Endboss extends MoveableObject {
       this.attackSoundPlayed = true;
     }
 
-    if (frame === 0) {
-      this.attackSoundPlayed = false;
-    }
-
-    this.playAnimation(this.IMAGE_SETS.attack);
-
-    return 120;
+    if (frame === 0) this.attackSoundPlayed = false;
   }
 
   playIntro() {
