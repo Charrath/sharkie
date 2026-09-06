@@ -8,6 +8,19 @@ let backgroundMusic = new Audio("assets/audio/backgroundSound.mp3");
 let bossMusic = new Audio("assets/audio/backgroundSoundBossFight.mp3");
 let gameOverMusic = new Audio("assets/audio/backgroundSoundGameOver.mp3");
 
+const keyMap = {
+  ArrowLeft: "LEFT",
+  KeyA: "LEFT",
+  ArrowUp: "UP",
+  KeyW: "UP",
+  ArrowRight: "RIGHT",
+  KeyD: "RIGHT",
+  ArrowDown: "DOWN",
+  KeyS: "DOWN",
+  KeyE: "E",
+  KeyF: "F",
+};
+
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.2;
 
@@ -19,6 +32,7 @@ gameOverMusic.volume = 0.3;
 
 function init() {
   canvas = document.getElementById("canvas");
+  initKeyboardControls();
 }
 
 function startGame() {
@@ -106,46 +120,12 @@ function toggleSound() {
   document.getElementById("soundButton").innerText = soundMuted ? "🔇" : "🔊";
 }
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowLeft" || event.code === "KeyA") {
-    keyboard.LEFT = true;
-  }
-  if (event.key === "ArrowUp" || event.code === "KeyW") {
-    keyboard.UP = true;
-  }
-  if (event.key === "ArrowRight" || event.code === "KeyD") {
-    keyboard.RIGHT = true;
-  }
-  if (event.key === "ArrowDown" || event.code === "KeyS") {
-    keyboard.DOWN = true;
-  }
-  if (event.code === "KeyF") {
-    keyboard.F = true;
-  }
-  if (event.code === "KeyE") {
-    keyboard.E = true;
-  }
-  console.log(event);
-});
+function initKeyboardControls() {
+  document.addEventListener("keydown", (event) => setKey(event, true));
+  document.addEventListener("keyup", (event) => setKey(event, false));
+}
 
-document.addEventListener("keyup", (event) => {
-  if (event.key === "ArrowLeft" || event.code === "KeyA") {
-    keyboard.LEFT = false;
-  }
-  if (event.key === "ArrowUp" || event.code === "KeyW") {
-    keyboard.UP = false;
-  }
-  if (event.key === "ArrowRight" || event.code === "KeyD") {
-    keyboard.RIGHT = false;
-  }
-  if (event.key === "ArrowDown" || event.code === "KeyS") {
-    keyboard.DOWN = false;
-  }
-  if (event.code === "KeyF") {
-    keyboard.F = false;
-  }
-  if (event.code === "KeyE") {
-    keyboard.E = false;
-  }
-  console.log(event);
-});
+function setKey(event, pressed) {
+  const key = keyMap[event.code] || keyMap[event.key];
+  if (key) keyboard[key] = pressed;
+}
