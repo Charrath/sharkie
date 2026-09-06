@@ -64,7 +64,7 @@ class Endboss extends MoveableObject {
   introPlayed = false;
   hurtSoundPlayed = false;
   spawnPoint = { x: 4000, y: 50 };
-  speed = 20;
+  speed = 40;
 
   constructor(world) {
     super();
@@ -149,16 +149,16 @@ class Endboss extends MoveableObject {
         this.returningToSpawn = false;
       }
     } else if (
-      Math.abs(distanceFromSpawn) >= 1500 ||
-      Math.abs(distanceToPlayer) > 350
+      Math.abs(distanceFromSpawn) >= 2000 ||
+      Math.abs(distanceToPlayer) > 550
     ) {
       this.returningToSpawn = true;
       return this.moveTo(this.spawnPoint.x);
     } else if (
-      Math.abs(distanceToPlayer) <= 350 &&
+      Math.abs(distanceToPlayer) <= 550 &&
       !this.world.character.isDead()
     ) {
-      return this.attackCharacter(12);
+      return this.attackCharacter(19);
     }
 
     this.playAnimation(this.IMAGE_SETS.swimming);
