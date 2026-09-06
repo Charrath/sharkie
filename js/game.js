@@ -117,6 +117,12 @@ function toggleSound() {
   bossMusic.muted = soundMuted;
   gameOverMusic.muted = soundMuted;
 
+  if (world?.character) {
+    Object.values(world.character.sounds).forEach((sound) => {
+      sound.muted = soundMuted;
+    });
+  }
+
   document.getElementById("soundButton").innerText = soundMuted ? "🔇" : "🔊";
 }
 
