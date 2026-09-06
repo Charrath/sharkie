@@ -49,67 +49,6 @@
             ANLEITUNG
           </button>
         </div>
-
-        <div id="instructions" class="instructions d-none">
-          <h2 class="instructions-title">SPIELANLEITUNG</h2>
-
-          <div class="instruction-box controls-box">
-            <h3>STEUERUNG</h3>
-            <p>WASD / Pfeiltasten → Schwimmen</p>
-            <p>E → Final Slap</p>
-            <p>F → Blasenangriff</p>
-          </div>
-
-          <div class="instruction-box enemies-box">
-            <h3>GEGNER</h3>
-            <p>
-              <img
-                class="instruction-icon"
-                src="img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png"
-                alt="Kugelfisch"
-              />Kugelfisch → Final Slap
-            </p>
-            <p>
-              <img
-                class="instruction-icon"
-                src="img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png"
-                alt="Qualle"
-              />Qualle → Blasenangriff
-            </p>
-            <p>
-              <img
-                class="instruction-icon"
-                src="img//2.Enemy/3 Final Enemy/2.floating/10.png"
-                alt="Endboss"
-              />
-              Endboss → Blasenangriff
-            </p>
-          </div>
-
-          <div class="instruction-box collect-box">
-            <h3>SAMMELN</h3>
-            <p>
-              <img
-                class="instruction-icon"
-                src="img//4. Marcadores/1. Coins/1.png"
-                alt="Münze"
-              />
-              Münzen einsammeln
-            </p>
-            <p>
-              <img
-                class="instruction-icon"
-                src="img//4. Marcadores/Posión/Animada/1.png"
-                alt="Giftflasche"
-              />
-              Gift für den Blasenangriff sammeln
-            </p>
-          </div>
-
-          <button class="menu-button back-button" onclick="hideInstructions()">
-            ZURÜCK
-          </button>
-        </div>
       </div>
       <div id="gameOverScreen" class="game-over-screen d-none">
         <h2 id="gameOverTitle">GAME OVER</h2>
@@ -119,8 +58,79 @@
           <button class="menu-button" onclick="backToMenu()">MENÜ</button>
         </div>
       </div>
+      <div id="instructions" class="instructions d-none">
+        <h2 class="instructions-title">SPIELANLEITUNG</h2>
+
+        <div class="instruction-box controls-box">
+          <h3>STEUERUNG</h3>
+          <p>WASD / Pfeiltasten → Schwimmen</p>
+          <p>E → Final Slap</p>
+          <p>F → Blasenangriff</p>
+        </div>
+
+        <div class="instruction-box enemies-box">
+          <h3>GEGNER</h3>
+          <p>
+            <img
+              class="instruction-icon"
+              src="img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png"
+              alt="Kugelfisch"
+            />Kugelfisch → Final Slap
+          </p>
+          <p>
+            <img
+              class="instruction-icon"
+              src="img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png"
+              alt="Qualle"
+            />Qualle → Blasenangriff
+          </p>
+          <p>
+            <img
+              class="instruction-icon"
+              src="img//2.Enemy/3 Final Enemy/2.floating/10.png"
+              alt="Endboss"
+            />
+            Endboss → Blasenangriff
+          </p>
+        </div>
+
+        <div class="instruction-box collect-box">
+          <h3>SAMMELN</h3>
+          <p>
+            <img
+              class="instruction-icon"
+              src="img//4. Marcadores/1. Coins/1.png"
+              alt="Münze"
+            />
+            Münzen einsammeln
+          </p>
+          <p>
+            <img
+              class="instruction-icon"
+              src="img//4. Marcadores/Posión/Animada/1.png"
+              alt="Giftflasche"
+            />
+            Gift für den Blasenangriff sammeln
+          </p>
+        </div>
+
+        <button class="menu-button back-button" onclick="hideInstructions()">
+          ZURÜCK
+        </button>
+      </div>
 
       <canvas id="canvas" width="720" height="480"></canvas>
+
+      <div id="gameMenuButtons" class="game-menu-buttons d-none">
+        <button class="game-icon-button" onclick="showInstructions()">?</button>
+        <button
+          id="soundButton"
+          class="game-icon-button"
+          onclick="toggleSound()"
+        >
+          🔊
+        </button>
+      </div>
 
       <div id="mobileControls" class="mobile-controls d-none">
         <div class="movement-controls">

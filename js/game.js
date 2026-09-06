@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let gameRunning = false;
+let soundMuted = false;
 
 let backgroundMusic = new Audio("assets/audio/backgroundSound.mp3");
 let bossMusic = new Audio("assets/audio/backgroundSoundBossFight.mp3");
@@ -26,6 +27,7 @@ function startGame() {
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("gameOverScreen").classList.add("d-none");
   document.getElementById("mobileControls").classList.remove("d-none");
+  document.getElementById("gameMenuButtons").classList.remove("d-none");
 
   backgroundMusic.currentTime = 1;
   backgroundMusic.play();
@@ -49,6 +51,7 @@ function showGameOver(won = false) {
 
   document.getElementById("mobileControls").classList.add("d-none");
   document.getElementById("gameOverScreen").classList.remove("d-none");
+  document.getElementById("gameMenuButtons").classList.add("d-none");
 }
 
 function restartGame() {
@@ -69,6 +72,7 @@ function backToMenu() {
   document.getElementById("mobileControls").classList.add("d-none");
   document.getElementById("gameOverScreen").classList.add("d-none");
   document.getElementById("startScreen").style.display = "block";
+  document.getElementById("gameMenuButtons").classList.add("d-none");
 }
 
 function playBossMusic() {
@@ -84,6 +88,16 @@ function showInstructions() {
 
 function hideInstructions() {
   document.getElementById("instructions").classList.add("d-none");
+}
+
+function toggleSound() {
+  soundMuted = !soundMuted;
+
+  backgroundMusic.muted = soundMuted;
+  bossMusic.muted = soundMuted;
+  gameOverMusic.muted = soundMuted;
+
+  document.getElementById("soundButton").innerText = soundMuted ? "🔇" : "🔊";
 }
 
 document.addEventListener("keydown", (event) => {

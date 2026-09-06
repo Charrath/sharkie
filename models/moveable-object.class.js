@@ -190,6 +190,7 @@ class MoveableObject extends DrawableObject {
   }
 
   playSound(name, delay = 0, startTime = 0) {
+    if (soundMuted) return;
     const sound = this.sounds[name];
     if (!sound) return;
     sound.currentTime = startTime;

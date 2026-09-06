@@ -301,6 +301,35 @@ canvas {
   display: none;
 }
 
+.game-menu-buttons {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 25;
+
+  display: flex;
+  gap: 10px;
+}
+
+.game-icon-button {
+  width: 45px;
+  height: 45px;
+
+  border: 2px solid white;
+  border-radius: 50%;
+
+  background: rgba(5, 40, 65, 0.65);
+  color: white;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.game-icon-button:hover {
+  transform: scale(1.08);
+}
+
 @media (pointer: coarse) and (orientation: portrait) {
   .game-container {
     display: none;
@@ -336,7 +365,7 @@ canvas {
 }
 
 @media (max-width: 950px) and (orientation: landscape) {
-   .mobile-controls {
+  .mobile-controls {
     display: block;
   }
 
