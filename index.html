@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -87,7 +87,7 @@
           <p>
             <img
               class="instruction-icon"
-              src="img//2.Enemy/3 Final Enemy/2.floating/10.png"
+              src="img/2.Enemy/3 Final Enemy/2.floating/10.png"
               alt="Endboss"
             />
             Endboss → Blasenangriff
@@ -99,7 +99,7 @@
           <p>
             <img
               class="instruction-icon"
-              src="img//4. Marcadores/1. Coins/1.png"
+              src="img/4. Marcadores/1. Coins/1.png"
               alt="Münze"
             />
             Münzen einsammeln
@@ -107,7 +107,7 @@
           <p>
             <img
               class="instruction-icon"
-              src="img//4. Marcadores/Posión/Animada/1.png"
+              src="img/4. Marcadores/Posión/Animada/1.png"
               alt="Giftflasche"
             />
             Gift für den Blasenangriff sammeln
@@ -122,11 +122,18 @@
       <canvas id="canvas" width="720" height="480"></canvas>
 
       <div id="gameMenuButtons" class="game-menu-buttons d-none">
-        <button class="game-icon-button" onclick="showInstructions()">?</button>
+        <button
+          class="game-icon-button"
+          onclick="showInstructions()"
+          aria-label="Spielanleitung öffnen"
+        >
+          ?
+        </button>
         <button
           id="soundButton"
           class="game-icon-button"
           onclick="toggleSound()"
+          aria-label="Ton ein- oder ausschalten"
         >
           🔊
         </button>
@@ -136,6 +143,7 @@
         <div class="movement-controls">
           <button
             class="control-button up"
+            aria-label="Nach oben schwimmen"
             onpointerdown="keyboard.UP = true"
             onpointerup="keyboard.UP = false"
             onpointerleave="keyboard.UP = false"
@@ -145,6 +153,7 @@
 
           <button
             class="control-button left"
+            aria-label="Nach links schwimmen"
             onpointerdown="keyboard.LEFT = true"
             onpointerup="keyboard.LEFT = false"
             onpointerleave="keyboard.LEFT = false"
@@ -154,6 +163,7 @@
 
           <button
             class="control-button down"
+            aria-label="Nach unten schwimmen"
             onpointerdown="keyboard.DOWN = true"
             onpointerup="keyboard.DOWN = false"
             onpointerleave="keyboard.DOWN = false"
@@ -163,6 +173,7 @@
 
           <button
             class="control-button right"
+            aria-label="Nach rechts schwimmen"
             onpointerdown="keyboard.RIGHT = true"
             onpointerup="keyboard.RIGHT = false"
             onpointerleave="keyboard.RIGHT = false"
@@ -174,6 +185,7 @@
         <div class="attack-controls">
           <button
             class="control-button attack-button"
+            aria-label="Final Slap ausführen"
             onpointerdown="keyboard.E = true"
             onpointerup="keyboard.E = false"
             onpointerleave="keyboard.E = false"
@@ -183,6 +195,7 @@
 
           <button
             class="control-button attack-button"
+            aria-label="Blasenangriff ausführen"
             onpointerdown="keyboard.F = true"
             onpointerup="keyboard.F = false"
             onpointerleave="keyboard.F = false"

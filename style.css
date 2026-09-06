@@ -131,7 +131,6 @@ canvas {
   box-sizing: border-box;
 
   background: rgba(5, 40, 65, 0.96);
-
   color: white;
 
   z-index: 30;
@@ -156,6 +155,7 @@ canvas {
   top: 5%;
   left: 50%;
   transform: translateX(-50%);
+
   margin: 0;
   font-size: clamp(18px, 3.5vw, 48px);
 }
@@ -173,8 +173,10 @@ canvas {
 .instruction-icon {
   width: clamp(14px, 2.2vw, 30px);
   height: clamp(14px, 2.2vw, 30px);
+
   object-fit: contain;
   vertical-align: middle;
+
   margin-right: clamp(3px, 0.5vw, 8px);
 }
 
@@ -195,7 +197,6 @@ canvas {
 
 .back-button {
   position: absolute;
-
   bottom: 8%;
   right: 8%;
 }
@@ -230,9 +231,11 @@ canvas {
 
 .mobile-controls {
   display: none;
+
   position: absolute;
   inset: 0;
   z-index: 20;
+
   pointer-events: none;
 }
 
@@ -259,9 +262,15 @@ canvas {
 
   font-size: 22px;
 
+  cursor: pointer;
   pointer-events: auto;
   touch-action: none;
   user-select: none;
+  -webkit-user-select: none;
+}
+
+.control-button:active {
+  transform: scale(0.92);
 }
 
 .up {
@@ -324,10 +333,20 @@ canvas {
   font-size: 22px;
 
   cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .game-icon-button:hover {
   transform: scale(1.08);
+}
+
+.menu-button:focus-visible,
+.control-button:focus-visible,
+.game-icon-button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 3px;
 }
 
 @media (pointer: coarse) and (orientation: portrait) {
