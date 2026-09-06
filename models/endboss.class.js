@@ -65,6 +65,7 @@ class Endboss extends MoveableObject {
   hurtSoundPlayed = false;
   spawnPoint = { x: 4000, y: 50 };
   speed = 40;
+  maxEnergy = 100;
 
   constructor(world) {
     super();
