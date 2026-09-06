@@ -38,6 +38,9 @@ function startGame() {
 
 function showGameOver(won = false) {
   gameRunning = false;
+  if (world) {
+    world.stop();
+  }
 
   backgroundMusic.pause();
   bossMusic.pause();
@@ -65,6 +68,9 @@ function restartGame() {
 
 function backToMenu() {
   gameRunning = false;
+  if (world) {
+    world.stop();
+  }
 
   gameOverMusic.pause();
   gameOverMusic.currentTime = 0;

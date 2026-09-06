@@ -1,12 +1,12 @@
 class Coin extends MoveableObject {
   IMAGES_ROTATE = [
-    'img/4. Marcadores/1. Coins/1.png',
-    'img/4. Marcadores/1. Coins/2.png',
-    'img/4. Marcadores/1. Coins/3.png',
-    'img/4. Marcadores/1. Coins/4.png'
+    "img/4. Marcadores/1. Coins/1.png",
+    "img/4. Marcadores/1. Coins/2.png",
+    "img/4. Marcadores/1. Coins/3.png",
+    "img/4. Marcadores/1. Coins/4.png",
   ];
 
-  static sound = new Audio('assets/audio/coin.mp3');
+  static sound = new Audio("assets/audio/coin.mp3");
 
   constructor(x, y) {
     super().loadImage(this.IMAGES_ROTATE[0]);
@@ -26,13 +26,15 @@ class Coin extends MoveableObject {
   }
 
   collect() {
-  if (this.collected) return;
-  this.collected = true;
-  clearInterval(this.animationInterval);
-  if (this.world.coinBar) {
-    this.world.coinBar.number += 1;
+    if (this.collected) return;
+    this.collected = true;
+    clearInterval(this.animationInterval);
+    if (this.world.coinBar) {
+      this.world.coinBar.number += 1;
+    }
+    if (!soundMuted) {
+      PoisonFlask.sound.currentTime = 0;
+      PoisonFlask.sound.play();
+    }
   }
-  Coin.sound.currentTime = 0;
-  Coin.sound.play();
-}
 }

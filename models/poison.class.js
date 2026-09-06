@@ -10,7 +10,7 @@ class PoisonFlask extends MoveableObject {
     "img/4. Marcadores/Posión/Animada/8.png",
   ];
 
-  static sound = new Audio('assets/audio/poison.mp3');
+  static sound = new Audio("assets/audio/poison.mp3");
 
   constructor(x, y) {
     super().loadImage(this.IMAGES_ROTATE[0]);
@@ -30,26 +30,28 @@ class PoisonFlask extends MoveableObject {
   }
 
   collect() {
-  if (this.collected) return;
-  this.collected = true;
-  clearInterval(this.animationInterval);
+    if (this.collected) return;
+    this.collected = true;
+    clearInterval(this.animationInterval);
 
-  if (this.world.poisonBar) {
-    this.world.poisonBar.number += 1;
-  }
-
-  PoisonFlask.sound.currentTime = 0;
-  PoisonFlask.sound.play();
-
-  // Respawn an gleicher Stelle nach 10 Sekunden
-  setTimeout(() => {
-    if (this.world && this.world.level && this.world.level.collectables) {
-      const newFlask = new PoisonFlask(this.x, this.y);
-      newFlask.world = this.world;
-      this.world.level.collectables.push(newFlask);
+    if (this.world.poisonBar) {
+      this.world.poisonBar.number += 1;
     }
-  }, 10000);
-}
+
+    if (!soundMuted) {
+      PoisonFlask.sound.currentTime = 0;
+      PoisonFlask.sound.play();
+    }
+
+    // Respawn an gleicher Stelle nach 10 Sekunden
+    setTimeout(() => {
+      if (this.world && this.world.level && this.world.level.collectables) {
+        const newFlask = new PoisonFlask(this.x, this.y);
+        newFlask.world = this.world;
+        this.world.level.collectables.push(newFlask);
+      }
+    }, 10000);
+  }
 
   respawn() {
     this.collected = false;

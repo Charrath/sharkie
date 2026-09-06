@@ -4,6 +4,7 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  runInterval;
   coinBar = new CoinBar();
   poisonBar = new PoisonBar();
   throwableObjects = [];
@@ -41,7 +42,7 @@ class World {
   }
 
   run() {
-    setInterval(() => {
+    this.runInterval = setInterval(() => {
       if (!gameRunning) return;
       this.checkCollisions();
       this.ensureBossBar();
@@ -49,6 +50,10 @@ class World {
       this.healthBar.update();
     }, 200);
   }
+
+  stop() {
+  clearInterval(this.runInterval);
+}
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) =>
