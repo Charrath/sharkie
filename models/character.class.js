@@ -134,18 +134,27 @@ class Character extends MoveableObject {
   startInputLoop() {
     setInterval(() => {
       if (!gameRunning) return;
-      if (this.world.keyboard.F && !this.isAttacking)
-        this.startAttack("bubble");
-      if (this.world.keyboard.E && !this.isAttacking)
-        this.startAttack("finalSlap");
-      if (!this.isDead()) {
-        if (this.canMoveRight()) this.moveRight();
-        if (this.canMoveLeft()) this.moveLeft();
-        if (this.canMoveUp()) this.moveUp();
-        if (this.canMoveDown()) this.moveDown();
-      }
+      this.handleAttacks();
+      this.handleMovement();
       this.updateCamera();
     }, 16);
+  }
+
+  handleAttacks() {
+    if (this.world.keyboard.F && !this.isAttacking) {
+      this.startAttack("bubble");
+    }
+    if (this.world.keyboard.E && !this.isAttacking) {
+      this.startAttack("finalSlap");
+    }
+  }
+
+  handleMovement() {
+    if (this.isDead()) return;
+    if (this.canMoveRight()) this.moveRight();
+    if (this.canMoveLeft()) this.moveLeft();
+    if (this.canMoveUp()) this.moveUp();
+    if (this.canMoveDown()) this.moveDown();
   }
 
   startAnimationLoop() {
