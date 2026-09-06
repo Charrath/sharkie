@@ -22,19 +22,24 @@ class MoveableObject extends DrawableObject {
   applyGravity() {
     setInterval(() => {
       this.x += this.speedX;
-
-      if (this.speedX > 0) {
-        this.speedX = Math.max(0, this.speedX - this.friction);
-      } else if (this.speedX < 0) {
-        this.speedX = Math.min(0, this.speedX + this.friction);
-      }
-
-      if (this.isUnderWater()) {
-        const horizontalFactor = Math.abs(this.speedX) / this.initialSpeedX;
-        const riseSpeed = this.buoyancy * (1 - horizontalFactor);
-        this.y -= riseSpeed;
-      }
+      this.applyFriction();
+      this.applyBuoyancy();
     }, 1000 / 25);
+  }
+
+  applyFriction() {
+    if (this.speedX > 0) {
+      this.speedX = Math.max(0, this.speedX - this.friction);
+    } else if (this.speedX < 0) {
+      this.speedX = Math.min(0, this.speedX + this.friction);
+    }
+  }
+
+  applyBuoyancy() {
+    if (!this.isUnderWater()) return;
+    const horizontalFactor = Math.abs(this.speedX) / this.initialSpeedX;
+    const riseSpeed = this.buoyancy * (1 - horizontalFactor);
+    this.y -= riseSpeed;
   }
 
   isUnderWater() {
@@ -148,16 +153,17 @@ class MoveableObject extends DrawableObject {
 
   hit(damage = 5) {
     if (this.isUntouchable) return;
-
-    this.energy -= damage;
-    if (this.energy < 0) this.energy = 0;
+    this.energy = Math.max(0, this.energy - damage);
     this.isUntouchable = true;
     this.currentImage = 0;
-    this.lastHit = new Date().getTime();
+    this.lastHit = Date.now();
+    this.resetUntouchable();
+  }
 
+  resetUntouchable() {
     const frames = this.IMAGE_SETS?.hurt?.length ?? 1;
-    const frameDurationMs = 200;
-    const hurtDuration = frames * frameDurationMs;
+    const hurtDuration = frames * 200;
+
     setTimeout(() => {
       this.isUntouchable = false;
     }, hurtDuration);
