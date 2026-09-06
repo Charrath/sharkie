@@ -15,11 +15,18 @@ class StatusBar extends DrawableObject {
     super.draw(ctx);
     if (this.showNumber) {
       ctx.font = "30px Luckiest Guy ";
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "black";
+      ctx.strokeText(
+        this.number.toString(),
+        this.x + this.numberX,
+        this.y + this.numberY,
+      );
       ctx.fillStyle = "white";
       ctx.fillText(
         this.number.toString(),
         this.x + this.numberX,
-        this.y + this.numberY
+        this.y + this.numberY,
       );
     }
   }

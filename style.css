@@ -78,7 +78,6 @@ canvas {
 }
 
 .menu-button {
-  font-family: "LuckiestGuy", sans-serif;
   font-size: clamp(18px, 2.5vw, 36px);
   color: white;
 
@@ -258,7 +257,6 @@ canvas {
   background: rgba(5, 40, 65, 0.65);
   color: white;
 
-  font-family: "LuckiestGuy", sans-serif;
   font-size: 22px;
 
   pointer-events: auto;
@@ -333,12 +331,15 @@ canvas {
 
   .rotate-content p {
     margin: 0;
-    font-family: "LuckiestGuy", sans-serif;
     font-size: clamp(20px, 6vw, 36px);
   }
 }
 
 @media (max-width: 950px) and (orientation: landscape) {
+   .mobile-controls {
+    display: block;
+  }
+
   .game-container {
     width: 100%;
     height: 100dvh;
