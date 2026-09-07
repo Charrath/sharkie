@@ -1,4 +1,13 @@
+/**
+ * Represents the health bar of the endboss.
+ * @extends StatusBar
+ */
 class BossHealthBar extends StatusBar {
+  /**
+   * Creates a new health bar for the given endboss.
+   *
+   * @param {Endboss} boss - The endboss whose health is displayed.
+   */
   constructor(boss) {
     super();
     this.boss = boss;
@@ -20,6 +29,9 @@ class BossHealthBar extends StatusBar {
     this.maxHP = boss.maxEnergy;
   }
 
+  /**
+   * Updates the health bar based on the current health of the endboss.
+   */
   update() {
     const hp = Math.max(0, this.boss.energy);
     const healthPercent = Math.round((hp / this.maxHP) * 100);
@@ -33,6 +45,12 @@ class BossHealthBar extends StatusBar {
     this.number = hp;
   }
 
+  /**
+   * Determines the health bar image step for the current health percentage.
+   *
+   * @param {number} healthPercent - The current health percentage of the endboss.
+   * @returns {number} The matching health bar step.
+   */
   getHealthStep(healthPercent) {
     if (healthPercent >= 100) return 100;
     if (healthPercent >= 80) return 80;
@@ -42,6 +60,11 @@ class BossHealthBar extends StatusBar {
     return 0;
   }
 
+  /**
+   * Checks whether the endboss health bar should be visible.
+   *
+   * @returns {boolean} True if the endboss has been introduced and is alive.
+   */
   isVisible() {
     return !!this.boss && !!this.boss.introduced && !this.boss.isDead?.();
   }

@@ -1,3 +1,9 @@
+/**
+ * Represents a status bar in the game.
+ * Displays an image and optionally a numerical value.
+ *
+ * @extends DrawableObject
+ */
 class StatusBar extends DrawableObject {
   height = 50;
   width = 50;
@@ -7,17 +13,31 @@ class StatusBar extends DrawableObject {
   numberY = 40;
   showNumber = true;
 
+  /**
+   * Creates a new status bar.
+   */
   constructor() {
     super();
   }
 
+  /**
+   * Draws the status bar and its numerical value on the canvas.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   */
   draw(ctx) {
     super.draw(ctx);
+
     if (this.showNumber) {
       this.drawNumber(ctx);
     }
   }
 
+  /**
+   * Draws the numerical value of the status bar on the canvas.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   */
   drawNumber(ctx) {
     const text = this.number.toString();
     const x = this.x + this.numberX;

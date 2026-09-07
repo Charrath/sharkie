@@ -1,3 +1,9 @@
+/**
+ * Represents a collectible poison flask in the game.
+ * Handles rotation animation, collection behavior and respawning.
+ *
+ * @extends MoveableObject
+ */
 class PoisonFlask extends MoveableObject {
   IMAGES_ROTATE = [
     "img/4. Marcadores/Posión/Animada/1.png",
@@ -12,6 +18,12 @@ class PoisonFlask extends MoveableObject {
 
   static sound = new Audio("assets/audio/poison.mp3");
 
+  /**
+   * Creates a new poison flask at the specified position.
+   *
+   * @param {number} x - The horizontal position of the poison flask.
+   * @param {number} y - The vertical position of the poison flask.
+   */
   constructor(x, y) {
     super().loadImage(this.IMAGES_ROTATE[0]);
     this.loadImages(this.IMAGES_ROTATE);
@@ -23,14 +35,22 @@ class PoisonFlask extends MoveableObject {
     this.animate();
   }
 
+  /**
+   * Starts the rotating animation of the poison flask.
+   */
   animate() {
     this.animationInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_ROTATE);
     }, 150);
   }
 
+  /**
+   * Collects the poison flask, increases the poison counter
+   * and creates a new flask after a delay.
+   */
   collect() {
     if (this.collected) return;
+
     this.collected = true;
     clearInterval(this.animationInterval);
 
@@ -52,6 +72,10 @@ class PoisonFlask extends MoveableObject {
     }, 10000);
   }
 
+  /**
+   * Makes the poison flask collectable again
+   * and restarts its animation.
+   */
   respawn() {
     this.collected = false;
     this.animate();

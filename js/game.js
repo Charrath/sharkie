@@ -30,28 +30,37 @@ bossMusic.volume = 0.3;
 gameOverMusic.loop = true;
 gameOverMusic.volume = 0.3;
 
+/**
+ * Initializes the game canvas and keyboard controls.
+ */
 function init() {
   canvas = document.getElementById("canvas");
   initKeyboardControls();
 }
 
+/**
+ * Starts a new game and initializes the game world.
+ */
 function startGame() {
   gameRunning = true;
-
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("gameOverScreen").classList.add("d-none");
   document.getElementById("mobileControls").classList.remove("d-none");
   document.getElementById("gameMenuButtons").classList.remove("d-none");
-
   backgroundMusic.currentTime = 1;
   backgroundMusic.play();
-
   level1 = createLevel1();
   world = new World(canvas, keyboard);
 }
 
+/**
+ * Ends the current game and displays the game over screen.
+ *
+ * @param {boolean} won - Indicates whether the player has won the game.
+ */
 function showGameOver(won = false) {
   gameRunning = false;
+
   if (world) {
     world.stop();
   }
@@ -71,17 +80,22 @@ function showGameOver(won = false) {
   document.getElementById("gameMenuButtons").classList.add("d-none");
 }
 
+/**
+ * Restarts the game after a game over.
+ */
 function restartGame() {
   document.getElementById("gameOverScreen").classList.add("d-none");
-
   gameOverMusic.pause();
   gameOverMusic.currentTime = 0;
-
   startGame();
 }
 
+/**
+ * Stops the current game and returns to the start menu.
+ */
 function backToMenu() {
   gameRunning = false;
+
   if (world) {
     world.stop();
   }
@@ -95,21 +109,32 @@ function backToMenu() {
   document.getElementById("gameMenuButtons").classList.add("d-none");
 }
 
+/**
+ * Stops the background music and starts the boss fight music.
+ */
 function playBossMusic() {
   backgroundMusic.pause();
-
   bossMusic.currentTime = 1;
   bossMusic.play();
 }
 
+/**
+ * Displays the game instructions.
+ */
 function showInstructions() {
   document.getElementById("instructions").classList.remove("d-none");
 }
 
+/**
+ * Hides the game instructions.
+ */
 function hideInstructions() {
   document.getElementById("instructions").classList.add("d-none");
 }
 
+/**
+ * Toggles all game sounds between muted and unmuted.
+ */
 function toggleSound() {
   soundMuted = !soundMuted;
 
@@ -126,12 +151,24 @@ function toggleSound() {
   document.getElementById("soundButton").innerText = soundMuted ? "🔇" : "🔊";
 }
 
+/**
+ * Initializes keyboard event listeners for game controls.
+ */
 function initKeyboardControls() {
   document.addEventListener("keydown", (event) => setKey(event, true));
   document.addEventListener("keyup", (event) => setKey(event, false));
 }
 
+/**
+ * Updates the state of a game control based on a keyboard event.
+ *
+ * @param {KeyboardEvent} event - The keyboard event triggered by the user.
+ * @param {boolean} pressed - Indicates whether the key is pressed or released.
+ */
 function setKey(event, pressed) {
   const key = keyMap[event.code] || keyMap[event.key];
-  if (key) keyboard[key] = pressed;
+
+  if (key) {
+    keyboard[key] = pressed;
+  }
 }

@@ -1,3 +1,7 @@
+/**
+ * Represents a drawable object in the game.
+ * Provides basic functionality for loading and drawing images and animations.
+ */
 class DrawableObject {
   img;
   imageCache = {};
@@ -7,19 +11,36 @@ class DrawableObject {
   height = 100;
   width = 100;
 
+  /**
+   * Loads a single image and sets it as the current image.
+   *
+   * @param {string} path - The path to the image file.
+   */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
+  /**
+   * Draws the object on the canvas.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   */
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
+  /**
+   * Draws the collision frame around supported game objects.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   */
   drawFrame(ctx) {
     const objects = [Character, PufferFish, JellyFish, Endboss];
     if (!objects.some((type) => this instanceof type)) return;
+
     const box = this.getFrameBox();
+
     ctx.beginPath();
     ctx.lineWidth = 2;
     ctx.strokeStyle = "blue";
@@ -27,6 +48,12 @@ class DrawableObject {
     ctx.stroke();
   }
 
+  /**
+   * Calculates the collision frame of the object based on its offsets.
+   *
+   * @returns {{x: number, y: number, width: number, height: number}}
+   * The position and dimensions of the collision frame.
+   */
   getFrameBox() {
     return {
       x: this.x + this.offset.left,
@@ -36,6 +63,11 @@ class DrawableObject {
     };
   }
 
+  /**
+   * Plays an animation by cycling through the provided images.
+   *
+   * @param {string[]} images - The image paths used for the animation.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -43,6 +75,11 @@ class DrawableObject {
     this.currentImage++;
   }
 
+  /**
+   * Loads multiple images and stores them in the image cache.
+   *
+   * @param {string[]} arr - The image paths to load.
+   */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();

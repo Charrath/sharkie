@@ -1,13 +1,25 @@
+/**
+ * Represents the health bar of the character.
+ * @extends StatusBar
+ */
 class HealthBar extends StatusBar {
-    constructor(character) {
-        super().loadImage('img/4. Marcadores/green/100_  copia 3.png');
-        this.character = character;
-        this.number = this.character.energy;
-        this.x = 155;
-        this.numberX = 46;
-      }
+  /**
+   * Creates a new health bar for the given character.
+   *
+   * @param {Character} character - The character whose health is displayed.
+   */
+  constructor(character) {
+    super().loadImage("img/4. Marcadores/green/100_  copia 3.png");
+    this.character = character;
+    this.number = this.character.energy;
+    this.x = 155;
+    this.numberX = 46;
+  }
 
-      update() {
-        this.number = this.character.energy;
-    }
+  /**
+   * Updates the health bar with the character's current energy.
+   */
+  update() {
+    this.number = this.character.energy;
+  }
 }

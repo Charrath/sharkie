@@ -1,3 +1,9 @@
+/**
+ * Represents a jellyfish enemy in the game.
+ * Handles swimming animations, vertical patrol movement and death behavior.
+ *
+ * @extends MoveableObject
+ */
 class JellyFish extends MoveableObject {
   IMAGE_SETS = {
     swimming: [
@@ -20,6 +26,9 @@ class JellyFish extends MoveableObject {
   maxY = 405;
   minY = 50;
 
+  /**
+   * Creates a new jellyfish with a random position and movement speed.
+   */
   constructor() {
     super().loadImage(this.IMAGE_SETS.swimming[0]);
     this.x = 200 + Math.random() * 400;
@@ -31,29 +40,47 @@ class JellyFish extends MoveableObject {
     this.animate();
   }
 
+  /**
+   * Loads all image sets used by the jellyfish.
+   */
   loadAllImages() {
     Object.values(this.IMAGE_SETS).forEach((images) => this.loadImages(images));
   }
 
+  /**
+   * Defines the vertical patrol area of the jellyfish.
+   *
+   * @param {number} centerY - The vertical center position of the patrol area.
+   * @param {number} [zoneHeight=160] - The total height of the patrol area.
+   */
   setVerticalPatrol(centerY, zoneHeight = 160) {
     const half = Math.min(
       zoneHeight / 2,
       centerY - this.minY,
-      this.maxY - centerY
+      this.maxY - centerY,
     );
+
     this.patrolMinY = centerY - half;
     this.patrolMaxY = centerY + half;
     this.dirY = Math.random() < 0.5 ? -1 : 1;
   }
 
+  /**
+   * Starts the animation and movement loops of the jellyfish.
+   */
   animate() {
     this.startAnimationLoop();
     this.startMovementLoop();
   }
 
+  /**
+   * Starts the animation loop and switches between swimming
+   * and death animations.
+   */
   startAnimationLoop() {
     setInterval(() => {
       if (!gameRunning) return;
+
       if (this.isDead) {
         this.playAnimation(this.IMAGE_SETS.dead);
       } else {
@@ -62,9 +89,13 @@ class JellyFish extends MoveableObject {
     }, 250);
   }
 
+  /**
+   * Starts the movement loop of the jellyfish.
+   */
   startMovementLoop() {
     setInterval(() => {
       if (!gameRunning) return;
+
       if (this.isDead) {
         this.flyAwayStep();
       } else {
@@ -73,6 +104,9 @@ class JellyFish extends MoveableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * Updates the vertical patrol movement of the jellyfish.
+   */
   updatePatrolMovement() {
     if (this.patrolMinY == null) return;
 
@@ -80,32 +114,51 @@ class JellyFish extends MoveableObject {
     this.correctPositionIfOutOfBounds();
   }
 
+  /**
+   * Keeps the jellyfish inside its patrol area
+   * and changes its movement direction at the boundaries.
+   */
   correctPositionIfOutOfBounds() {
     if (this.y <= this.patrolMinY) {
       this.y = this.patrolMinY;
       this.dirY = 1;
     }
+
     if (this.y >= this.patrolMaxY) {
       this.y = this.patrolMaxY;
       this.dirY = -1;
     }
   }
 
+  /**
+   * Marks the jellyfish as dead and starts its upward movement.
+   */
   die() {
     this.isDead = true;
     this.verticalSpeed = -2;
   }
 
+  /**
+   * Moves the dead jellyfish upward until it leaves the screen.
+   */
   flyAwayStep() {
     this.y += this.verticalSpeed;
+
     if (this.y + this.height < 0) {
       this.removeFromWorld();
     }
   }
 
+  /**
+   * Removes the jellyfish from the enemy list of the game world.
+   */
   removeFromWorld() {
     if (!this.world || !this.world.level || !this.world.level.enemies) return;
+
     const index = this.world.level.enemies.indexOf(this);
-    if (index > -1) this.world.level.enemies.splice(index, 1);
+
+    if (index > -1) {
+      this.world.level.enemies.splice(index, 1);
+    }
   }
 }
