@@ -133,22 +133,44 @@ function hideInstructions() {
 }
 
 /**
- * Toggles all game sounds between muted and unmuted.
+ * Toggles the global sound state and updates all active sounds.
+ *
+ * @returns {void}
  */
 function toggleSound() {
   soundMuted = !soundMuted;
-
   backgroundMusic.muted = soundMuted;
   bossMusic.muted = soundMuted;
   gameOverMusic.muted = soundMuted;
-
-  if (world?.character) {
-    Object.values(world.character.sounds).forEach((sound) => {
-      sound.muted = soundMuted;
-    });
-  }
-
+  muteObjectSounds();
   document.getElementById("soundButton").innerText = soundMuted ? "🔇" : "🔊";
+}
+
+/**
+ * Updates the mute state of all character and enemy sounds.
+ *
+ * @returns {void}
+ */
+function muteObjectSounds() {
+  setSoundsMuted(world?.character?.sounds);
+
+  world?.level?.enemies?.forEach((enemy) => {
+    setSoundsMuted(enemy.sounds);
+  });
+}
+
+/**
+ * Sets the mute state for all sounds in a sound collection.
+ *
+ * @param {Object} sounds - Collection of audio objects.
+ * @returns {void}
+ */
+function setSoundsMuted(sounds) {
+  if (!sounds) return;
+
+  Object.values(sounds).forEach((sound) => {
+    sound.muted = soundMuted;
+  });
 }
 
 /**
