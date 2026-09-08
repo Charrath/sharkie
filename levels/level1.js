@@ -202,7 +202,7 @@ function createLevel1() {
     405,
   );
 
-  const background = createBackgroundObjects(-717, 717, 8, layerPaths);
+  const background = createBackgroundObjects(-719, 719, 8, layerPaths);
 
   const collectables = createCollectables(enemies);
 
