@@ -31,13 +31,14 @@ gameOverMusic.loop = true;
 gameOverMusic.volume = 0.2;
 
 /**
- * Initializes the game canvas, keyboard controls, and sound state.
+ * Initializes the game canvas, controls, and sound state.
  *
  * @returns {void}
  */
 function init() {
   canvas = document.getElementById("canvas");
   initKeyboardControls();
+  disableControlContextMenu();
   applySoundState();
 }
 
@@ -220,4 +221,15 @@ function setKey(event, pressed) {
   if (key) {
     keyboard[key] = pressed;
   }
+}
+
+/**
+ * Disables the context menu on mobile control buttons.
+ *
+ * @returns {void}
+ */
+function disableControlContextMenu() {
+  document.querySelectorAll(".control-button").forEach((button) => {
+    button.addEventListener("contextmenu", (event) => event.preventDefault());
+  });
 }
