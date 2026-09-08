@@ -2,7 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let gameRunning = false;
-let soundMuted = false;
+let soundMuted = localStorage.getItem("soundMuted") === "true";
 
 let backgroundMusic = new Audio("assets/audio/backgroundSound.mp3");
 let bossMusic = new Audio("assets/audio/backgroundSoundBossFight.mp3");
@@ -25,17 +25,20 @@ backgroundMusic.loop = true;
 backgroundMusic.volume = 0.2;
 
 bossMusic.loop = true;
-bossMusic.volume = 0.3;
+bossMusic.volume = 0.2;
 
 gameOverMusic.loop = true;
-gameOverMusic.volume = 0.3;
+gameOverMusic.volume = 0.2;
 
 /**
- * Initializes the game canvas and keyboard controls.
+ * Initializes the game canvas, keyboard controls, and sound state.
+ *
+ * @returns {void}
  */
 function init() {
   canvas = document.getElementById("canvas");
   initKeyboardControls();
+  applySoundState();
 }
 
 /**
@@ -139,11 +142,22 @@ function hideInstructions() {
  */
 function toggleSound() {
   soundMuted = !soundMuted;
+  localStorage.setItem("soundMuted", soundMuted);
   backgroundMusic.muted = soundMuted;
   bossMusic.muted = soundMuted;
   gameOverMusic.muted = soundMuted;
   muteObjectSounds();
-  document.getElementById("soundButton").innerText = soundMuted ? "🔇" : "🔊";
+  updateSoundButton();
+}
+
+/**
+ * Updates the sound button based on the current mute state.
+ *
+ * @returns {void}
+ */
+function updateSoundButton() {
+  const button = document.getElementById("soundButton");
+  if (button) button.innerText = soundMuted ? "🔇" : "🔊";
 }
 
 /**
@@ -171,6 +185,19 @@ function setSoundsMuted(sounds) {
   Object.values(sounds).forEach((sound) => {
     sound.muted = soundMuted;
   });
+}
+
+/**
+ * Applies the saved mute state to the game sounds and sound button.
+ *
+ * @returns {void}
+ */
+function applySoundState() {
+  backgroundMusic.muted = soundMuted;
+  bossMusic.muted = soundMuted;
+  gameOverMusic.muted = soundMuted;
+  muteObjectSounds();
+  updateSoundButton();
 }
 
 /**
