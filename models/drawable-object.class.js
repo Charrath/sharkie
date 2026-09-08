@@ -87,4 +87,13 @@ class DrawableObject {
       this.imageCache[path] = img;
     });
   }
+
+  /**
+   * Checks whether the object should be visible.
+   *
+   * @returns {boolean} Always returns true by default.
+   */
+  isVisible() {
+    return true;
+  }
 }

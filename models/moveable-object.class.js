@@ -334,15 +334,6 @@ class MoveableObject extends DrawableObject {
   }
 
   /**
-   * Checks whether the object should be visible.
-   *
-   * @returns {boolean} Always returns true by default.
-   */
-  isVisible() {
-    return true;
-  }
-
-  /**
    * Loads a sound and stores it in the sound collection.
    *
    * @param {string} name - The name used to identify the sound.
