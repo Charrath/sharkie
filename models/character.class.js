@@ -9,7 +9,7 @@ class Character extends MoveableObject {
   SOUNDS = CHARACTER_CONFIG.sounds;
 
   height = 150;
-  width = 122;
+  width = 200;
   y = 50;
   speed = 2.5;
   world;
