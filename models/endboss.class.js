@@ -13,7 +13,7 @@ class Endboss extends MoveableObject {
   height = 200;
   width = 200;
   y = 50;
-  offset = { top: 63, left: 10, right: 14, bottom: 30 };
+  offset = { top: 105, left: 15, right: 40, bottom: 35 };
   introduced = false;
   introPlayed = false;
   hurtSoundPlayed = false;

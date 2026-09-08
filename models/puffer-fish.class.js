@@ -35,7 +35,7 @@ class PufferFish extends MoveableObject {
 
   height = 75;
   width = 75;
-  offset = { top: 3, left: 1, right: 10, bottom: 19 };
+  offset = { top: 10, left: 10, right: 20, bottom: 25 };
   maxY = 405;
   minY = 50;
   verticalSpeed = -6;
@@ -156,7 +156,7 @@ class PufferFish extends MoveableObject {
     this.playOnce(this.IMAGE_SETS.transition, 150, () => {
       this.transitioning = false;
       this.inBubbleMode = true;
-      this.offset.bottom = 3;
+      this.offset.bottom = 5;
     });
   }
 
@@ -242,7 +242,7 @@ class PufferFish extends MoveableObject {
       i--;
     }, speed);
 
-    this.offset.bottom = 19;
+    this.offset.bottom = 25;
   }
 
   /**

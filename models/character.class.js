@@ -5,12 +5,11 @@
  * @extends MoveableObject
  */
 class Character extends MoveableObject {
-
   IMAGE_SETS = CHARACTER_CONFIG.images;
   SOUNDS = CHARACTER_CONFIG.sounds;
 
   height = 150;
-  width = 200;
+  width = 122;
   y = 50;
   speed = 2.5;
   world;
@@ -19,7 +18,7 @@ class Character extends MoveableObject {
   isAttacking = false;
   isUntouchable = false;
   attackType = 0;
-  offset = { top: 115, bottom: 80, left: 40, right: 40 };
+  offset = { top: 112, bottom: 70, left: 26, right: 26 };
   maxX = 4410;
   minX = -300;
   maxY = 350;
@@ -266,8 +265,8 @@ class Character extends MoveableObject {
     this.currentImage = 0;
 
     Object.assign(this.offset, {
-      top: 132,
-      bottom: 62,
+      top: 125,
+      bottom: 55,
     });
   }
 
@@ -279,8 +278,8 @@ class Character extends MoveableObject {
     this.animationState = "idle";
 
     Object.assign(this.offset, {
-      top: 120,
-      bottom: 85,
+      top: 112,
+      bottom: 70,
     });
 
     this.stopSound("sleepLoop");

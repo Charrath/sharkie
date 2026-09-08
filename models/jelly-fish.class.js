@@ -22,7 +22,7 @@ class JellyFish extends MoveableObject {
 
   height = 75;
   width = 75;
-  offset = { top: 5, left: 1, right: 3, bottom: 10 };
+  offset = { top: 13, left: 15, right: 15, bottom: 20 };
   maxY = 405;
   minY = 50;
 
