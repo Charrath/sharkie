@@ -1,10 +1,8 @@
 /**
- * Contains all image sets used for the character animations.
- * Each property contains the image paths for a specific animation.
- *
- * @type {Object.<string, string[]>}
+ * Contains all image and sound configurations used by the character.
  */
-const CHARACTER_IMAGE_SETS = {
+const CHARACTER_CONFIG = {
+  images: {
     idle: [
       "img/1.Sharkie/1.IDLE/1.png",
       "img/1.Sharkie/1.IDLE/2.png",
@@ -96,4 +94,15 @@ const CHARACTER_IMAGE_SETS = {
       "img/1.Sharkie/4.Attack/Fin slap/7.png",
       "img/1.Sharkie/4.Attack/Fin slap/8.png",
     ],
-  };
+  },
+
+  sounds: {
+    swim: ["assets/audio/sharkieSwim.mp3", 0.2],
+    sleepStart: ["assets/audio/sharkieSleepStart.mp3", 0.4],
+    sleepLoop: ["assets/audio/sharkieSleepLoop.mp3", 0.4],
+    punch: ["assets/audio/sharkiePunch.mp3", 0.5],
+    hurt: ["assets/audio/sharkieHurt.mp3", 0.5],
+    bubbleAttack: ["assets/audio/sharkieBubble.mp3", 0.5],
+    dead: ["assets/audio/sharkieDead.mp3", 0.5],
+  },
+};

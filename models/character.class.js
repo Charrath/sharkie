@@ -5,9 +5,9 @@
  * @extends MoveableObject
  */
 class Character extends MoveableObject {
-  IMAGE_SETS = CHARACTER_IMAGE_SETS;
 
-  SOUNDS = CHARACTER_SOUNDS;
+  IMAGE_SETS = CHARACTER_CONFIG.images;
+  SOUNDS = CHARACTER_CONFIG.sounds;
 
   height = 150;
   width = 200;
@@ -19,7 +19,7 @@ class Character extends MoveableObject {
   isAttacking = false;
   isUntouchable = false;
   attackType = 0;
-  offset = { top: 120, bottom: 85, left: 35, right: 35 };
+  offset = { top: 115, bottom: 80, left: 40, right: 40 };
   maxX = 4410;
   minX = -300;
   maxY = 350;

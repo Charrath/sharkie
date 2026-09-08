@@ -35,7 +35,7 @@ class PufferFish extends MoveableObject {
 
   height = 75;
   width = 75;
-  offset = { top: 3, left: 1, right: 3, bottom: 19 };
+  offset = { top: 3, left: 1, right: 10, bottom: 19 };
   maxY = 405;
   minY = 50;
   verticalSpeed = -6;
