@@ -16,7 +16,7 @@ body {
   justify-content: center;
   font-family: "LuckiestGuy", sans-serif;
 
-  background-image: url("./img/background/underwater-background.png");
+  background-image: url("img/3. Background/underwater-background.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -43,7 +43,7 @@ canvas {
 
   z-index: 10;
 
-  background-image: url("./img/background/start-screen.png");
+  background-image: url("img/3. Background/start-screen.png");
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
