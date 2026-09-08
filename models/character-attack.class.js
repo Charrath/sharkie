@@ -180,7 +180,7 @@ class CharacterAttack {
    */
   spawnBubble() {
     const character = this.character;
-    const bx = character.x + (character.otherDirection ? 0 : 180);
+    const bx = character.x + (character.otherDirection ? 20 : 140);
     const by = character.y + 85;
     const bubble = new ThrowableObject(bx, by, character.world);
 

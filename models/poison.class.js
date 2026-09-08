@@ -28,9 +28,9 @@ class PoisonFlask extends MoveableObject {
     super().loadImage(this.IMAGES_ROTATE[0]);
     this.loadImages(this.IMAGES_ROTATE);
     this.x = x;
-    this.y = y;
-    this.width = 40;
-    this.height = 40;
+    this.y = y - 20;
+    this.width = 60;
+    this.height = 60;
     this.collected = false;
     this.animate();
   }
