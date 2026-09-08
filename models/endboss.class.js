@@ -6,7 +6,6 @@
  * @extends MoveableObject
  */
 class Endboss extends MoveableObject {
-
   IMAGE_SETS = ENDBOSS_CONFIG.images;
   SOUNDS = ENDBOSS_CONFIG.sounds;
 
@@ -20,6 +19,8 @@ class Endboss extends MoveableObject {
   spawnPoint = { x: 4000, y: 50 };
   speed = 40;
   maxEnergy = 100;
+  pauseAfterAttack = false;
+  attackPauseUntil = 0;
 
   /**
    * Creates a new endboss and initializes images, sounds and animations.
@@ -139,14 +140,12 @@ class Endboss extends MoveableObject {
     const playerDist = Math.abs(this.world.character.x - this.x);
 
     if (this.returningToSpawn) return this.returnToSpawn();
-
-    if (this.shouldReturnToSpawn(spawnDist, playerDist)) {
+    if (this.shouldReturnToSpawn(spawnDist, playerDist))
       return this.startReturn();
-    }
 
-    if (this.canAttackPlayer(playerDist)) {
-      return this.attackCharacter(19);
-    }
+    if (this.isAttackPaused()) return 150;
+
+    if (this.canAttackPlayer(playerDist)) return this.attackCharacter(19);
 
     this.playAnimation(this.IMAGE_SETS.swimming);
     return 200;
@@ -181,6 +180,33 @@ class Endboss extends MoveableObject {
    */
   canAttackPlayer(playerDist) {
     return playerDist <= 550 && !this.world.character.isDead();
+  }
+
+  /**
+   * Starts the attack pause after a successful hit.
+   */
+  startAttackPause() {
+    this.attackPauseUntil = Date.now() + 1000;
+    this.pauseAfterAttack = false;
+  }
+
+  /**
+   * Checks whether the attack pause is active.
+   *
+   * @returns {boolean} True while the endboss is pausing.
+   */
+  isAttackPaused() {
+    return Date.now() < this.attackPauseUntil;
+  }
+
+  /**
+   * Checks whether the attack should pause after the current animation.
+   *
+   * @returns {boolean} True if the attack should pause.
+   */
+  shouldPauseAttack() {
+    const frames = this.IMAGE_SETS.attack.length;
+    return this.pauseAfterAttack && this.currentImage % frames === 0;
   }
 
   /**
@@ -240,6 +266,8 @@ class Endboss extends MoveableObject {
     this.moveTowardsCharacter(char, speed);
     this.handleAttackSound();
     this.playAnimation(this.IMAGE_SETS.attack);
+
+    if (this.shouldPauseAttack()) this.startAttackPause();
 
     return 120;
   }

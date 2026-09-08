@@ -80,7 +80,7 @@ class World {
       }
 
       this.healthBar.update();
-    }, 200);
+    }, 50);
   }
 
   /**
@@ -163,6 +163,10 @@ class World {
 
     const damage = enemy instanceof Endboss ? 20 : 10;
     this.character.hit(damage);
+
+    if (enemy instanceof Endboss) {
+    enemy.pauseAfterAttack = true;
+  }
   }
 
   /**
