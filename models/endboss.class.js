@@ -186,7 +186,7 @@ class Endboss extends MoveableObject {
    * Starts the attack pause after a successful hit.
    */
   startAttackPause() {
-    this.attackPauseUntil = Date.now() + 1000;
+    this.attackPauseUntil = Date.now() + 1500;
     this.pauseAfterAttack = false;
   }
 
