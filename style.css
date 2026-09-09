@@ -170,14 +170,12 @@ canvas {
 
 .instruction-box h3 {
   margin: 0 0 6px;
-
-  font-size: clamp(12px, 2vw, 28px);
+  font-size: clamp(18px, 2vw, 28px);
 }
 
 .instruction-box p {
   margin: 4px 0;
-
-  font-size: clamp(9px, 1.4vw, 19px);
+  font-size: clamp(16px, 1.4vw, 19px);
 }
 
 .instruction-icon {
