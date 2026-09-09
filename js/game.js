@@ -46,6 +46,7 @@ function init() {
  * Starts a new game and initializes the game world.
  */
 function startGame() {
+  enterFullscreen();
   gameRunning = true;
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("gameOverScreen").classList.add("d-none");
@@ -55,6 +56,19 @@ function startGame() {
   backgroundMusic.play();
   level1 = createLevel1();
   world = new World(canvas, keyboard);
+}
+
+/**
+ * Opens the game in fullscreen mode.
+ *
+ * @returns {void}
+ */
+function enterFullscreen() {
+  const element = document.documentElement;
+
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  }
 }
 
 /**
