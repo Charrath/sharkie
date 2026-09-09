@@ -75,24 +75,55 @@ function enterFullscreen() {
  * Ends the current game and displays the game over screen.
  *
  * @param {boolean} won - Indicates whether the player has won the game.
+ * @returns {void}
  */
 function showGameOver(won = false) {
   gameRunning = false;
+  if (world) world.stop();
+  stopGameMusic();
+  setGameOverTitle(won);
+  playGameOverMusic();
+  showGameOverScreen();
+}
 
-  if (world) {
-    world.stop();
-  }
-
+/**
+ * Stops the background and boss music.
+ *
+ * @returns {void}
+ */
+function stopGameMusic() {
   backgroundMusic.pause();
   bossMusic.pause();
+}
 
+/**
+ * Sets the game over title based on the game result.
+ *
+ * @param {boolean} won - Indicates whether the player has won the game.
+ * @returns {void}
+ */
+function setGameOverTitle(won) {
   document.getElementById("gameOverTitle").innerHTML = won
     ? "YOU WIN"
     : "GAME OVER";
+}
 
+/**
+ * Starts the game over music from the beginning.
+ *
+ * @returns {void}
+ */
+function playGameOverMusic() {
   gameOverMusic.currentTime = 0;
   gameOverMusic.play();
+}
 
+/**
+ * Displays the game over screen and hides game controls.
+ *
+ * @returns {void}
+ */
+function showGameOverScreen() {
   document.getElementById("mobileControls").classList.add("d-none");
   document.getElementById("gameOverScreen").classList.remove("d-none");
   document.getElementById("gameMenuButtons").classList.add("d-none");

@@ -28,6 +28,7 @@ class PoisonFlask extends MoveableObject {
     super().loadImage(this.IMAGES_ROTATE[0]);
     this.loadImages(this.IMAGES_ROTATE);
     this.x = x;
+    this.spawnY = y;
     this.y = y - 20;
     this.width = 60;
     this.height = 60;
@@ -45,31 +46,30 @@ class PoisonFlask extends MoveableObject {
   }
 
   /**
-   * Collects the poison flask, increases the poison counter
-   * and creates a new flask after a delay.
+   * Collects the poison flask and updates the poison bar.
    */
   collect() {
     if (this.collected) return;
-
     this.collected = true;
     clearInterval(this.animationInterval);
-
-    if (this.world.poisonBar) {
-      this.world.poisonBar.number += 1;
-    }
+    if (this.world.poisonBar) this.world.poisonBar.number += 1;
 
     if (!soundMuted) {
       PoisonFlask.sound.currentTime = 0;
       PoisonFlask.sound.play();
     }
 
-    setTimeout(() => {
-      if (this.world && this.world.level && this.world.level.collectables) {
-        const newFlask = new PoisonFlask(this.x, this.y);
-        newFlask.world = this.world;
-        this.world.level.collectables.push(newFlask);
-      }
-    }, 10000);
+    setTimeout(() => this.spawnNewFlask(), 10000);
+  }
+
+  /**
+   * Creates a new poison flask at its original spawn position.
+   */
+  spawnNewFlask() {
+    if (!this.world?.level?.collectables) return;
+    const newFlask = new PoisonFlask(this.x, this.spawnY);
+    newFlask.world = this.world;
+    this.world.level.collectables.push(newFlask);
   }
 
   /**

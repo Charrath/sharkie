@@ -39,29 +39,34 @@ function createBackgroundObjects(startX, step, groupCount, layerPaths) {
  * @returns {string[]} The ordered list of enemy type names.
  */
 function buildMixedOrder(pufferFishCount, jellyFishCount) {
-  if (jellyFishCount === 0) {
-    return Array(pufferFishCount).fill("PufferFish");
-  }
-
-  if (pufferFishCount === 0) {
-    return Array(jellyFishCount).fill("JellyFish");
-  }
+  if (!jellyFishCount) return Array(pufferFishCount).fill("PufferFish");
+  if (!pufferFishCount) return Array(jellyFishCount).fill("JellyFish");
 
   const order = [];
-  const pufferPerJelly = Math.floor(pufferFishCount / jellyFishCount);
-  const extraPuffer = pufferFishCount % jellyFishCount;
-
-  for (let jellyIndex = 0; jellyIndex < jellyFishCount; jellyIndex++) {
-    const groupSize = pufferPerJelly + (jellyIndex < extraPuffer ? 1 : 0);
-
-    for (let pufferIndex = 0; pufferIndex < groupSize; pufferIndex++) {
-      order.push("PufferFish");
-    }
-
-    order.push("JellyFish");
+  for (let i = 0; i < jellyFishCount; i++) {
+    addEnemyGroup(order, i, pufferFishCount, jellyFishCount);
   }
-
   return order;
+}
+
+/**
+ * Adds a group of puffer fish followed by one jelly fish.
+ *
+ * @param {string[]} order - The current enemy order.
+ * @param {number} index - The current jelly fish index.
+ * @param {number} pufferCount - The total number of puffer fish.
+ * @param {number} jellyCount - The total number of jelly fish.
+ * @returns {void}
+ */
+function addEnemyGroup(order, index, pufferCount, jellyCount) {
+  const base = Math.floor(pufferCount / jellyCount);
+  const extra = pufferCount % jellyCount;
+  const groupSize = base + (index < extra ? 1 : 0);
+
+  for (let i = 0; i < groupSize; i++) {
+    order.push("PufferFish");
+  }
+  order.push("JellyFish");
 }
 
 /**
@@ -77,21 +82,32 @@ function buildMixedOrder(pufferFishCount, jellyFishCount) {
 function createEnemies(config, minX, maxX, minY, maxY) {
   const types = { PufferFish, JellyFish };
   const enemies = [];
-
   const order = buildMixedOrder(config.PufferFish || 0, config.JellyFish || 0);
-
   const stepX = (maxX - minX) / Math.max(1, order.length - 1);
 
-  order.forEach((type, i) => {
-    const enemy = createEnemy(types[type], type, minX + i * stepX, minY, maxY);
-
-    setEnemyPatrol(enemy);
-    enemies.push(enemy);
-  });
+  order.forEach((type, i) =>
+    addEnemy(enemies, types[type], type, minX + i * stepX, minY, maxY),
+  );
 
   enemies.push(new Endboss());
-
   return enemies;
+}
+
+/**
+ * Creates an enemy, sets its patrol area and adds it to the enemy list.
+ *
+ * @param {MoveableObject[]} enemies - The current enemy list.
+ * @param {Function} EnemyClass - The class used to create the enemy.
+ * @param {string} type - The enemy type name.
+ * @param {number} x - The horizontal spawn position.
+ * @param {number} minY - The minimum vertical spawn position.
+ * @param {number} maxY - The maximum vertical spawn position.
+ * @returns {void}
+ */
+function addEnemy(enemies, EnemyClass, type, x, minY, maxY) {
+  const enemy = createEnemy(EnemyClass, type, x, minY, maxY);
+  setEnemyPatrol(enemy);
+  enemies.push(enemy);
 }
 
 /**
