@@ -22,6 +22,7 @@ class World {
    */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
+    this.ctx.imageSmoothingEnabled = false;
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.character = new Character(this);
@@ -165,8 +166,8 @@ class World {
     this.character.hit(damage);
 
     if (enemy instanceof Endboss) {
-    enemy.pauseAfterAttack = true;
-  }
+      enemy.pauseAfterAttack = true;
+    }
   }
 
   /**
@@ -225,7 +226,9 @@ class World {
    * Draws all objects that belong to the game world.
    */
   drawWorld() {
-    this.ctx.translate(this.camera_x, 0);
+    const cameraX = Math.round(this.camera_x);
+
+    this.ctx.translate(cameraX, 0);
 
     this.addObjectsToMap(this.level.backgroundObjects);
     this.drawCollectables();
@@ -233,7 +236,7 @@ class World {
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.enemies);
 
-    this.ctx.translate(-this.camera_x, 0);
+    this.ctx.translate(-cameraX, 0);
   }
 
   /**

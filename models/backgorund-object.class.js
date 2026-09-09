@@ -3,7 +3,7 @@
  * @extends MoveableObject
  */
 class BackgroundObject extends MoveableObject {
-  width = 720;
+  width = 721;
   height = 480;
 
   /**

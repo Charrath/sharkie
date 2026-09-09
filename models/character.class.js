@@ -18,7 +18,7 @@ class Character extends MoveableObject {
   isAttacking = false;
   isUntouchable = false;
   attackType = 0;
-  offset = { top: 112, bottom: 70, left: 26, right: 26 };
+  offset = { top: 112, bottom: 70, left: 40, right: 40 };
   maxX = 4410;
   minX = -300;
   maxY = 350;

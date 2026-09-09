@@ -343,7 +343,8 @@ canvas {
   display: none;
 }
 
-@media (pointer: coarse) and (hover: none) and (orientation: portrait) {
+@media (pointer: coarse) and (hover: none) and (orientation: portrait),
+  (max-width: 1000px) and (pointer: fine) and (orientation: portrait) {
   .game-container {
     display: none;
   }
@@ -379,7 +380,8 @@ canvas {
   }
 }
 
-@media (pointer: coarse) and (hover: none) and (orientation: landscape) {
+@media (pointer: coarse) and (hover: none) and (orientation: landscape),
+  (max-width: 1000px) and (pointer: fine) and (orientation: landscape) {
   .mobile-controls {
     display: block;
   }
@@ -387,16 +389,17 @@ canvas {
   .game-container {
     width: 100vw;
     height: 100dvh;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     overflow: hidden;
   }
 
   canvas {
-    width: auto;
+    width: min(100vw, calc(100dvh * 1.5));
     height: auto;
-    max-width: 100vw;
-    max-height: 100dvh;
+    display: block;
   }
 }
